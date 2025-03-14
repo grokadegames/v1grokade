@@ -1,4 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# V1 Grokade
+
+AI Gaming Vibe Hub - A platform to discover and play AI-powered games.
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Deployment
+
+### Netlify Deployment
+
+To deploy to Netlify, you can use the provided script:
+
+```bash
+./deploy-netlify.sh
+```
+
+Alternatively, you can:
+
+1. Install Netlify CLI:
+   ```bash
+   npm install -g netlify-cli
+   ```
+
+2. Build the project:
+   ```bash
+   npm run build
+   ```
+
+3. Deploy to Netlify:
+   ```bash
+   netlify deploy --prod
+   ```
+
+### Railway Deployment
+
+To deploy to Railway, you can use the provided script:
+
+```bash
+./deploy-railway.sh
+```
+
+Alternatively, you can:
+
+1. Install Railway CLI:
+   ```bash
+   npm install -g @railway/cli
+   ```
+
+2. Login to Railway:
+   ```bash
+   railway login
+   ```
+
+3. Build and deploy:
+   ```bash
+   npm run build
+   railway up
+   ```
+
+## Project Structure
+
+- `/src/app` - Next.js app directory
+- `/src/components` - React components
+- `/public` - Static files like images and fonts
+- `/src/app/globals.css` - Global CSS styles
+
+## Technologies Used
+
+- Next.js 15
+- React 19
+- Tailwind CSS
+- Node.js
 
 ## Getting Started
 
