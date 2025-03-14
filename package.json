@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint && node postbuild.js",
-    "start": "if [ -d \".next/standalone\" ]; then node .next/standalone/server.js; else next start; fi",
-    "start:next": "next start",
+    "build": "next build --no-lint",
+    "start": "next start",
     "lint": "next lint",
     "setup-db": "./scripts/setup-db.sh",
     "prisma:generate": "prisma generate",

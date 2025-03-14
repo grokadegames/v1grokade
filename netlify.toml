@@ -5,47 +5,9 @@
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
-  NETLIFY_NEXT_PLUGIN_SKIP = "false"
-  NETLIFY = "true"
   
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
-
-[build.processing.images]
-  compress = true
-
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Handle Next.js static assets
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/_next/static/:splat"
-  status = 200
-
-# Handle Next.js API routes
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/nextjs-server"
-  status = 200
-  force = true
-
-# Handle all other routes
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/nextjs-server"
-  status = 200
 
 # Security headers
 [[headers]]
