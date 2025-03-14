@@ -8,9 +8,9 @@ const nextConfig = {
   },
   // This helps with proper Netlify routing
   trailingSlash: true,
-  // Required for proper middleware operation on Netlify
+  // Remove the invalid experimental option
   experimental: {
-    instrumentationHook: false
+    // instrumentationHook line removed
   }
 };
 
