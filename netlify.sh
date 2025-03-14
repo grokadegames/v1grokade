@@ -8,9 +8,11 @@ echo "NPM version: $(npm -v)"
 npm ci
 
 # Generate Prisma client
-npm run prisma:generate
+echo "Generating Prisma client..."
+npx prisma generate
 
 # Build the Next.js app
+echo "Building Next.js app..."
 npm run build
 
 echo "Build completed successfully!" 

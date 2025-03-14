@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "next-on-netlify",
     "dev": "next dev",
     "build": "next build --no-lint",
     "start": "next start",
