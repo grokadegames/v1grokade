@@ -1,11 +1,11 @@
 [build]
-  command = "bash netlify.sh"
+  command = "npm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NETLIFY_NEXT_PLUGIN_SKIP = "false"
 
 # Simple redirect for all requests to the Next.js app
 [[redirects]]
@@ -20,4 +20,7 @@
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "same-origin" 
+    Referrer-Policy = "same-origin"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs" 
