@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
 
 export default function GameCard({ game }) {
   // Default game object if none provided
@@ -19,10 +18,29 @@ export default function GameCard({ game }) {
   // Use provided game or default
   game = game || defaultGame;
   
-  // Format the date if available
+  // Format the date if available using native JavaScript
   const formattedDate = game.createdAt 
-    ? formatDistanceToNow(new Date(game.createdAt), { addSuffix: true })
+    ? formatRelativeTime(new Date(game.createdAt))
     : 'Just now';
+  
+  // Simple function to format relative time without external dependencies
+  function formatRelativeTime(date) {
+    const now = new Date();
+    const diffMs = now - date;
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const diffMonths = Math.floor(diffDays / 30);
+    const diffYears = Math.floor(diffDays / 365);
+    
+    if (diffSecs < 60) return 'Just now';
+    if (diffMins < 60) return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
+    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
+    if (diffDays < 30) return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+    if (diffMonths < 12) return `${diffMonths} ${diffMonths === 1 ? 'month' : 'months'} ago`;
+    return `${diffYears} ${diffYears === 1 ? 'year' : 'years'} ago`;
+  }
 
   return (
     <div className="bg-grok-card rounded-md overflow-hidden shadow-lg h-full flex flex-col">
