@@ -7,8 +7,43 @@ export default function GameGrid() {
   const [filter, setFilter] = useState('production');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('newest');
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const gamesContainerRef = useRef(null);
   
+  // Fetch games from the API
+  const fetchGames = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const queryParams = new URLSearchParams();
+      if (searchTerm) queryParams.append('search', searchTerm);
+      queryParams.append('sort', sortOrder);
+      
+      const response = await fetch(`/api/games?${queryParams.toString()}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch games');
+      }
+      
+      const data = await response.json();
+      setGames(data.games || []);
+    } catch (err) {
+      console.error('Error fetching games:', err);
+      setError('Failed to load games. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Fetch games when component mounts or when search/sort changes
+  useEffect(() => {
+    fetchGames();
+  }, [searchTerm, sortOrder]);
+  
+  // Implement horizontal scrolling
   useEffect(() => {
     const container = gamesContainerRef.current;
     if (!container) return;
@@ -56,64 +91,6 @@ export default function GameGrid() {
       container.removeEventListener('mousemove', onMouseMove);
     };
   }, []);
-  
-  // Sample games data
-  const games = [
-    {
-      id: 'brick-breaker-1',
-      title: 'Brick Breaker',
-      creator: 'Grokade Team',
-      description: 'Classic brick breaking game with paddle and power-ups',
-      plays: 120,
-      isLive: true,
-      image: null
-    },
-    {
-      id: 'snake-game-1',
-      title: 'Snake Game',
-      creator: 'Grokade Team',
-      description: 'Classic snake game - eat food and grow longer',
-      plays: 95,
-      isLive: true,
-      image: null
-    },
-    {
-      id: 'space-invaders-1',
-      title: 'Space Invaders',
-      creator: 'Grokade Team',
-      description: 'Defend Earth from alien invaders',
-      plays: 80,
-      isLive: true,
-      image: null
-    },
-    {
-      id: 'space-invaders-2',
-      title: 'Space Invaders',
-      creator: 'Grokade Team',
-      description: 'Defend Earth from alien invaders',
-      plays: 65,
-      isLive: true,
-      image: null
-    },
-    {
-      id: 'brick-breaker-2',
-      title: 'Brick Breaker',
-      creator: 'Grokade Team',
-      description: 'Classic brick breaking game with paddle and power-ups',
-      plays: 120,
-      isLive: true,
-      image: null
-    },
-    {
-      id: 'snake-game-2',
-      title: 'Snake Game',
-      creator: 'Grokade Team',
-      description: 'Classic snake game - eat food and grow longer',
-      plays: 80,
-      isLive: true,
-      image: null
-    }
-  ];
 
   return (
     <div className="py-12 bg-grok-dark" id="games-section">
@@ -172,32 +149,54 @@ export default function GameGrid() {
         
         {/* Game cards horizontal scroll container */}
         <div className="relative">
-          <div 
-            ref={gamesContainerRef}
-            className="games-container overflow-x-auto scrollbar-hide"
-          >
-            <div className="flex gap-6 pb-4 min-w-max">
-              {games.map((game) => (
-                <div key={game.id} className="w-80">
-                  <GameCard game={game} />
-                </div>
-              ))}
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-grok-purple"></div>
             </div>
-          </div>
+          ) : error ? (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-white">{error}</p>
+            </div>
+          ) : games.length === 0 ? (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-white">No games found. Try a different search term.</p>
+            </div>
+          ) : (
+            <div 
+              ref={gamesContainerRef}
+              className="games-container overflow-x-auto scrollbar-hide"
+            >
+              <div className="flex gap-6 pb-4 min-w-max">
+                {games.map((game) => (
+                  <div key={game.id} className="w-80">
+                    <GameCard game={game} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Optional: Add navigation arrows */}
-          <div className="hidden md:flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none">
-            <button className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" onClick={() => { gamesContainerRef.current.scrollLeft -= 300; }}>
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" onClick={() => { gamesContainerRef.current.scrollLeft += 300; }}>
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          {games.length > 0 && (
+            <div className="hidden md:flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none">
+              <button 
+                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                onClick={() => { gamesContainerRef.current.scrollLeft -= 300; }}
+              >
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button 
+                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                onClick={() => { gamesContainerRef.current.scrollLeft += 300; }}
+              >
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Add some CSS to hide scrollbar but keep functionality */}

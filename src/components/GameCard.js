@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { formatDistanceToNow } from 'date-fns';
 
 export default function GameCard({ game }) {
   // Default game object if none provided
@@ -11,11 +12,17 @@ export default function GameCard({ game }) {
     description: 'Classic brick breaking game with paddle and power-ups',
     plays: 120,
     isLive: true,
-    image: null
+    image: null,
+    playUrl: '#'
   };
 
   // Use provided game or default
   game = game || defaultGame;
+  
+  // Format the date if available
+  const formattedDate = game.createdAt 
+    ? formatDistanceToNow(new Date(game.createdAt), { addSuffix: true })
+    : 'Just now';
 
   return (
     <div className="bg-grok-card rounded-md overflow-hidden shadow-lg h-full flex flex-col">
@@ -57,19 +64,27 @@ export default function GameCard({ game }) {
         <p className="text-grok-text-secondary text-sm mb-4 flex-grow">
           {game.description}
         </p>
-        <div className="flex justify-between items-center text-xs text-grok-text-secondary mt-auto">
+        <div className="mt-4">
+          <Link 
+            href={game.playUrl || '#'} 
+            className="block w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+          >
+            Play Now
+          </Link>
+        </div>
+        <div className="flex justify-between items-center text-xs text-grok-text-secondary mt-3">
           <div className="flex items-center">
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            {game.plays} plays
+            {game.plays ?? 0} plays
           </div>
           <div className="flex items-center">
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 8V16M12 8L8 12M12 8L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Just now
+            {formattedDate}
           </div>
         </div>
       </div>
