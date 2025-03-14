@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function Login() {
+// Component that uses useSearchParams
+function LoginContent() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -137,5 +138,30 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function LoginFallback() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
+      <div className="w-full max-w-md p-8 space-y-8 bg-gray-800 rounded-lg shadow-md">
+        <div className="text-center">
+          <h1 className="mt-6 text-3xl font-extrabold text-white">Sign In</h1>
+          <div className="mt-8 flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component wrapped with Suspense
+export default function Login() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginContent />
+    </Suspense>
   );
 } 
