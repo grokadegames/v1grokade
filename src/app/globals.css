@@ -22,7 +22,7 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-grok-purple hover:bg-purple-800 text-white py-2 px-4 rounded transition-colors duration-300;
+    @apply bg-grok-purple hover:bg-grok-purple-dark text-white py-2 px-4 rounded transition-colors duration-300;
   }
   
   .btn-secondary {
