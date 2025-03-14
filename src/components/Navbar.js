@@ -2,9 +2,16 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    router.push('/login');
+  };
 
   return (
     <nav className="border-b border-gray-800 bg-grok-darker">
@@ -37,9 +44,12 @@ export default function Navbar() {
               </svg>
               Roadmap
             </Link>
-            <Link href="/login" className="bg-grok-purple text-white px-4 py-2 rounded-md hover:bg-opacity-90">
+            <button 
+              onClick={handleLoginClick}
+              className="bg-grok-purple text-white px-4 py-2 rounded-md hover:bg-opacity-90"
+            >
               Login
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -124,13 +134,16 @@ export default function Navbar() {
                   </svg>
                   Roadmap
                 </Link>
-                <Link 
-                  href="/login" 
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMenuOpen(false);
+                    router.push('/login');
+                  }}
                   className="bg-grok-purple text-white px-4 py-2 rounded-md text-center"
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   Login
-                </Link>
+                </button>
               </div>
             </div>
           </div>

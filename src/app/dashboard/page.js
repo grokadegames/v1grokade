@@ -82,7 +82,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-semibold text-white mb-4">Your Games</h2>
-            <p className="text-gray-400">You haven't created any games yet.</p>
+            <p className="text-gray-400">You haven&apos;t created any games yet. Start creating now!</p>
             <button className="mt-4 w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition">
               Create Game
             </button>
@@ -90,7 +90,7 @@ export default function Dashboard() {
           
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-semibold text-white mb-4">Favorites</h2>
-            <p className="text-gray-400">You haven't added any favorites yet.</p>
+            <p className="text-gray-400">You haven&apos;t added any games to your favorites yet. Let&apos;s start exploring!</p>
             <Link href="/" className="mt-4 block w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition text-center">
               Browse Games
             </Link>

@@ -8,10 +8,11 @@ const nextConfig = {
   },
   // This helps with proper Netlify routing
   trailingSlash: true,
-  // Remove the invalid experimental option
+  // Remove empty experimental object
   experimental: {
-    // instrumentationHook line removed
-  }
+  },
+  // Add output config for Netlify compatibility
+  output: 'standalone',
 };
 
 export default nextConfig;

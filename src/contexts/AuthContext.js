@@ -15,7 +15,13 @@ export function AuthProvider({ children }) {
     // Check if the user is logged in
     async function loadUserFromCookie() {
       try {
-        const response = await fetch('/api/auth/me');
+        const response = await fetch('/api/auth/me', {
+          // Add cache: 'no-store' to prevent caching issues on Netlify
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
@@ -36,8 +42,10 @@ export function AuthProvider({ children }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
         },
         body: JSON.stringify({ username, password }),
+        cache: 'no-store',
       });
 
       const data = await response.json();
@@ -47,7 +55,13 @@ export function AuthProvider({ children }) {
       }
 
       // Fetch user data after successful login
-      const userResponse = await fetch('/api/auth/me');
+      const userResponse = await fetch('/api/auth/me', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+      
       if (userResponse.ok) {
         const userData = await userResponse.json();
         setUser(userData.user);
