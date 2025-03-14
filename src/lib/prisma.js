@@ -6,7 +6,21 @@ import { PrismaClient } from '@prisma/client';
 
 const globalForPrisma = global;
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+// Clean the DATABASE_URL if it has any whitespace issues
+if (process.env.DATABASE_URL) {
+  console.log('[PRISMA] Original DATABASE_URL length:', process.env.DATABASE_URL.length);
+  process.env.DATABASE_URL = process.env.DATABASE_URL.trim();
+  console.log('[PRISMA] Cleaned DATABASE_URL length:', process.env.DATABASE_URL.length);
+}
+
+// Create the PrismaClient instance with extra logging in development
+const prismaClientOptions = process.env.NODE_ENV === 'development' 
+  ? {
+      log: ['query', 'info', 'warn', 'error'],
+    }
+  : {};
+
+export const prisma = globalForPrisma.prisma || new PrismaClient(prismaClientOptions);
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
