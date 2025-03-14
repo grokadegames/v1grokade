@@ -1,42 +1,76 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Register() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    displayName: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
   const { register } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      setIsLoading(false);
-      return;
+  const validateForm = () => {
+    if (!formData.username || !formData.email || !formData.displayName || !formData.password) {
+      setError('All fields are required');
+      return false;
     }
 
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return false;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setError('');
+    setSuccessMessage('');
+
     try {
-      const result = await register(username, email, displayName, password);
-      
+      const result = await register(
+        formData.username,
+        formData.email,
+        formData.displayName,
+        formData.password
+      );
+
       if (result.success) {
-        router.push('/login?registered=true');
+        setSuccessMessage('Registration successful! Redirecting to login...');
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000);
       } else {
-        setError(result.error || 'Registration failed');
+        setError(result.error || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError('An unexpected error occurred. Please try again.');
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +82,7 @@ export default function Register() {
         <div className="text-center">
           <h1 className="mt-6 text-3xl font-extrabold text-white">Create Account</h1>
           <p className="mt-2 text-sm text-gray-400">
-            Join Grokade today
+            Sign up for a Grokade account
           </p>
         </div>
         
@@ -56,6 +90,12 @@ export default function Register() {
           {error && (
             <div className="p-3 text-sm font-medium text-white bg-red-500 rounded-md">
               {error}
+            </div>
+          )}
+          
+          {successMessage && (
+            <div className="p-3 text-sm font-medium text-white bg-green-500 rounded-md">
+              {successMessage}
             </div>
           )}
           
@@ -70,8 +110,8 @@ export default function Register() {
                 type="text"
                 autoComplete="username"
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={formData.username}
+                onChange={handleChange}
                 className="relative block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                 placeholder="Choose a username"
               />
@@ -87,10 +127,10 @@ export default function Register() {
                 type="email"
                 autoComplete="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
                 className="relative block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Email address"
+                placeholder="Your email address"
               />
             </div>
             
@@ -104,10 +144,10 @@ export default function Register() {
                 type="text"
                 autoComplete="name"
                 required
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                value={formData.displayName}
+                onChange={handleChange}
                 className="relative block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Your name as shown to others"
+                placeholder="How should we call you?"
               />
             </div>
             
@@ -121,8 +161,8 @@ export default function Register() {
                 type="password"
                 autoComplete="new-password"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
                 className="relative block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                 placeholder="Create a password"
               />
@@ -138,8 +178,8 @@ export default function Register() {
                 type="password"
                 autoComplete="new-password"
                 required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 className="relative block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                 placeholder="Confirm your password"
               />

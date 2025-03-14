@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
@@ -10,24 +10,48 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
-  const { login } = useAuth();
+  const searchParams = useSearchParams();
+  const { login, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    // If user is already authenticated, redirect to dashboard
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+    
+    // Check if user was just registered
+    const registered = searchParams.get('registered');
+    if (registered === 'true') {
+      setSuccessMessage('Registration successful! Please log in.');
+    }
+  }, [isAuthenticated, router, searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setSuccessMessage('');
+
+    if (!username || !password) {
+      setError('Username and password are required');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const result = await login(username, password);
       
       if (result.success) {
-        router.push('/dashboard');
+        setSuccessMessage('Login successful! Redirecting...');
+        // Router push will happen in the auth context after successful login
       } else {
-        setError(result.error || 'Login failed');
+        setError(result.error || 'Invalid username or password');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      console.error('Login error:', err);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +71,12 @@ export default function Login() {
           {error && (
             <div className="p-3 text-sm font-medium text-white bg-red-500 rounded-md">
               {error}
+            </div>
+          )}
+          
+          {successMessage && (
+            <div className="p-3 text-sm font-medium text-white bg-green-500 rounded-md">
+              {successMessage}
             </div>
           )}
           
