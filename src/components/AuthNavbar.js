@@ -32,6 +32,12 @@ export default function AuthNavbar() {
 
           {/* Action Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/roadmap" className="bg-black border-2 border-orange-500 text-orange-500 px-4 py-2 rounded-md flex items-center hover:bg-orange-500 hover:text-black transition-colors duration-300">
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 17H7V13H3V17ZM10 17H14V8H10V17ZM17 17H21V3H17V17Z" fill="currentColor" />
+              </svg>
+              Roadmap
+            </Link>
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <Link href="/dashboard" className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700">
@@ -117,6 +123,16 @@ export default function AuthNavbar() {
               </Link>
               
               <div className="pt-2 flex flex-col space-y-3">
+                <Link 
+                  href="/roadmap" 
+                  className="bg-black border-2 border-orange-500 text-orange-500 px-4 py-2 rounded-md flex items-center justify-center hover:bg-orange-500 hover:text-black transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 17H7V13H3V17ZM10 17H14V8H10V17ZM17 17H21V3H17V17Z" fill="currentColor" />
+                  </svg>
+                  Roadmap
+                </Link>
                 {isAuthenticated ? (
                   <>
                     <Link 
