@@ -3,6 +3,43 @@
 import { useState, useRef, useEffect } from 'react';
 import GameCard from './GameCard';
 
+// Fallback data in case API fails
+const FALLBACK_GAMES = [
+  {
+    id: 'brick-breaker',
+    title: 'Brick Breaker',
+    creator: 'Grokade Team',
+    description: 'Classic brick breaking game with paddle and power-ups',
+    playUrl: 'https://example.com/brick-breaker',
+    image: null,
+    createdAt: new Date().toISOString(),
+    isLive: true,
+    plays: 120
+  },
+  {
+    id: 'snake',
+    title: 'Snake Game',
+    creator: 'Grokade Team',
+    description: 'Classic snake game - grow as you eat and avoid walls!',
+    playUrl: 'https://example.com/snake',
+    image: null,
+    createdAt: new Date().toISOString(),
+    isLive: true,
+    plays: 85
+  },
+  {
+    id: 'tetris',
+    title: 'Tetris',
+    creator: 'Grokade Team',
+    description: 'The classic block-stacking puzzle game',
+    playUrl: 'https://example.com/tetris',
+    image: null,
+    createdAt: new Date().toISOString(),
+    isLive: true,
+    plays: 210
+  }
+];
+
 export default function GameGrid() {
   const [filter, setFilter] = useState('production');
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,6 +47,7 @@ export default function GameGrid() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [usingFallback, setUsingFallback] = useState(false);
   const gamesContainerRef = useRef(null);
   
   // Fetch games from the API
@@ -17,22 +55,39 @@ export default function GameGrid() {
     try {
       setLoading(true);
       setError(null);
+      setUsingFallback(false);
       
       const queryParams = new URLSearchParams();
       if (searchTerm) queryParams.append('search', searchTerm);
       queryParams.append('sort', sortOrder);
       
+      console.log('[GameGrid] Fetching games from API...');
+      
       const response = await fetch(`/api/games?${queryParams.toString()}`);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch games');
+        console.error('[GameGrid] API response not ok:', response.status);
+        throw new Error(`Failed to fetch games: ${response.status}`);
       }
       
       const data = await response.json();
-      setGames(data.games || []);
+      console.log('[GameGrid] Received games:', data.games?.length || 0);
+      
+      if (data.games && data.games.length > 0) {
+        setGames(data.games);
+      } else {
+        console.warn('[GameGrid] No games found in API response, using fallback');
+        setGames(FALLBACK_GAMES);
+        setUsingFallback(true);
+      }
     } catch (err) {
-      console.error('Error fetching games:', err);
-      setError('Failed to load games. Please try again later.');
+      console.error('[GameGrid] Error fetching games:', err);
+      
+      // Use fallback data
+      console.log('[GameGrid] Using fallback game data');
+      setGames(FALLBACK_GAMES);
+      setUsingFallback(true);
+      setError('Unable to fetch live data. Showing sample games instead.');
     } finally {
       setLoading(false);
     }
@@ -153,9 +208,39 @@ export default function GameGrid() {
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-grok-purple"></div>
             </div>
+          ) : usingFallback ? (
+            <div>
+              <div className="bg-amber-900/30 text-amber-200 px-4 py-2 rounded-md mb-4 text-sm">
+                <p>Using sample data while we work on connecting to the live database. Games shown are examples only.</p>
+              </div>
+              <div 
+                ref={gamesContainerRef}
+                className="games-container overflow-x-auto scrollbar-hide"
+              >
+                <div className="flex gap-6 pb-4 min-w-max">
+                  {games.map((game) => (
+                    <div key={game.id} className="w-80">
+                      <GameCard game={game} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           ) : error ? (
-            <div className="flex justify-center items-center h-64">
-              <p className="text-white">{error}</p>
+            <div className="flex flex-col items-center h-64">
+              <p className="text-white mb-4">{error}</p>
+              <div 
+                ref={gamesContainerRef}
+                className="games-container overflow-x-auto scrollbar-hide w-full"
+              >
+                <div className="flex gap-6 pb-4 min-w-max">
+                  {games.map((game) => (
+                    <div key={game.id} className="w-80">
+                      <GameCard game={game} />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : games.length === 0 ? (
             <div className="flex justify-center items-center h-64">
