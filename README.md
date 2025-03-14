@@ -14,9 +14,15 @@ npm run dev
 
 ## Deployment
 
-### Netlify Deployment
+### Continuous Deployment with GitHub
 
-To deploy to Netlify, you can use the provided script:
+This repository is configured for continuous deployment to Netlify. Whenever changes are pushed to the main branch, the site will automatically be built and deployed.
+
+To set up continuous deployment, see [GITHUB_SETUP.md](./GITHUB_SETUP.md) for instructions on configuring GitHub Secrets.
+
+### Manual Netlify Deployment
+
+For manual deployments to Netlify, you can use the provided script:
 
 ```bash
 ./deploy-netlify.sh
@@ -71,6 +77,7 @@ Alternatively, you can:
 - `/src/components` - React components
 - `/public` - Static files like images and fonts
 - `/src/app/globals.css` - Global CSS styles
+- `/.github/workflows` - GitHub Actions workflow for CI/CD
 
 ## Technologies Used
 
@@ -78,6 +85,9 @@ Alternatively, you can:
 - React 19
 - Tailwind CSS
 - Node.js
+- PostgreSQL (on Railway)
+- Netlify for hosting
+- GitHub Actions for CI/CD
 
 ## Getting Started
 
@@ -85,19 +95,23 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Authentication System
+
+V1 Grokade includes a complete authentication system:
+
+- User registration
+- Login/logout functionality
+- Protected routes
+- JWT-based authentication
+- PostgreSQL database storage
+
+The login and registration pages are styled to match the design of the platform.
 
 ## Learn More
 
