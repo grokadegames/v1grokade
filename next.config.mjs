@@ -8,8 +8,8 @@ const nextConfig = {
   },
   // This helps with proper Netlify routing
   trailingSlash: true,
-  // Use standalone output for Netlify
-  output: 'standalone',
+  // Use standalone output only for Railway (not for Netlify)
+  output: process.env.NETLIFY ? undefined : 'standalone',
 };
 
 export default nextConfig;

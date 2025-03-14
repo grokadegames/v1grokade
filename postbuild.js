@@ -1,11 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 
+console.log('🔄 Running post-build setup...');
+
+// Skip standalone setup if running on Netlify
+if (process.env.NETLIFY) {
+  console.log('📌 Running on Netlify, skipping standalone setup');
+  process.exit(0);
+}
+
+// Only for Railway and other non-Netlify deployments
+console.log('📌 Running standalone setup for Railway deployment');
+
 // Directories to ensure exist
 const staticDir = path.join('.next/standalone/.next/static');
 const publicDir = path.join('.next/standalone/public');
-
-console.log('🔄 Running post-build setup...');
 
 // Ensure public directory exists
 if (!fs.existsSync(publicDir)) {

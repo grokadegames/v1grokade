@@ -1,11 +1,12 @@
 [build]
   command = "npm run build"
-  publish = ".next/standalone"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
   NETLIFY_NEXT_PLUGIN_SKIP = "false"
+  NETLIFY = "true"
   
 [build.processing]
   skip_processing = false
