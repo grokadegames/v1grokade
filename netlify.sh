@@ -1,34 +1,24 @@
 #!/bin/bash
 
-# Display Node and NPM versions
-echo "Node version: $(node -v)"
-echo "NPM version: $(npm -v)"
+echo "🚀 Starting Netlify build process..."
 
-# Clean install dependencies
-echo "Installing dependencies..."
-npm ci
+# Install all dependencies including date-fns
+echo "📦 Installing dependencies..."
+npm install
+npm install date-fns --no-save
 
-# Generate Prisma client
-echo "Generating Prisma client..."
-npx prisma generate
-
-# Clean .next directory if exists
-echo "Cleaning previous build..."
+# Clean .next directory to ensure fresh build
+echo "🧹 Cleaning .next directory..."
 rm -rf .next
 
-# Build the Next.js app
-echo "Building Next.js app with export..."
+# Build the application
+echo "🏗️ Building the Next.js application..."
 npm run build
 
-# If build was successful, copy necessary files for static hosting
+# Verify build success
 if [ -d ".next" ]; then
-  echo "Build completed successfully!"
-  
-  # Create an index.html at the root of .next for static hosting
-  echo "<html><head><meta http-equiv='refresh' content='0;url=/_next/static/chunks/pages/index.html'></head></html>" > .next/index.html
-  
-  echo "Prepared for static deployment!"
+  echo "✅ Build completed successfully!"
 else
-  echo "Build failed: .next directory not found"
+  echo "❌ Build failed! .next directory not found."
   exit 1
 fi 
