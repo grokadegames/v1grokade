@@ -22,15 +22,15 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-grok-purple hover:bg-grok-purple-dark text-white py-2 px-4 rounded transition-colors duration-300;
+    @apply bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded transition-colors duration-300;
   }
   
   .btn-secondary {
-    @apply border border-grok-purple text-grok-purple hover:bg-grok-purple hover:text-white py-2 px-4 rounded transition-colors duration-300;
+    @apply border border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white py-2 px-4 rounded transition-colors duration-300;
   }
 
   .btn-outline {
-    @apply bg-transparent border border-grok-red text-white px-4 py-2 rounded-md hover:bg-opacity-10 transition-all;
+    @apply bg-transparent border border-red-500 text-white px-4 py-2 rounded-md hover:bg-opacity-10 transition-all;
   }
 
   .container-custom {
@@ -38,19 +38,19 @@ body {
   }
 
   .game-card {
-    @apply bg-grok-card rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl;
+    @apply bg-gray-800 rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl;
   }
 
   .game-card-image {
-    @apply w-full h-40 bg-grok-darker flex items-center justify-center;
+    @apply w-full h-40 bg-gray-900 flex items-center justify-center;
   }
 
   .featured-badge {
-    @apply bg-grok-featured text-white text-xs font-semibold px-2 py-1 rounded absolute top-2 right-2;
+    @apply bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded absolute top-2 right-2;
   }
 
   .live-badge {
-    @apply bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded;
+    @apply bg-green-500 text-gray-900 text-xs font-semibold px-2 py-1 rounded;
   }
   
   .sponsors-container {
