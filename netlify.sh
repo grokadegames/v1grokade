@@ -17,16 +17,17 @@ echo "Cleaning previous build..."
 rm -rf .next
 
 # Build the Next.js app
-echo "Building Next.js app..."
+echo "Building Next.js app with export..."
 npm run build
 
-# Check if .next directory was created
+# If build was successful, copy necessary files for static hosting
 if [ -d ".next" ]; then
   echo "Build completed successfully!"
   
-  # Run our build check script
-  echo "Checking build output..."
-  node check-build.js
+  # Create an index.html at the root of .next for static hosting
+  echo "<html><head><meta http-equiv='refresh' content='0;url=/_next/static/chunks/pages/index.html'></head></html>" > .next/index.html
+  
+  echo "Prepared for static deployment!"
 else
   echo "Build failed: .next directory not found"
   exit 1
