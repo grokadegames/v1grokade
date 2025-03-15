@@ -26,7 +26,6 @@ export default function GamePage() {
     '/images/gallery2.jpg',
     '/images/gallery3.jpg',
     '/images/gallery4.jpg',
-    '/images/gallery5.jpg',
   ];
   
   useEffect(() => {
@@ -450,19 +449,26 @@ export default function GamePage() {
           {/* Game Preview Section (Left Side) */}
           <div className="w-full lg:w-2/3 rounded-lg overflow-hidden">
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-              {game.image ? (
+              {selectedGalleryImage === 0 && game.image ? (
                 <img 
-                  src={selectedGalleryImage === 0 ? game.image : galleryImages[selectedGalleryImage - 1]} 
+                  src={game.image} 
                   alt={game.title} 
                   className="w-full h-full object-cover"
                 />
+              ) : selectedGalleryImage > 0 && galleryImages[selectedGalleryImage - 1] ? (
+                <img 
+                  src={galleryImages[selectedGalleryImage - 1]} 
+                  alt={`${game.title} gallery ${selectedGalleryImage}`} 
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-grok-dark">
+                <div className="w-full h-full flex flex-col items-center justify-center bg-grok-dark">
                   <svg className="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
                     <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
                     <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
                   </svg>
+                  <p className="text-gray-400 mt-4">No image available</p>
                 </div>
               )}
             </div>
@@ -489,7 +495,7 @@ export default function GamePage() {
               </div>
               
               {/* Gallery images */}
-              {[1, 2, 3, 4, 5].map((_, index) => (
+              {[1, 2, 3, 4].map((_, index) => (
                 <div 
                   key={index} 
                   className={`w-40 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
