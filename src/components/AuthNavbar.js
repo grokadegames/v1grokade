@@ -29,7 +29,7 @@ export default function AuthNavbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/games" className="text-white hover:text-purple-500 transition-colors">Games</Link>
+            <Link href="/" className="text-white hover:text-purple-500 transition-colors">Games</Link>
             <Link href="/gigs" className="text-white hover:text-purple-500 transition-colors">Gigs</Link>
             <Link href="/talent" className="text-white hover:text-purple-500 transition-colors">Talent</Link>
             <Link href="/rankings" className="text-white hover:text-purple-500 transition-colors">Rankings</Link>
@@ -90,7 +90,7 @@ export default function AuthNavbar() {
           <div className="md:hidden mt-4 pb-4">
             <div className="flex flex-col space-y-3">
               <Link 
-                href="/games" 
+                href="/" 
                 className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
