@@ -21,10 +21,37 @@ function LoginContent() {
     console.log('[Login] Component mounted, isAuthenticated:', isAuthenticated);
     console.log('[Login] User data:', user);
     
+    // Force a recheck of authentication state
+    const recheckAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        });
+        
+        // If we still get a valid user, wait a moment and navigate home
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            setTimeout(() => {
+              router.push('/');
+            }, 300);
+          }
+        }
+      } catch (error) {
+        console.error('[Login] Error rechecking auth status:', error);
+      }
+    };
+    
     // If user is already authenticated, redirect to home page
     if (isAuthenticated) {
       console.log('[Login] User is authenticated, redirecting to home page');
       router.push('/');
+    } else {
+      // Double-check the auth state to avoid stale state issues
+      recheckAuth();
     }
     
     // Check if user was just registered

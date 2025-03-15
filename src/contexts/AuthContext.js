@@ -124,12 +124,22 @@ export function AuthProvider({ children }) {
       console.log('[Auth] Attempting logout');
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+        cache: 'no-store',
       });
 
       if (response.ok) {
         console.log('[Auth] Logout successful');
+        // Clear the user state
         setUser(null);
-        router.push('/');
+        
+        // Important: Add a small delay before redirecting to ensure state is properly cleared
+        setTimeout(() => {
+          console.log('[Auth] Redirecting to home page after logout');
+          router.push('/');
+        }, 300);
       } else {
         console.error('[Auth] Logout failed');
       }

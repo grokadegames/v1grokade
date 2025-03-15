@@ -3,13 +3,20 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AuthNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    router.push('/login');
+  };
 
   return (
-    <nav className="border-b border-gray-800 bg-gray-900">
+    <nav className="border-b border-gray-800 bg-grok-darker">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -51,9 +58,12 @@ export default function AuthNavbar() {
                 </button>
               </div>
             ) : (
-              <Link href="/login" className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+              <button 
+                onClick={handleLoginClick}
+                className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+              >
                 Login
-              </Link>
+              </button>
             )}
           </div>
 
@@ -153,13 +163,16 @@ export default function AuthNavbar() {
                     </button>
                   </>
                 ) : (
-                  <Link 
-                    href="/login" 
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      router.push('/login');
+                    }}
                     className="bg-purple-600 text-white px-4 py-2 rounded-md text-center"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     Login
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>
