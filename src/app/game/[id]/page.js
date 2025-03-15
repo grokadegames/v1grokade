@@ -18,6 +18,7 @@ export default function GamePage() {
   const featuredGamesContainerRef = useRef(null);
   const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
   
   // Example gallery images - in a real app these would come from the API
   const galleryImages = [
@@ -99,11 +100,13 @@ export default function GamePage() {
     const startAutoScroll = () => {
       scrollInterval = setInterval(() => {
         if (!isSponsorsHovered && container) {
-          container.scrollLeft += 1;
+          container.scrollLeft += scrollDirection;
           
-          // Reset scroll position when reaching the end for seamless looping
+          // Change direction when reaching the end or beginning
           if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 10) {
-            container.scrollLeft = 0;
+            setScrollDirection(-1); // Start scrolling left
+          } else if (container.scrollLeft <= 10) {
+            setScrollDirection(1); // Start scrolling right
           }
         }
       }, 30); // Adjust speed by changing interval time
@@ -114,7 +117,7 @@ export default function GamePage() {
     return () => {
       clearInterval(scrollInterval);
     };
-  }, [isSponsorsHovered]);
+  }, [isSponsorsHovered, scrollDirection]);
   
   // Horizontal scrolling for sponsors with hover detection
   useEffect(() => {
