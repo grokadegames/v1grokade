@@ -10,7 +10,8 @@
     "setup-db": "./scripts/setup-db.sh",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.js",
+    "netlify-build": "npx prisma generate && next build --no-lint"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",

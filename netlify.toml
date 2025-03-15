@@ -1,10 +1,11 @@
 [build]
-  command = "npm run build"
+  command = "chmod +x netlify-build.sh && ./netlify-build.sh"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
+  PRISMA_TELEMETRY_INFORMATION = "netlify"
   
 [[plugins]]
   package = "@netlify/plugin-nextjs"
