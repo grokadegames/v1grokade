@@ -86,7 +86,7 @@ export default function Hero() {
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
             <p className="text-gray-300 text-lg mb-6">
-              Discover games built with AI tools like Grok using our vibegame index. Play games, attract players, run competitions, post gigs, and hire game devs.
+              Discover games built with Grok and other AI tools. Play games, attract players, run competitions, hire game devs, or browse our vibegame index.
             </p>
             <div className="flex space-x-4">
               <a href="#games-section" className="btn-primary">Play Now</a>
