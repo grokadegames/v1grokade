@@ -128,30 +128,13 @@ export default function GamePage() {
               )}
               
               {/* Game Stats Overlay */}
-              <div className="absolute top-4 left-4 right-4 flex justify-between">
-                <div className="flex gap-2">
-                  <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
-                    Score: 10
-                  </div>
-                  <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
-                    Players: 8
-                  </div>
-                </div>
+              <div className="absolute top-4 right-4">
                 <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
                   0:02
                 </div>
               </div>
               
-              {/* Audio Controls */}
-              <div className="absolute bottom-20 left-4 flex items-center">
-                <button className="bg-black bg-opacity-70 p-2 rounded-full">
-                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 5L6 9H2V15H6L11 19V5Z" fill="currentColor" />
-                    <path d="M15.54 8.46C16.1255 9.04546 16.4965 9.80937 16.4965 10.605C16.4965 11.4006 16.1255 12.1645 15.54 12.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M18.54 5.46C19.7309 6.65194 20.4039 8.28451 20.4039 10C20.4039 11.7155 19.7309 13.3481 18.54 14.54" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
+              {/* Audio Controls removed as requested */}
             </div>
             
             {/* Reaction Buttons */}
@@ -226,11 +209,7 @@ export default function GamePage() {
               </div>
               
               <div className="space-y-4">
-                {/* Views Count */}
-                <div className="flex items-center">
-                  <div className="text-purple-500 mr-2">Views</div>
-                  <div className="text-gray-300">{game.views || 85}</div>
-                </div>
+                {/* Views Count removed as requested */}
                 
                 {/* Rating */}
                 <div className="flex items-center">
