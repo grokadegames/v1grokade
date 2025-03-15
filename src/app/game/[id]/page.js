@@ -279,7 +279,7 @@ export default function GamePage() {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
         <AuthNavbar />
         <div className="container-custom mx-auto px-4 py-12 pt-16">
           <div className="flex justify-center items-center h-64">
@@ -293,10 +293,10 @@ export default function GamePage() {
   
   if (error || !game) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
         <AuthNavbar />
         <div className="container-custom mx-auto px-4 py-12 pt-16">
-          <div className="bg-gray-900 p-8 rounded-lg border-2 border-purple-500">
+          <div className="bg-black bg-opacity-50 backdrop-blur-sm p-8 rounded-lg border-2 border-purple-500">
             <h1 className="text-2xl font-bold text-purple-500 mb-4">Game Not Found</h1>
             <p className="text-grok-text-secondary mb-6">
               {error || "We couldn't find the game you're looking for."}
@@ -322,11 +322,11 @@ export default function GamePage() {
   }
   
   return (
-    <div className="min-h-screen bg-grok-darker">
+    <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
       <AuthNavbar />
       
       {/* Sponsors Grid - Now with additional top padding and matching home page style */}
-      <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
+      <div className="border-b border-gray-800 py-6 bg-transparent pt-20">
         <div className="container-custom mx-auto px-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-white font-semibold">SPONSORS</h3>
