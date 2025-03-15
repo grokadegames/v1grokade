@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function DebugPage() {
   const [endpoint, setEndpoint] = useState('/api/games');
@@ -184,6 +185,27 @@ export default function DebugPage() {
       <main className="flex-grow bg-grok-dark text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-6">API Debug Tool</h1>
+          
+          {/* Navigation Testing */}
+          <div className="bg-grok-card p-6 rounded-lg mb-8">
+            <h2 className="text-xl font-semibold mb-4">Navigation Testing</h2>
+            <p className="mb-4">Test navigation to common pages. Click these links to verify routing works correctly.</p>
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              <Link href="/login" className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">
+                Go to Login Page
+              </Link>
+              <Link href="/register" className="bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700 transition">
+                Go to Register Page
+              </Link>
+              <Link href="/dashboard" className="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 transition">
+                Go to Dashboard
+              </Link>
+              <Link href="/" className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 transition">
+                Go to Home Page
+              </Link>
+            </div>
+          </div>
           
           {/* Client-Side Information */}
           <div className="bg-grok-card p-6 rounded-lg mb-8">

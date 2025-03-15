@@ -1,5 +1,3 @@
-'use client';
-
 import { NextResponse } from 'next/server';
 
 // Middleware function for handling authentication and redirects
