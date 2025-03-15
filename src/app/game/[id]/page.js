@@ -192,6 +192,30 @@ export default function GamePage() {
     setDislikeCount(prev => prev + 1);
   };
   
+  // Format date to match production grid format
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Recently added';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      return 'Today';
+    } else if (diffDays === 1) {
+      return 'Yesterday';
+    } else if (diffDays < 7) {
+      return `${diffDays} days ago`;
+    } else if (diffDays < 30) {
+      return `${Math.floor(diffDays / 7)} weeks ago`;
+    } else if (diffDays < 365) {
+      return `${Math.floor(diffDays / 30)} months ago`;
+    } else {
+      return `${Math.floor(diffDays / 365)} years ago`;
+    }
+  };
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-black">
@@ -240,8 +264,8 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      {/* Sponsors Grid - Simplified to match home page */}
-      <div className="border-b border-gray-800 py-6 bg-grok-darker">
+      {/* Sponsors Grid - Now with additional top padding */}
+      <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
         <div className="container-custom mx-auto px-4">
           <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
           <div 
@@ -281,27 +305,7 @@ export default function GamePage() {
               )}
             </div>
             
-            {/* Reaction Buttons */}
-            <div className="flex justify-center gap-4 mt-4">
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">🔥</span>
-              </button>
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">😂</span>
-              </button>
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">👍</span>
-              </button>
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">❤️</span>
-              </button>
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">🎮</span>
-              </button>
-              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
-                <span className="text-xl">⚡</span>
-              </button>
-            </div>
+            {/* Reaction Buttons - Removed as requested */}
             
             {/* Game Screenshots Carousel */}
             <div className="flex gap-2 mt-4 overflow-x-auto">
@@ -440,11 +444,11 @@ export default function GamePage() {
         </div>
       </div>
       
-      {/* GameDetail FeaturedGames Section */}
+      {/* Featured Games Section - Renamed from GameDetail FeaturedGames */}
       <div className="border-t border-gray-800 py-8 mt-12">
         <div className="container-custom mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl text-white font-semibold">GAME DETAIL FEATURED GAMES</h2>
+            <h2 className="text-xl text-white font-semibold">FEATURED GAMES</h2>
             
             {/* Carousel Navigation */}
             <div className="flex gap-2">
@@ -531,7 +535,7 @@ export default function GamePage() {
                       <div className="flex flex-col gap-2 mt-4">
                         <Link 
                           href={`/game/${featuredGame.id}`}
-                          className="bg-orange-500 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-orange-600 transition-colors text-sm"
+                          className="bg-purple-600 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-purple-700 transition-colors text-sm"
                         >
                           View Game
                         </Link>
@@ -549,16 +553,14 @@ export default function GamePage() {
                         </a>
                       </div>
                       
-                      {/* Time indicator with real data */}
+                      {/* Time indicator with production grid style date format */}
                       <div className="flex items-center mt-3">
                         <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                           <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                         <span className="text-gray-400 text-xs">
-                          {featuredGame.updatedAt 
-                            ? new Date(featuredGame.updatedAt).toLocaleDateString() 
-                            : 'Recently added'}
+                          {formatDate(featuredGame.updatedAt)}
                         </span>
                       </div>
                     </div>
