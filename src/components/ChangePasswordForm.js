@@ -36,25 +36,7 @@ export default function ChangePasswordForm() {
     try {
       setIsLoading(true);
       
-      // First validate the current password by trying to log in
-      const loginResponse = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: user.username,
-          password: currentPassword
-        }),
-      });
-      
-      if (!loginResponse.ok) {
-        setError('Current password is incorrect');
-        setIsLoading(false);
-        return;
-      }
-      
-      // Now update the password
+      // Now update the password - including the current password for verification
       const response = await fetch('/api/auth/update-password', {
         method: 'POST',
         headers: {
@@ -62,6 +44,7 @@ export default function ChangePasswordForm() {
         },
         body: JSON.stringify({
           username: user.username,
+          currentPassword: currentPassword,
           newPassword: newPassword
         }),
       });
