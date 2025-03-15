@@ -142,8 +142,8 @@ export default function Hero() {
             >
               <div className="flex gap-4 pb-4 min-w-max">
                 {/* Sponsor 1 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -153,8 +153,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 2 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17 4H7V6H17V4Z" fill="currentColor" />
                       <path d="M17 8H7V10H17V8Z" fill="currentColor" />
@@ -167,8 +167,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 3 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2"/>
                       <path d="M12 8V16M12 8L16 12M12 8L8 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -178,8 +178,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 4 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -189,8 +189,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 5 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -200,8 +200,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 6 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
                       <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -212,8 +212,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 7 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -223,8 +223,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 8 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M4 6H20M4 12H12M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
@@ -233,8 +233,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 9 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17 8L12 13L7 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -244,8 +244,8 @@ export default function Hero() {
                 </div>
                 
                 {/* Sponsor 10 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>

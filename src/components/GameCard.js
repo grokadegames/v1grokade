@@ -44,10 +44,10 @@ export default function GameCard({ game }) {
   }
 
   return (
-    <div className="bg-grok-card rounded-md overflow-hidden shadow-lg h-full flex flex-col">
+    <div className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col">
       <div className="relative">
         {/* Game thumbnail/image */}
-        <div className="h-40 bg-grok-darker flex items-center justify-center">
+        <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center">
           {game.image ? (
             <img 
               src={game.image} 

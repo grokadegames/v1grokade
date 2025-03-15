@@ -347,8 +347,8 @@ export default function GamePage() {
           >
             <div className="flex gap-4 pb-4 min-w-max">
               {/* Sponsor 1 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                     <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -358,8 +358,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 2 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2"/>
                     <path d="M4 9H20" stroke="currentColor" strokeWidth="2"/>
@@ -369,8 +369,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 3 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                     <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -380,8 +380,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 4 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                     <path d="M8 15C8 15 9.5 17 12 17C14.5 17 16 15 16 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -393,8 +393,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 5 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                     <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -405,8 +405,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 6 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2" rx="2"/>
                     <path d="M9 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -417,8 +417,8 @@ export default function GamePage() {
               </div>
               
               {/* Sponsor 7 */}
-              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                     <path d="M14 10C14 10 12.5 8 9.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -467,7 +467,7 @@ export default function GamePage() {
           </div>
           
           {/* Game Details Panel (Right Side) - Fix mobile title display */}
-          <div className="w-full lg:w-1/3 bg-grok-dark rounded-lg p-6">
+          <div className="w-full lg:w-1/3 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg p-6">
             <div className="flex flex-col h-full">
               <div className="mb-2">
                 <h1 className="text-2xl font-bold text-white break-words">
@@ -610,9 +610,9 @@ export default function GamePage() {
               <div className="flex gap-4 pb-4 min-w-max">
                 {featuredGames.length > 0 ? (
                   featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card w-[280px] flex-shrink-0 bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div key={featuredGame.id} className="game-card w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                       <div className="relative">
-                        <div className="aspect-video bg-grok-darker flex items-center justify-center">
+                        <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center">
                           {featuredGame.image ? (
                             <img 
                               src={featuredGame.image} 

@@ -149,14 +149,14 @@ export default function FeatureGameGrid() {
   // Featured Game Card component
   const FeaturedGameCard = ({ game }) => {
     return (
-      <div className="w-full max-w-[320px] sm:max-w-md bg-grok-card rounded-lg overflow-hidden shadow-lg relative mx-auto">
+      <div className="w-full max-w-[320px] sm:max-w-md bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg relative mx-auto">
         {/* Featured Badge */}
         <div className="absolute top-4 right-4 bg-grok-purple text-white text-xs font-semibold px-3 py-1 rounded-md z-10">
           FEATURED
         </div>
         
         {/* Game Icon */}
-        <div className="aspect-video bg-grok-darker flex items-center justify-center relative">
+        <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center relative">
           {game.image ? (
             <img 
               src={game.image} 
@@ -164,7 +164,7 @@ export default function FeatureGameGrid() {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-grok-card rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-black bg-opacity-70 rounded-full flex items-center justify-center">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="4" width="20" height="4" rx="1" fill="currentColor" />
                 <rect x="2" y="10" width="8" height="4" rx="1" fill="currentColor" />
