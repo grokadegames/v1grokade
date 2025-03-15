@@ -202,13 +202,6 @@ export default function GamePage() {
                   </svg>
                 </div>
               )}
-              
-              {/* Game Stats Overlay */}
-              <div className="absolute top-4 right-4">
-                <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
-                  0:02
-                </div>
-              </div>
             </div>
             
             {/* Reaction Buttons */}
