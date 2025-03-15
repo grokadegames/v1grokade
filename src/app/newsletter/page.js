@@ -35,14 +35,14 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
       <AuthNavbar />
       
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <div className="bg-gray-800 shadow-lg rounded-lg p-8">
+          <div className="bg-gray-900 shadow-lg rounded-lg p-8 border-2 border-orange-500">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-orange-500 mb-2">
                 Join Our Newsletter
               </h1>
               <p className="text-gray-400">
@@ -60,7 +60,7 @@ export default function Newsletter() {
                 </div>
                 <Link 
                   href="/"
-                  className="inline-block bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors"
+                  className="inline-block bg-black border-2 border-orange-500 text-orange-500 px-6 py-2 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300"
                 >
                   Return to Home
                 </Link>
@@ -74,7 +74,7 @@ export default function Newsletter() {
                 )}
                 
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-white mb-2">
+                  <label htmlFor="email" className="block text-orange-500 mb-2">
                     Email Address
                   </label>
                   <input
@@ -83,7 +83,7 @@ export default function Newsletter() {
                     placeholder="youremail@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                     required
                   />
                 </div>
@@ -91,7 +91,7 @@ export default function Newsletter() {
                 <div className="flex flex-col space-y-4">
                   <button
                     type="submit"
-                    className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors"
+                    className="w-full bg-black border-2 border-orange-500 text-orange-500 py-2 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300"
                   >
                     Subscribe Now
                   </button>
@@ -103,7 +103,7 @@ export default function Newsletter() {
                         href="https://twitter.com/GrokadeGames" 
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-purple-400 hover:text-purple-300"
+                        className="text-orange-500 hover:text-orange-400"
                       >
                         X @GrokadeGames
                       </a>

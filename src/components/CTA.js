@@ -2,10 +2,10 @@ import Link from 'next/link';
 
 export default function CTA() {
   return (
-    <div className="bg-primary py-16 md:py-24">
+    <div className="bg-black py-16 md:py-24">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 mb-6">
             Stay Ahead in Gaming Innovation
           </h2>
           <p className="text-white text-opacity-90 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
@@ -14,7 +14,7 @@ export default function CTA() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/newsletter" 
-              className="bg-white text-primary font-semibold px-8 py-3 rounded-md hover:bg-opacity-90 transition-all"
+              className="bg-black border-2 border-orange-500 text-orange-500 px-8 py-3 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300"
             >
               Subscribe Now
             </Link>
@@ -22,7 +22,7 @@ export default function CTA() {
               href="https://twitter.com/GrokadeGames" 
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-transparent border border-white text-white font-semibold px-8 py-3 rounded-md hover:bg-white hover:bg-opacity-10 transition-all"
+              className="bg-black border-2 border-orange-500 text-orange-500 px-8 py-3 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300"
             >
               Follow Us on X @GrokadeGames
             </a>
