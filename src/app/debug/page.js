@@ -185,36 +185,6 @@ export default function DebugPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-6">API Debug Tool</h1>
           
-          {/* Login Button Issue Analysis */}
-          <div className="bg-yellow-800/30 border border-yellow-600/50 p-4 rounded-lg mb-8">
-            <h2 className="text-xl font-semibold text-yellow-300 mb-2">Login Button Issue</h2>
-            <p className="mb-4">The login button error is due to a client/server component boundary issue in Next.js. The error message indicates that middleware (client-side code) is being called from a server component.</p>
-            
-            <h3 className="font-semibold mb-2 text-yellow-300">Likely Causes:</h3>
-            <ol className="list-decimal pl-6 mb-4 space-y-2">
-              <li>The <code className="px-1 bg-black/30 rounded">AuthProvider</code> is used in a server component context</li>
-              <li>The app layout (<code className="px-1 bg-black/30 rounded">layout.js</code>) is a server component by default, but is trying to use client-side functionality</li>
-              <li>Missing <code className="px-1 bg-black/30 rounded">'use client'</code> directive in a component that uses client hooks</li>
-            </ol>
-            
-            <h3 className="font-semibold mb-2 text-yellow-300">Suggested Fix:</h3>
-            <p className="mb-2">Add <code className="px-1 bg-black/30 rounded">'use client'</code> to the top of <code className="px-1 bg-black/30 rounded">src/app/layout.js</code> file to make it a client component:</p>
-            <pre className="bg-black/30 p-3 rounded mb-4 overflow-x-auto">
-              {'\'use client\';\n\nimport \'./globals.css\';\nimport { Inter } from \'next/font/google\';\nimport { AuthProvider } from \'@/contexts/AuthContext\';\n\n// Rest of the code...'}
-            </pre>
-            
-            <h3 className="font-semibold mb-2 text-yellow-300">Alternative Solution:</h3>
-            <p>Create a separate client component wrapper for AuthProvider, and use that in the server layout:</p>
-            <pre className="bg-black/30 p-3 rounded mb-4 overflow-x-auto">
-              {'// src/components/Providers.js\n\'use client\';\n\nimport { AuthProvider } from \'@/contexts/AuthContext\';\n\nexport default function Providers({ children }) {\n  return <AuthProvider>{children}</AuthProvider>;\n}'}
-            </pre>
-            
-            <p>Then in layout.js:</p>
-            <pre className="bg-black/30 p-3 rounded overflow-x-auto">
-              {'// src/app/layout.js\nimport Providers from \'@/components/Providers\';\n\nexport default function RootLayout({ children }) {\n  return (\n    <html>\n      <body>\n        <Providers>{children}</Providers>\n      </body>\n    </html>\n  );\n}'}
-            </pre>
-          </div>
-          
           {/* Client-Side Information */}
           <div className="bg-grok-card p-6 rounded-lg mb-8">
             <h2 className="text-xl font-semibold mb-4">Client Environment</h2>
