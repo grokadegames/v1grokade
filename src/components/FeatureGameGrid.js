@@ -257,11 +257,11 @@ export default function FeatureGameGrid() {
           {/* Current featured game */}
           <FeaturedGameCard game={featuredGames[currentGameIndex]} />
           
-          {/* Navigation arrows */}
+          {/* Navigation arrows - moved on top of image with transparent background */}
           {featuredGames.length > 1 && (
-            <div className="flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none px-2">
+            <div className="flex items-center justify-between absolute top-[25%] w-full -translate-y-1/2 pointer-events-none px-2">
               <button 
-                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all" 
                 onClick={prevGame}
                 aria-label="Previous game"
               >
@@ -270,7 +270,7 @@ export default function FeatureGameGrid() {
                 </svg>
               </button>
               <button 
-                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all" 
                 onClick={nextGame}
                 aria-label="Next game"
               >
