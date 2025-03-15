@@ -61,10 +61,7 @@ export default function Register() {
       );
 
       if (result.success) {
-        setSuccessMessage('Registration successful! Redirecting to login...');
-        setTimeout(() => {
-          router.push('/login');
-        }, 2000);
+        setSuccessMessage('Registration successful! Redirecting to home page...');
       } else {
         setError(result.error || 'Registration failed. Please try again.');
       }

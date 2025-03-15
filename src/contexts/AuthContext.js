@@ -109,9 +109,9 @@ export function AuthProvider({ children }) {
         throw new Error(data.message || 'Registration failed');
       }
 
-      console.log('[Auth] Registration successful, redirecting to login');
-      // Redirect to login page after successful registration
-      router.push('/login?registered=true');
+      console.log('[Auth] Registration successful, redirecting to home page');
+      // Redirect to home page after successful registration
+      router.push('/?registered=true');
       return { success: true };
     } catch (error) {
       console.error('[Auth] Registration error:', error);
