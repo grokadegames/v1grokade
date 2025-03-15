@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
+// This component is client-side only
 export default function WelcomeNotification() {
   const [showNotification, setShowNotification] = useState(false);
   const { user } = useAuth();
-  const searchParams = useSearchParams();
   
+  // Move searchParams into a useEffect to ensure it only runs on the client
   useEffect(() => {
-    // Check if user just registered
+    const searchParams = new URLSearchParams(window.location.search);
     const isNewRegistration = searchParams.get('registered') === 'true';
     
     if (isNewRegistration && user) {
@@ -23,7 +24,7 @@ export default function WelcomeNotification() {
       
       return () => clearTimeout(timer);
     }
-  }, [searchParams, user]);
+  }, [user]);
   
   if (!showNotification) return null;
   

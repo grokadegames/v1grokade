@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import AuthNavbar from '@/components/AuthNavbar';
 import Hero from '@/components/Hero';
 import GameGrid from '@/components/GameGrid';
@@ -17,7 +18,9 @@ export default function Home() {
         <CTA />
       </main>
       <Footer />
-      <WelcomeNotification />
+      <Suspense fallback={null}>
+        <WelcomeNotification />
+      </Suspense>
     </div>
   );
 }
