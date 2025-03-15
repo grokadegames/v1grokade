@@ -122,7 +122,7 @@ export default function Hero() {
               </div>
               
               {/* Game Icon */}
-              <div className="aspect-video bg-grok-darker flex items-center justify-center">
+              <div className="aspect-video bg-grok-darker flex items-center justify-center relative">
                 {featuredGame && featuredGame.image ? (
                   <img 
                     src={featuredGame.image} 
@@ -141,6 +141,25 @@ export default function Hero() {
                     </svg>
                   </div>
                 )}
+                
+                {/* View count overlay - left side */}
+                <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+                  {/* Eye icon for views */}
+                  <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-white text-xs">{featuredGame ? (featuredGame.views ?? 0) : 0}</span>
+                </div>
+                
+                {/* Play count overlay - right side */}
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+                  {/* Play button icon */}
+                  <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-white text-xs">{featuredGame ? (featuredGame.plays ?? 0) : 0}</span>
+                </div>
               </div>
               
               {/* Game Info */}
@@ -156,7 +175,7 @@ export default function Hero() {
                   {featuredGame && (
                     <Link 
                       href={`/game/${featuredGame.id}`}
-                      className="px-4 py-2 bg-grok-purple text-white rounded-md text-center hover:bg-purple-700 transition-colors duration-200 text-sm"
+                      className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
                     >
                       View Game
                     </Link>
@@ -166,30 +185,10 @@ export default function Hero() {
                     href={featuredGame ? featuredGame.playUrl : '#games-section'} 
                     target={featuredGame ? "_blank" : "_self"}
                     rel="noopener noreferrer"
-                    className="px-4 py-2 bg-transparent border border-grok-purple text-white rounded-md text-center hover:bg-grok-purple/10 transition-colors duration-200 text-sm"
+                    className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
                   >
                     Play Now
                   </a>
-                </div>
-                
-                <div className="mt-6 flex justify-between items-center text-xs text-grok-text-secondary">
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    {featuredGame ? (featuredGame.plays || 0) : 0} plays
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8.5 10C9.32843 10 10 9.32843 10 8.5C10 7.67157 9.32843 7 8.5 7C7.67157 7 7 7.67157 7 8.5C7 9.32843 7.67157 10 8.5 10Z" fill="currentColor" />
-                      <path d="M15.5 10C16.3284 10 17 9.32843 17 8.5C17 7.67157 16.3284 7 15.5 7C14.6716 7 14 7.67157 14 8.5C14 9.32843 14.6716 10 15.5 10Z" fill="currentColor" />
-                      <path d="M12 17C14.2091 17 16 15.2091 16 13H8C8 15.2091 9.79086 17 12 17Z" fill="currentColor" />
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    {featuredGame && featuredGame.createdAt ? 'New' : 'Featured'}
-                  </div>
                 </div>
               </div>
             </div>
