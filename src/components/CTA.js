@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function CTA() {
   return (
-    <div className="bg-black py-16 md:py-24">
+    <div className="bg-grok-dark py-12 border-t border-gray-800">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 mb-6">

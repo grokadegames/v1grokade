@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import SubmitGameModal from './SubmitGameModal';
 import AuthAlert from './AuthAlert';
 import FeatureGameGrid from './FeatureGameGrid';
+import CTA from './CTA';
 
 export default function Hero() {
   const sponsorsContainerRef = useRef(null);
@@ -260,6 +261,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      
+      {/* Newsletter Section */}
+      <CTA />
       
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
