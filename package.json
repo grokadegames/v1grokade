@@ -14,6 +14,7 @@
     "netlify-build": "npx prisma generate && next build --no-lint"
   },
   "dependencies": {
+    "@heroicons/react": "2.2.0",
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
     "csv-parser": "^3.2.0",
