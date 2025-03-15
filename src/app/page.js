@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="bg-grok-darker">
       <AuthNavbar />
-      <main>
+      <main className="pt-16">
         <Hero />
         <GameGrid />
         <CTA />

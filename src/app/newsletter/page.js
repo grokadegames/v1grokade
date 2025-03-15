@@ -38,7 +38,7 @@ export default function Newsletter() {
     <div className="min-h-screen bg-black flex flex-col">
       <AuthNavbar />
       
-      <main className="flex-grow flex items-center justify-center px-4 py-12">
+      <main className="flex-grow flex items-center justify-center px-4 py-12 pt-16">
         <div className="w-full max-w-md">
           <div className="bg-gray-900 shadow-lg rounded-lg p-8 border-2 border-orange-500">
             <div className="text-center mb-8">

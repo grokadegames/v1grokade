@@ -182,7 +182,7 @@ export default function DebugPage() {
     <div className="flex flex-col min-h-screen">
       <AuthNavbar />
       
-      <main className="flex-grow bg-grok-dark text-white py-12">
+      <main className="flex-grow bg-grok-dark text-white py-12 pt-16">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-6">API Debug Tool</h1>
           

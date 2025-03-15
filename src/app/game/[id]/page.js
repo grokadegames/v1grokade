@@ -55,7 +55,7 @@ export default function GamePage() {
     return (
       <div className="min-h-screen bg-black">
         <AuthNavbar />
-        <div className="container-custom mx-auto px-4 py-12">
+        <div className="container-custom mx-auto px-4 py-12 pt-16">
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
           </div>
@@ -69,7 +69,7 @@ export default function GamePage() {
     return (
       <div className="min-h-screen bg-black">
         <AuthNavbar />
-        <div className="container-custom mx-auto px-4 py-12">
+        <div className="container-custom mx-auto px-4 py-12 pt-16">
           <div className="bg-gray-900 p-8 rounded-lg border-2 border-orange-500">
             <h1 className="text-2xl font-bold text-orange-500 mb-4">Game Not Found</h1>
             <p className="text-grok-text-secondary mb-6">
@@ -88,7 +88,7 @@ export default function GamePage() {
   return (
     <div className="min-h-screen bg-black">
       <AuthNavbar />
-      <main className="container-custom mx-auto px-4 py-12">
+      <main className="container-custom mx-auto px-4 py-12 pt-16">
         <div className="bg-gray-900 p-8 rounded-lg">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-1/3">
