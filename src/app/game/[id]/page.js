@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
@@ -13,6 +13,8 @@ export default function GamePage() {
   const [error, setError] = useState(null);
   const [likeCount, setLikeCount] = useState(47);
   const [dislikeCount, setDislikeCount] = useState(3);
+  const [featuredGames, setFeaturedGames] = useState([]);
+  const sponsorsContainerRef = useRef(null);
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -34,6 +36,14 @@ export default function GamePage() {
             foundGame.views = Math.floor(Math.random() * 300) + 100; // Random views between 100-400
           }
           setGame(foundGame);
+          
+          // Get featured games (excluding current game)
+          const featured = data.games
+            .filter(g => g.id !== params.id)
+            .sort(() => 0.5 - Math.random()) // Randomize order
+            .slice(0, 5); // Get top 5
+          
+          setFeaturedGames(featured);
         } else {
           setError('Game not found');
         }
@@ -49,6 +59,53 @@ export default function GamePage() {
       fetchGame();
     }
   }, [params.id]);
+  
+  // Horizontal scrolling for sponsors
+  useEffect(() => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    const onMouseDown = (e) => {
+      isDown = true;
+      container.classList.add('cursor-grabbing');
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    };
+    
+    const onMouseLeave = () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    };
+    
+    const onMouseUp = () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    };
+    
+    const onMouseMove = (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    };
+    
+    container.addEventListener('mousedown', onMouseDown);
+    container.addEventListener('mouseleave', onMouseLeave);
+    container.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('mousemove', onMouseMove);
+    
+    return () => {
+      container.removeEventListener('mousedown', onMouseDown);
+      container.removeEventListener('mouseleave', onMouseLeave);
+      container.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('mousemove', onMouseMove);
+    };
+  }, []);
   
   const handleLike = () => {
     setLikeCount(prev => prev + 1);
@@ -106,7 +163,95 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      <div className="container-custom mx-auto px-4 py-8 pt-24">
+      {/* Sponsors Bar */}
+      <div className="border-b border-gray-800 py-4 bg-grok-darker">
+        <div className="container-custom mx-auto px-4">
+          <div className="flex flex-col">
+            <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
+            <div 
+              ref={sponsorsContainerRef}
+              className="sponsors-container overflow-x-auto scrollbar-hide"
+            >
+              <div className="flex gap-4 pb-4 min-w-max">
+                {/* Sponsor 1 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 1</span>
+                </div>
+                
+                {/* Sponsor 2 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17 4H7V6H17V4Z" fill="currentColor" />
+                      <path d="M17 8H7V10H17V8Z" fill="currentColor" />
+                      <path d="M7 12H9V14H7V12Z" fill="currentColor" />
+                      <path d="M13 12H11V14H13V12Z" fill="currentColor" />
+                      <path d="M17 12H15V14H17V12Z" fill="currentColor" />
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 2</span>
+                </div>
+                
+                {/* Sponsor 3 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M12 8V16M12 8L16 12M12 8L8 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 3</span>
+                </div>
+                
+                {/* Sponsor 4 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M9 9H9.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M15 9H15.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 4</span>
+                </div>
+                
+                {/* Sponsor 5 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 17H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 5</span>
+                </div>
+                
+                {/* Sponsor 6 */}
+                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
+                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 4H20V16H4V4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8 20H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 16V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Sponsor 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="container-custom mx-auto px-4 py-8 pt-16">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Game Preview Section (Left Side) */}
           <div className="w-full lg:w-2/3 rounded-lg overflow-hidden">
@@ -133,8 +278,6 @@ export default function GamePage() {
                   0:02
                 </div>
               </div>
-              
-              {/* Audio Controls removed as requested */}
             </div>
             
             {/* Reaction Buttons */}
@@ -209,8 +352,6 @@ export default function GamePage() {
               </div>
               
               <div className="space-y-4">
-                {/* Views Count removed as requested */}
-                
                 {/* Rating */}
                 <div className="flex items-center">
                   <div className="text-purple-500 mr-2">Rating</div>
@@ -252,7 +393,7 @@ export default function GamePage() {
                   <span className="text-grok-text-secondary">{game.plays ?? 0} plays</span>
                 </div>
 
-                {/* View count (already shown above, but keeping for consistency) */}
+                {/* View count */}
                 <div className="flex items-center bg-grok-darker px-4 py-2 rounded-md">
                   <svg className="w-5 h-5 mr-2 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -294,6 +435,63 @@ export default function GamePage() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Featured Games Section */}
+      <div className="border-t border-gray-800 py-8 mt-12">
+        <div className="container-custom mx-auto px-4">
+          <h2 className="text-xl text-white font-semibold mb-6">FEATURED GAMES:</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {featuredGames.map((featuredGame) => (
+              <div key={featuredGame.id} className="bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                <Link href={`/game/${featuredGame.id}`}>
+                  <div className="relative">
+                    <div className="h-36 bg-grok-darker flex items-center justify-center">
+                      {featuredGame.image ? (
+                        <img 
+                          src={featuredGame.image} 
+                          alt={featuredGame.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 flex items-center justify-center">
+                          <svg className="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
+                            <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Play Count Badge */}
+                    <div className="absolute bottom-2 left-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70">
+                      <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                      </svg>
+                      <span className="text-white text-xs">{featuredGame.plays || 0}</span>
+                    </div>
+                    
+                    {/* Views Badge */}
+                    <div className="absolute bottom-2 right-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70">
+                      <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="text-white text-xs">{featuredGame.views || 0}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4">
+                    <h3 className="text-white font-semibold truncate">{featuredGame.title}</h3>
+                    <p className="text-gray-400 text-sm truncate">{featuredGame.creator || 'Unknown'}</p>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </div>
