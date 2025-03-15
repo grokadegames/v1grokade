@@ -476,11 +476,11 @@ export default function GamePage() {
             {/* Reaction Buttons - Removed as requested */}
             
             {/* Game Screenshots Carousel */}
-            <div className="flex gap-2 mt-4 overflow-x-auto px-2 py-1">
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-4 px-2 md:px-4 py-2 overflow-hidden">
               {/* Thumbnail for main image */}
               <div 
                 key="main" 
-                className={`w-40 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
                 onClick={() => setSelectedGalleryImage(0)}
               >
                 {game.image ? (
@@ -498,7 +498,7 @@ export default function GamePage() {
               {[1, 2, 3, 4].map((_, index) => (
                 <div 
                   key={index} 
-                  className={`w-40 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                  className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
                   onClick={() => setSelectedGalleryImage(index + 1)}
                 >
                   <div className="w-full h-full bg-grok-dark">
