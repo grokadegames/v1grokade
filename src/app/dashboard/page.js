@@ -36,7 +36,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-grok-dark text-white">
       <AuthNavbar />
-      <div className="container mx-auto px-4 pt-24 pb-16">
+      <div className="container mx-auto px-4 pt-16 pb-16">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
