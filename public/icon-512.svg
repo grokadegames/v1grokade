@@ -1,19 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 32 32" fill="none">
-  <!-- Base/Background -->
+  <!-- Background -->
   <rect width="32" height="32" rx="4" fill="#0A0A0A"/>
   
-  <!-- Joystick Base -->
-  <rect x="6" y="18" width="20" height="8" rx="2" fill="#222222"/>
+  <!-- Controller Body -->
+  <path d="M5 12C5 10.8954 5.89543 10 7 10H25C26.1046 10 27 10.8954 27 12V19C27 21.7614 24.7614 24 22 24H10C7.23858 24 5 21.7614 5 19V12Z" fill="#222222"/>
   
-  <!-- Joystick Stick -->
-  <rect x="14" y="8" width="4" height="12" rx="2" fill="#9966FF"/>
+  <!-- Left Side Grip -->
+  <path d="M5 15C5 13.8954 5.89543 13 7 13H9C10.1046 13 11 13.8954 11 15V19C11 20.1046 10.1046 21 9 21H7C5.89543 21 5 20.1046 5 19V15Z" fill="#333333"/>
   
-  <!-- Joystick Top -->
-  <circle cx="16" cy="8" r="4" fill="#9966FF"/>
+  <!-- Right Side Grip -->
+  <path d="M21 15C21 13.8954 21.8954 13 23 13H25C26.1046 13 27 13.8954 27 15V19C27 20.1046 26.1046 21 25 21H23C21.8954 21 21 20.1046 21 19V15Z" fill="#333333"/>
   
-  <!-- Button 1 -->
-  <circle cx="22" cy="20" r="2" fill="#9966FF"/>
+  <!-- D-Pad -->
+  <rect x="8" y="16" width="4" height="2" rx="1" fill="#9966FF"/>
+  <rect x="9" y="15" width="2" height="4" rx="1" fill="#9966FF"/>
   
-  <!-- Button 2 -->
-  <circle cx="26" cy="20" r="2" fill="#9966FF"/>
+  <!-- Action Buttons -->
+  <circle cx="21" cy="15" r="1.5" fill="#9966FF"/>
+  <circle cx="23" cy="17" r="1.5" fill="#9966FF"/>
+  <circle cx="25" cy="15" r="1.5" fill="#9966FF"/>
+  <circle cx="23" cy="13" r="1.5" fill="#9966FF"/>
+  
+  <!-- Central Button -->
+  <circle cx="16" cy="17" r="2" fill="#9966FF"/>
 </svg> 
