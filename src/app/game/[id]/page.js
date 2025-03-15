@@ -11,14 +11,13 @@ export default function GamePage() {
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [likeCount, setLikeCount] = useState(47);
+  const [dislikeCount, setDislikeCount] = useState(3);
   
   useEffect(() => {
     const fetchGame = async () => {
       try {
         setLoading(true);
-        // In a real implementation, this would call an API endpoint to get game by ID
-        // For now, let's use a simulation since we don't have a getGameById endpoint yet
-        
         // Fetch all games and find the one with matching ID
         const response = await fetch(`/api/games`);
         
@@ -51,13 +50,21 @@ export default function GamePage() {
     }
   }, [params.id]);
   
+  const handleLike = () => {
+    setLikeCount(prev => prev + 1);
+  };
+
+  const handleDislike = () => {
+    setDislikeCount(prev => prev + 1);
+  };
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-black">
         <AuthNavbar />
         <div className="container-custom mx-auto px-4 py-12 pt-16">
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
           </div>
         </div>
         <Footer />
@@ -70,12 +77,12 @@ export default function GamePage() {
       <div className="min-h-screen bg-black">
         <AuthNavbar />
         <div className="container-custom mx-auto px-4 py-12 pt-16">
-          <div className="bg-gray-900 p-8 rounded-lg border-2 border-orange-500">
-            <h1 className="text-2xl font-bold text-orange-500 mb-4">Game Not Found</h1>
+          <div className="bg-gray-900 p-8 rounded-lg border-2 border-purple-500">
+            <h1 className="text-2xl font-bold text-purple-500 mb-4">Game Not Found</h1>
             <p className="text-grok-text-secondary mb-6">
               {error || "We couldn't find the game you're looking for."}
             </p>
-            <Link href="/" className="bg-black border-2 border-orange-500 text-orange-500 px-6 py-2 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300">
+            <Link href="/" className="bg-black border-2 border-purple-500 text-purple-500 px-6 py-2 rounded-md hover:bg-purple-500 hover:text-black transition-colors duration-300">
               Back to Games
             </Link>
           </div>
@@ -84,85 +91,234 @@ export default function GamePage() {
       </div>
     );
   }
+
+  // Parse tags if they exist
+  const tagsList = game.tags ? 
+    game.tags.split(',').filter(tag => tag !== 'none' && tag.trim() !== '') : 
+    [];
+    
+  // Add "Indie" and "Single Player" as default categories if no tags
+  if (tagsList.length === 0) {
+    tagsList.push('Action', 'Adventure');
+  }
   
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
-      <main className="container-custom mx-auto px-4 py-12 pt-16">
-        <div className="bg-gray-900 p-8 rounded-lg">
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="w-full md:w-1/3">
-              <div className="h-64 bg-grok-darker flex items-center justify-center rounded-md overflow-hidden">
-                {game.image ? (
-                  <img 
-                    src={game.image} 
-                    alt={game.title} 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-24 h-24 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                      <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
-                      <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
-                    </svg>
+      
+      <div className="container-custom mx-auto px-4 py-8 pt-24">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Game Preview Section (Left Side) */}
+          <div className="w-full lg:w-2/3 rounded-lg overflow-hidden">
+            <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+              {game.image ? (
+                <img 
+                  src={game.image} 
+                  alt={game.title} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-grok-dark">
+                  <svg className="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                    <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
+                    <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                </div>
+              )}
+              
+              {/* Game Stats Overlay */}
+              <div className="absolute top-4 left-4 right-4 flex justify-between">
+                <div className="flex gap-2">
+                  <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
+                    Score: 10
                   </div>
-                )}
+                  <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
+                    Players: 8
+                  </div>
+                </div>
+                <div className="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full">
+                  0:02
+                </div>
               </div>
               
-              <div className="mt-6">
+              {/* Audio Controls */}
+              <div className="absolute bottom-20 left-4 flex items-center">
+                <button className="bg-black bg-opacity-70 p-2 rounded-full">
+                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 5L6 9H2V15H6L11 19V5Z" fill="currentColor" />
+                    <path d="M15.54 8.46C16.1255 9.04546 16.4965 9.80937 16.4965 10.605C16.4965 11.4006 16.1255 12.1645 15.54 12.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M18.54 5.46C19.7309 6.65194 20.4039 8.28451 20.4039 10C20.4039 11.7155 19.7309 13.3481 18.54 14.54" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            {/* Reaction Buttons */}
+            <div className="flex justify-center gap-4 mt-4">
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">🔥</span>
+              </button>
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">😂</span>
+              </button>
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">👍</span>
+              </button>
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">❤️</span>
+              </button>
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">🎮</span>
+              </button>
+              <button className="bg-grok-dark p-2 rounded-full hover:bg-gray-800">
+                <span className="text-xl">⚡</span>
+              </button>
+            </div>
+            
+            {/* Game Screenshots Carousel */}
+            <div className="flex gap-2 mt-4 overflow-x-auto">
+              {[1, 2, 3, 4, 5].map((_, index) => (
+                <div key={index} className="w-40 h-24 flex-shrink-0 rounded-md overflow-hidden border-2 border-grok-purple">
+                  <div className="w-full h-full bg-grok-dark"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Game Details Panel (Right Side) */}
+          <div className="w-full lg:w-1/3 bg-grok-dark rounded-lg p-6">
+            <div className="flex flex-col h-full">
+              <div className="mb-2">
+                <h1 className="text-2xl font-bold text-white">{game.title}</h1>
+                <div className="text-sm text-red-500">Not available</div>
+              </div>
+              
+              <p className="text-gray-400 text-sm mb-6">
+                {game.description || 'Classic snake game - eat food and grow longer'}
+              </p>
+              
+              <div className="flex flex-col gap-4 mb-6">
+                <a 
+                  href="#" 
+                  className="bg-purple-600 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-purple-700 transition-colors"
+                >
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
+                  </svg>
+                  Preview Game
+                </a>
+                
                 <a 
                   href={game.playUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="block w-full text-center bg-black border-2 border-orange-500 text-orange-500 px-6 py-3 rounded-md hover:bg-orange-500 hover:text-black transition-colors duration-300"
+                  className="bg-grok-dark border border-gray-700 text-gray-300 py-2 px-4 rounded-md flex items-center justify-center hover:bg-gray-800 transition-colors"
                 >
-                  Play Game
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                    <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" strokeWidth="2" />
+                    <path d="M8 12L16 12" stroke="currentColor" strokeWidth="2" />
+                    <path d="M12 8L12 16" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                  Play on Official Site
                 </a>
               </div>
-            </div>
-            
-            <div className="w-full md:w-2/3">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold text-orange-500">{game.title}</h1>
-                {game.isLive && (
-                  <span className="bg-grok-live text-grok-dark text-xs font-semibold px-3 py-1 rounded">LIVE</span>
-                )}
+              
+              <div className="space-y-4">
+                {/* Views Count */}
+                <div className="flex items-center">
+                  <div className="text-purple-500 mr-2">Views</div>
+                  <div className="text-gray-300">{game.views || 85}</div>
+                </div>
+                
+                {/* Rating */}
+                <div className="flex items-center">
+                  <div className="text-purple-500 mr-2">Rating</div>
+                  <div className="text-gray-300">94%</div>
+                </div>
+                
+                {/* Release Date */}
+                <div className="flex items-center">
+                  <div className="text-purple-500 mr-2">Released</div>
+                  <div className="text-gray-300">3/14/2025</div>
+                </div>
+                
+                {/* Tags */}
+                <div>
+                  <div className="text-purple-500 mb-2">Tags</div>
+                  <div className="flex flex-wrap gap-2">
+                    {tagsList.map((tag, index) => (
+                      <span 
+                        key={index} 
+                        className="bg-gray-800 text-gray-300 px-2 py-1 rounded-md text-sm"
+                      >
+                        {tag.trim()}
+                      </span>
+                    ))}
+                    <span className="bg-gray-800 text-gray-300 px-2 py-1 rounded-md text-sm">
+                      Single Player
+                    </span>
+                  </div>
+                </div>
               </div>
               
-              <div className="text-sm text-grok-text-secondary mb-6">
-                Created by: <span className="text-white">{game.creator}</span>
-              </div>
-              
-              <div className="bg-grok-darker p-6 rounded-md mb-8">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">About this Game</h2>
-                <p className="text-grok-text-secondary">
-                  {game.description}
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap gap-4">
+              {/* Play & View Counts */}
+              <div className="flex flex-wrap gap-4 mt-6">
                 {/* Play count */}
                 <div className="flex items-center bg-grok-darker px-4 py-2 rounded-md">
-                  <svg className="w-5 h-5 mr-2 text-orange-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 mr-2 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <span className="text-grok-text-secondary">{game.plays ?? 0} plays</span>
                 </div>
 
-                {/* View count */}
+                {/* View count (already shown above, but keeping for consistency) */}
                 <div className="flex items-center bg-grok-darker px-4 py-2 rounded-md">
-                  <svg className="w-5 h-5 mr-2 text-orange-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 mr-2 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <span className="text-grok-text-secondary">{game.views ?? 0} views</span>
                 </div>
               </div>
+              
+              {/* Social Interaction Buttons */}
+              <div className="flex gap-2 mt-6">
+                <button 
+                  onClick={handleLike}
+                  className="flex-1 bg-grok-darker text-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 22H4C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V13C2 12.4696 2.21071 11.9609 2.58579 11.5858C2.96086 11.2107 3.46957 11 4 11H7M14 9V5C14 4.20435 13.6839 3.44129 13.1213 2.87868C12.5587 2.31607 11.7956 2 11 2L7 11V22H18.28C18.7623 22.0055 19.2304 21.8364 19.5979 21.524C19.9654 21.2116 20.2077 20.7769 20.28 20.3L21.66 11.3C21.7035 11.0134 21.6842 10.7207 21.6033 10.4423C21.5225 10.1638 21.3821 9.90629 21.1919 9.68751C21.0016 9.46873 20.7661 9.29393 20.5016 9.17522C20.2371 9.0565 19.9499 8.99672 19.66 9H14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {likeCount}
+                </button>
+                
+                <button 
+                  onClick={handleDislike}
+                  className="flex-1 bg-grok-darker text-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 2H20C20.5304 2 21.0391 2.21071 21.4142 2.58579C21.7893 2.96086 22 3.46957 22 4V11C22 11.5304 21.7893 12.0391 21.4142 12.4142C21.0391 12.7893 20.5304 13 20 13H17M10 15V19C10 19.7956 10.3161 20.5587 10.8787 21.1213C11.4413 21.6839 12.2044 22 13 22L17 13V2H5.72C5.23948 1.99453 4.77136 2.16359 4.40376 2.47599C4.03617 2.78839 3.79319 3.22301 3.72 3.7L2.34 12.7C2.29651 12.9866 2.31583 13.2793 2.39666 13.5577C2.47749 13.8362 2.61791 14.0937 2.80815 14.3125C2.99839 14.5313 3.23393 14.7061 3.49843 14.8248C3.76294 14.9435 4.05009 15.0033 4.34 15H10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {dislikeCount}
+                </button>
+                
+                <button className="flex-1 bg-grok-darker text-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 2V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Share
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+      
       <Footer />
     </div>
   );
