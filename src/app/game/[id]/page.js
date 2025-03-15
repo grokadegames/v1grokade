@@ -17,6 +17,16 @@ export default function GamePage() {
   const sponsorsContainerRef = useRef(null);
   const featuredGamesContainerRef = useRef(null);
   const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState(0);
+  
+  // Example gallery images - in a real app these would come from the API
+  const galleryImages = [
+    '/images/gallery1.jpg',
+    '/images/gallery2.jpg',
+    '/images/gallery3.jpg',
+    '/images/gallery4.jpg',
+    '/images/gallery5.jpg',
+  ];
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -91,8 +101,8 @@ export default function GamePage() {
         if (!isSponsorsHovered && container) {
           container.scrollLeft += 1;
           
-          // Reset scroll position when reaching the end
-          if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+          // Reset scroll position when reaching the end for seamless looping
+          if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 10) {
             container.scrollLeft = 0;
           }
         }
@@ -317,7 +327,7 @@ export default function GamePage() {
       <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
         <div className="container-custom mx-auto px-4">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-grok-purple font-semibold">SPONSORS</h3>
+            <h3 className="text-white font-semibold">SPONSORS</h3>
             
             {/* Sponsor Carousel Navigation */}
             <div className="flex gap-2">
@@ -345,7 +355,7 @@ export default function GamePage() {
             ref={sponsorsContainerRef}
             className="overflow-x-auto scrollbar-hide cursor-grab"
           >
-            <div className="flex gap-4 pb-4 min-w-max">
+            <div className="flex gap-4 pb-4 min-w-max sponsors-wrapper">
               {/* Sponsor 1 */}
               <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
                 <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
@@ -439,7 +449,7 @@ export default function GamePage() {
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
               {game.image ? (
                 <img 
-                  src={game.image} 
+                  src={selectedGalleryImage === 0 ? game.image : galleryImages[selectedGalleryImage - 1]} 
                   alt={game.title} 
                   className="w-full h-full object-cover"
                 />
@@ -457,10 +467,37 @@ export default function GamePage() {
             {/* Reaction Buttons - Removed as requested */}
             
             {/* Game Screenshots Carousel */}
-            <div className="flex gap-2 mt-4 overflow-x-auto">
-              {[1, 2, 3, 4, 5].map((_, index) => (
-                <div key={index} className="w-40 h-24 flex-shrink-0 rounded-md overflow-hidden border-2 border-grok-purple">
+            <div className="flex gap-2 mt-4 overflow-x-auto px-2 py-1">
+              {/* Thumbnail for main image */}
+              <div 
+                key="main" 
+                className={`w-40 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                onClick={() => setSelectedGalleryImage(0)}
+              >
+                {game.image ? (
+                  <img 
+                    src={game.image} 
+                    alt={`${game.title} thumbnail`}
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
                   <div className="w-full h-full bg-grok-dark"></div>
+                )}
+              </div>
+              
+              {/* Gallery images */}
+              {[1, 2, 3, 4, 5].map((_, index) => (
+                <div 
+                  key={index} 
+                  className={`w-40 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                  onClick={() => setSelectedGalleryImage(index + 1)}
+                >
+                  <div className="w-full h-full bg-grok-dark">
+                    {/* Placeholder for gallery images */}
+                    <div className="h-full w-full flex items-center justify-center text-gray-500">
+                      Gallery {index + 1}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
