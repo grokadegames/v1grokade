@@ -12,6 +12,7 @@ export default function Hero() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showAuthAlert, setShowAuthAlert] = useState(false);
   const { isAuthenticated } = useAuth();
+  const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
   
   // Handle Submit Game button click
   const handleSubmitGameClick = (e) => {
@@ -24,7 +25,35 @@ export default function Hero() {
     }
   };
 
-  // Implement horizontal scrolling for sponsors
+  // Add autoscroll functionality for sponsors
+  useEffect(() => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    // Autoscroll functionality
+    let scrollInterval;
+    
+    const startAutoScroll = () => {
+      scrollInterval = setInterval(() => {
+        if (!isSponsorsHovered && container) {
+          container.scrollLeft += 1;
+          
+          // Reset scroll position when reaching the end
+          if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+            container.scrollLeft = 0;
+          }
+        }
+      }, 30); // Adjust speed by changing interval time
+    };
+    
+    startAutoScroll();
+    
+    return () => {
+      clearInterval(scrollInterval);
+    };
+  }, [isSponsorsHovered]);
+
+  // Implement horizontal scrolling for sponsors with hover detection
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
@@ -43,6 +72,7 @@ export default function Hero() {
     const onMouseLeave = () => {
       isDown = false;
       container.classList.remove('active');
+      setIsSponsorsHovered(false);
     };
 
     const onMouseUp = () => {
@@ -57,12 +87,17 @@ export default function Hero() {
       const walk = (x - startX) * 2; // Scroll speed multiplier
       container.scrollLeft = scrollLeft - walk;
     };
+    
+    const onMouseEnter = () => {
+      setIsSponsorsHovered(true);
+    };
 
     // Add event listeners
     container.addEventListener('mousedown', onMouseDown);
     container.addEventListener('mouseleave', onMouseLeave);
     container.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
+    container.addEventListener('mouseenter', onMouseEnter);
 
     // Cleanup
     return () => {
@@ -70,6 +105,7 @@ export default function Hero() {
       container.removeEventListener('mouseleave', onMouseLeave);
       container.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mousemove', onMouseMove);
+      container.removeEventListener('mouseenter', onMouseEnter);
     };
   }, []);
 
@@ -77,14 +113,14 @@ export default function Hero() {
     <div className="py-16 bg-grok-dark border-b border-grok-card">
       <div className="container-custom mx-auto">
         <div className="flex flex-col lg:flex-row items-center">
-          <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
+          <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left px-4">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
-            <p className="text-gray-300 text-lg mb-6">
+            <p className="text-gray-300 text-lg mb-6 mx-auto lg:mx-0 max-w-xl">
               Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center lg:justify-start">
               <a href="#games-section" className="btn-primary">Play Now</a>
               <button onClick={handleSubmitGameClick} className="btn-secondary">
                 Submit Game

@@ -16,6 +16,7 @@ export default function GamePage() {
   const [featuredGames, setFeaturedGames] = useState([]);
   const sponsorsContainerRef = useRef(null);
   const featuredGamesContainerRef = useRef(null);
+  const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -77,7 +78,35 @@ export default function GamePage() {
     }
   }, [params.id]);
   
-  // Horizontal scrolling for sponsors
+  // Add autoscroll functionality for sponsors
+  useEffect(() => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    // Autoscroll functionality
+    let scrollInterval;
+    
+    const startAutoScroll = () => {
+      scrollInterval = setInterval(() => {
+        if (!isSponsorsHovered && container) {
+          container.scrollLeft += 1;
+          
+          // Reset scroll position when reaching the end
+          if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+            container.scrollLeft = 0;
+          }
+        }
+      }, 30); // Adjust speed by changing interval time
+    };
+    
+    startAutoScroll();
+    
+    return () => {
+      clearInterval(scrollInterval);
+    };
+  }, [isSponsorsHovered]);
+  
+  // Horizontal scrolling for sponsors with hover detection
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
@@ -96,6 +125,7 @@ export default function GamePage() {
     const onMouseLeave = () => {
       isDown = false;
       container.classList.remove('cursor-grabbing');
+      setIsSponsorsHovered(false);
     };
     
     const onMouseUp = () => {
@@ -111,16 +141,22 @@ export default function GamePage() {
       container.scrollLeft = scrollLeft - walk;
     };
     
+    const onMouseEnter = () => {
+      setIsSponsorsHovered(true);
+    };
+    
     container.addEventListener('mousedown', onMouseDown);
     container.addEventListener('mouseleave', onMouseLeave);
     container.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
+    container.addEventListener('mouseenter', onMouseEnter);
     
     return () => {
       container.removeEventListener('mousedown', onMouseDown);
       container.removeEventListener('mouseleave', onMouseLeave);
       container.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mousemove', onMouseMove);
+      container.removeEventListener('mouseenter', onMouseEnter);
     };
   }, []);
   
@@ -181,6 +217,19 @@ export default function GamePage() {
   const scrollFeaturedRight = () => {
     if (featuredGamesContainerRef.current) {
       featuredGamesContainerRef.current.scrollLeft += 300;
+    }
+  };
+  
+  // Add sponsor navigation handlers
+  const scrollSponsorsLeft = () => {
+    if (sponsorsContainerRef.current) {
+      sponsorsContainerRef.current.scrollLeft -= 300;
+    }
+  };
+
+  const scrollSponsorsRight = () => {
+    if (sponsorsContainerRef.current) {
+      sponsorsContainerRef.current.scrollLeft += 300;
     }
   };
   
@@ -264,13 +313,47 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      {/* Sponsors Grid - Now with additional top padding and matching home page style */}
-      <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
+      {/* Hero Section - Fix mobile centering */}
+      <div className="container-custom mx-auto px-4 py-8 pt-20 text-center">
+        <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-2">
+          {game?.title || 'Game Details'}
+        </h1>
+        <p className="text-gray-400 max-w-2xl mx-auto text-center">
+          Explore and play the latest AI-generated games on Grokade
+        </p>
+      </div>
+      
+      {/* Sponsors Grid - Now with autoscroll and responsive styling */}
+      <div className="border-b border-gray-800 py-6 bg-grok-darker">
         <div className="container-custom mx-auto px-4">
-          <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-grok-purple font-semibold">SPONSORS</h3>
+            
+            {/* Sponsor Carousel Navigation */}
+            <div className="flex gap-2">
+              <button
+                onClick={scrollSponsorsLeft}
+                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
+                aria-label="Scroll sponsors left"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                onClick={scrollSponsorsRight}
+                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
+                aria-label="Scroll sponsors right"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
           <div 
             ref={sponsorsContainerRef}
-            className="overflow-x-auto scrollbar-hide"
+            className="overflow-x-auto scrollbar-hide cursor-grab"
           >
             <div className="flex gap-4 pb-4 min-w-max">
               {/* Sponsor 1 */}
@@ -393,11 +476,13 @@ export default function GamePage() {
             </div>
           </div>
           
-          {/* Game Details Panel (Right Side) */}
+          {/* Game Details Panel (Right Side) - Fix mobile title display */}
           <div className="w-full lg:w-1/3 bg-grok-dark rounded-lg p-6">
             <div className="flex flex-col h-full">
               <div className="mb-2">
-                <h1 className="text-2xl font-bold text-white">{game.title}</h1>
+                <h1 className="text-2xl font-bold text-white break-words">
+                  {game.title}
+                </h1>
                 <div className="text-sm text-red-500">Not available</div>
               </div>
               
@@ -520,7 +605,7 @@ export default function GamePage() {
         </div>
       </div>
       
-      {/* Featured Games Section - Renamed from GameDetail FeaturedGames */}
+      {/* Featured Games Section */}
       <div className="border-t border-gray-800 py-8 mt-12">
         <div className="container-custom mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
@@ -601,7 +686,7 @@ export default function GamePage() {
                     </div>
                     
                     <div className="p-4">
-                      <h3 className="text-white font-semibold truncate">{featuredGame.title}</h3>
+                      <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2">{featuredGame.title}</h3>
                       <p className="text-gray-400 text-sm truncate">By: {featuredGame.creator || 'Unknown'}</p>
                       
                       <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
