@@ -14,8 +14,8 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-grok-text-secondary mb-6">
-              Discover games built with Grok and other AI tools. Play games, 
-              attract players, run competitions, hire game devs, or browse our vibegame index.
+              Discover games built with Grok and other AI tools. Attract players, 
+              run competitions, hire game devs, or browse our vibegame index.
             </p>
           </div>
 
