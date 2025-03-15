@@ -14,20 +14,26 @@ function LoginContent() {
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
 
+  // Effect for redirection and initialization
   useEffect(() => {
-    // If user is already authenticated, redirect to dashboard
+    console.log('[Login] Component mounted, isAuthenticated:', isAuthenticated);
+    console.log('[Login] User data:', user);
+    
+    // If user is already authenticated, redirect to home page
     if (isAuthenticated) {
-      router.push('/dashboard');
+      console.log('[Login] User is authenticated, redirecting to home page');
+      router.push('/');
     }
     
     // Check if user was just registered
     const registered = searchParams.get('registered');
     if (registered === 'true') {
+      console.log('[Login] User was just registered');
       setSuccessMessage('Registration successful! Please log in.');
     }
-  }, [isAuthenticated, router, searchParams]);
+  }, [isAuthenticated, router, searchParams, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,16 +48,23 @@ function LoginContent() {
     }
 
     try {
+      console.log('[Login] Submitting login form for:', username);
       const result = await login(username, password);
       
       if (result.success) {
+        console.log('[Login] Login successful');
         setSuccessMessage('Login successful! Redirecting...');
-        // Router push will happen in the auth context after successful login
+        // Explicit redirect here as a backup to the one in AuthContext
+        setTimeout(() => {
+          console.log('[Login] Explicit redirect to home page');
+          router.push('/');
+        }, 1000);
       } else {
+        console.error('[Login] Login failed:', result.error);
         setError(result.error || 'Invalid username or password');
       }
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('[Login] Unexpected error:', err);
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
