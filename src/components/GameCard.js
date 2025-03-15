@@ -71,6 +71,25 @@ export default function GameCard({ game }) {
             <span className="bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded">LIVE</span>
           </div>
         )}
+        
+        {/* View count overlay - left side */}
+        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+          {/* Eye icon for views */}
+          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-white text-xs">{game.views ?? 0}</span>
+        </div>
+        
+        {/* Play count overlay - right side */}
+        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+          {/* Play button icon */}
+          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-white text-xs">{game.plays ?? 0}</span>
+        </div>
       </div>
     
       <div className="p-4 flex flex-col flex-grow">
@@ -89,7 +108,7 @@ export default function GameCard({ game }) {
         <div className="flex gap-2 mt-4">
           <Link 
             href={`/game/${game.id}`}
-            className="flex-1 text-center bg-orange-500 hover:bg-orange-600 text-black px-4 py-2 rounded-md transition-colors duration-200"
+            className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
           >
             View Game
           </Link>
@@ -102,22 +121,7 @@ export default function GameCard({ game }) {
             Play Now
           </a>
         </div>
-        <div className="flex justify-between items-center text-xs text-grok-text-secondary mt-3">
-          <div className="flex items-center">
-            {/* Play button icon */}
-            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            {game.plays ?? 0} plays
-          </div>
-          <div className="flex items-center">
-            {/* Eye icon for views */}
-            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            {game.views ?? 0} views
-          </div>
+        <div className="flex justify-end items-center text-xs text-grok-text-secondary mt-3">
           <div className="flex items-center">
             {/* Clock icon for time */}
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
