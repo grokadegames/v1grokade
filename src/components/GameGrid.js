@@ -266,9 +266,9 @@ export default function GameGrid() {
           
           {/* Optional: Add navigation arrows */}
           {games.length > 0 && (
-            <div className="hidden md:flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none">
+            <div className="hidden md:flex items-center justify-between absolute top-[25%] w-full -translate-y-1/2 pointer-events-none px-2">
               <button 
-                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all" 
                 onClick={() => { gamesContainerRef.current.scrollLeft -= 300; }}
               >
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -276,7 +276,7 @@ export default function GameGrid() {
                 </svg>
               </button>
               <button 
-                className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
+                className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all" 
                 onClick={() => { gamesContainerRef.current.scrollLeft += 300; }}
               >
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
