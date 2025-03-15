@@ -38,8 +38,8 @@ export default function Hero() {
         if (!isSponsorsHovered && container) {
           container.scrollLeft += 1;
           
-          // Reset scroll position when reaching the end
-          if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+          // Reset scroll position when reaching the end for seamless looping
+          if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 10) {
             container.scrollLeft = 0;
           }
         }
@@ -140,7 +140,7 @@ export default function Hero() {
               ref={sponsorsContainerRef}
               className="sponsors-container overflow-x-auto scrollbar-hide cursor-grab"
             >
-              <div className="flex gap-4 pb-4 min-w-max">
+              <div className="flex gap-4 pb-4 min-w-max sponsors-wrapper">
                 {/* Sponsor 1 */}
                 <div className="flex items-center bg-black bg-opacity-50 backdrop-blur-sm px-4 py-3 rounded min-w-[180px]">
                   <div className="w-8 h-8 bg-black bg-opacity-70 rounded flex items-center justify-center mr-3">

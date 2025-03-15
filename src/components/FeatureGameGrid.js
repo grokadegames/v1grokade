@@ -156,12 +156,12 @@ export default function FeatureGameGrid() {
         </div>
         
         {/* Game Icon */}
-        <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center relative">
+        <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center relative overflow-hidden">
           {game.image ? (
             <img 
               src={game.image} 
               alt={game.title} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           ) : (
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-black bg-opacity-70 rounded-full flex items-center justify-center">
