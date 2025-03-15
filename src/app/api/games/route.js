@@ -176,7 +176,9 @@ export async function GET(request) {
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,
         isLive: true, // Assuming all games from DB are live
-        plays: 0 // Placeholder for future play count feature
+        plays: 0, // Placeholder for future play count feature
+        tags: game.tagcategory || '',
+        xaccount: game.xaccount || ''
       }));
       
       console.log('[API] Formatted games data, returning', formattedGames.length, 'games');
