@@ -149,7 +149,7 @@ export default function FeatureGameGrid() {
   // Featured Game Card component
   const FeaturedGameCard = ({ game }) => {
     return (
-      <div className="w-full max-w-[320px] sm:max-w-md bg-grok-card rounded-lg overflow-hidden shadow-lg relative">
+      <div className="w-full max-w-[320px] sm:max-w-md bg-grok-card rounded-lg overflow-hidden shadow-lg relative mx-auto">
         {/* Featured Badge */}
         <div className="absolute top-4 right-4 bg-grok-purple text-white text-xs font-semibold px-3 py-1 rounded-md z-10">
           FEATURED
@@ -227,33 +227,43 @@ export default function FeatureGameGrid() {
     );
   };
 
+  // State to track the current game index
+  const [currentGameIndex, setCurrentGameIndex] = useState(0);
+  
+  // Function to go to the next game
+  const nextGame = () => {
+    setCurrentGameIndex((prevIndex) => 
+      prevIndex === featuredGames.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+  
+  // Function to go to the previous game
+  const prevGame = () => {
+    setCurrentGameIndex((prevIndex) => 
+      prevIndex === 0 ? featuredGames.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
-    <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
+    <div className="w-full lg:w-1/2 mt-8 lg:mt-0 flex items-center justify-center">
       {loading ? (
         <div className="flex justify-center items-center h-[320px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-grok-purple"></div>
         </div>
+      ) : featuredGames.length === 0 ? (
+        <div className="text-center text-white">No featured games available</div>
       ) : (
-        <div className="relative">
-          <div 
-            ref={featuredContainerRef}
-            className="featured-games-container overflow-x-auto scrollbar-hide"
-          >
-            <div className="flex gap-6 pb-4 min-w-max">
-              {featuredGames.map((game) => (
-                <div key={game.id} className="w-[320px] sm:w-[384px]">
-                  <FeaturedGameCard game={game} />
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="relative w-full max-w-[320px] sm:max-w-md">
+          {/* Current featured game */}
+          <FeaturedGameCard game={featuredGames[currentGameIndex]} />
           
           {/* Navigation arrows */}
           {featuredGames.length > 1 && (
-            <div className="hidden md:flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none">
+            <div className="flex items-center justify-between absolute top-1/2 w-full -translate-y-1/2 pointer-events-none px-2">
               <button 
                 className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
-                onClick={() => { featuredContainerRef.current.scrollLeft -= 400; }}
+                onClick={prevGame}
+                aria-label="Previous game"
               >
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -261,7 +271,8 @@ export default function FeatureGameGrid() {
               </button>
               <button 
                 className="bg-grok-card p-2 rounded-full shadow-lg pointer-events-auto" 
-                onClick={() => { featuredContainerRef.current.scrollLeft += 400; }}
+                onClick={nextGame}
+                aria-label="Next game"
               >
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -269,22 +280,22 @@ export default function FeatureGameGrid() {
               </button>
             </div>
           )}
+          
+          {/* Game pagination indicators */}
+          {featuredGames.length > 1 && (
+            <div className="flex justify-center mt-4">
+              {featuredGames.map((_, index) => (
+                <button 
+                  key={index}
+                  className={`w-2 h-2 mx-1 rounded-full ${currentGameIndex === index ? 'bg-grok-purple' : 'bg-gray-600'}`}
+                  onClick={() => setCurrentGameIndex(index)}
+                  aria-label={`Go to game ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
-      
-      {/* Add some CSS to hide scrollbar but keep functionality */}
-      <style jsx>{`
-        .featured-games-container {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;     /* Firefox */
-        }
-        .featured-games-container::-webkit-scrollbar {
-          display: none;             /* Chrome, Safari and Opera */
-        }
-        .featured-games-container.active {
-          cursor: grabbing;
-        }
-      `}</style>
     </div>
   );
 } 
