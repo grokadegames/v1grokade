@@ -163,89 +163,20 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      {/* Sponsors Bar */}
-      <div className="border-b border-gray-800 py-4 bg-grok-darker">
+      {/* Sponsors Grid - Simplified to match home page */}
+      <div className="border-b border-gray-800 py-6 bg-grok-darker">
         <div className="container-custom mx-auto px-4">
-          <div className="flex flex-col">
-            <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
-            <div 
-              ref={sponsorsContainerRef}
-              className="sponsors-container overflow-x-auto scrollbar-hide"
-            >
-              <div className="flex gap-4 pb-4 min-w-max">
-                {/* Sponsor 1 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 1</span>
+          <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
+          <div 
+            ref={sponsorsContainerRef}
+            className="overflow-x-auto scrollbar-hide"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4 pb-2 min-w-max md:min-w-0">
+              {Array.from({length: 10}).map((_, index) => (
+                <div key={index} className="bg-grok-card px-4 py-2 rounded text-white text-center">
+                  Sponsor {index + 1}
                 </div>
-                
-                {/* Sponsor 2 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17 4H7V6H17V4Z" fill="currentColor" />
-                      <path d="M17 8H7V10H17V8Z" fill="currentColor" />
-                      <path d="M7 12H9V14H7V12Z" fill="currentColor" />
-                      <path d="M13 12H11V14H13V12Z" fill="currentColor" />
-                      <path d="M17 12H15V14H17V12Z" fill="currentColor" />
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 2</span>
-                </div>
-                
-                {/* Sponsor 3 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M12 8V16M12 8L16 12M12 8L8 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 3</span>
-                </div>
-                
-                {/* Sponsor 4 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M9 9H9.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M15 9H15.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 4</span>
-                </div>
-                
-                {/* Sponsor 5 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 17H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 5</span>
-                </div>
-                
-                {/* Sponsor 6 */}
-                <div className="flex items-center bg-grok-card px-4 py-3 rounded min-w-[180px]">
-                  <div className="w-8 h-8 bg-grok-darker rounded flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 4H20V16H4V4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M8 20H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 16V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-white font-medium">Sponsor 6</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -439,17 +370,17 @@ export default function GamePage() {
         </div>
       </div>
       
-      {/* Featured Games Section - Now renamed to GameDetailFeaturedGames */}
+      {/* Featured Games Section - Now with responsive sizing */}
       <div className="border-t border-gray-800 py-8 mt-12">
         <div className="container-custom mx-auto px-4">
           <h2 className="text-xl text-white font-semibold mb-6">GAME DETAIL FEATURED GAMES</h2>
           
           <div className="games-container overflow-x-auto scrollbar-hide">
-            <div className="flex gap-4 pb-4 min-w-max">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {featuredGames.map((featuredGame) => (
-                <div key={featuredGame.id} className="game-card min-w-[280px] bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                <div key={featuredGame.id} className="game-card bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                   <div className="relative">
-                    <div className="h-36 bg-grok-darker flex items-center justify-center">
+                    <div className="aspect-video bg-grok-darker flex items-center justify-center">
                       {featuredGame.image ? (
                         <img 
                           src={featuredGame.image} 
