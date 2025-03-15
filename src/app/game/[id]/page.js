@@ -15,6 +15,7 @@ export default function GamePage() {
   const [dislikeCount, setDislikeCount] = useState(3);
   const [featuredGames, setFeaturedGames] = useState([]);
   const sponsorsContainerRef = useRef(null);
+  const featuredGamesContainerRef = useRef(null);
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -37,27 +38,27 @@ export default function GamePage() {
           }
           setGame(foundGame);
           
-          // Get featured games (excluding current game)
-          // First, enhance each game with additional properties if needed
-          const enhancedGames = data.games.map(game => ({
-            ...game,
-            // Generate reasonable plays count if not provided
-            plays: game.plays || Math.floor(Math.random() * 200) + 50,
-            // Generate views if not provided
-            views: game.views || Math.floor(Math.random() * 300) + 100,
-            // Determine if game is live (could be based on a property or random for demo)
-            isLive: game.isLive || Math.random() > 0.7, // About 30% chance to be live
-            // Add a created/updated timestamp for relative time display
-            updatedAt: game.updatedAt || new Date().toISOString(),
-            // Ensure description exists
-            description: game.description || 'Experience this exciting game from the Grokade collection.'
-          }));
-          
-          // Get top games by views (excluding current) and take 5
-          const featured = enhancedGames
+          // Filter out the current game and use real data from API
+          // Only fill in missing properties if absolutely necessary
+          const gamesWithoutCurrent = data.games
             .filter(g => g.id !== params.id)
-            .sort((a, b) => b.views - a.views) // Sort by popularity (views)
-            .slice(0, 5); // Get top 5
+            .map(game => ({
+              ...game,
+              // Only use fallbacks if data is missing
+              plays: game.plays || 0,
+              views: game.views || 0,
+              // Only mark as live if explicitly set to true
+              isLive: !!game.isLive,
+              creator: game.creator || 'Grokade Developer',
+              description: game.description || '',
+              // Format dates properly
+              updatedAt: game.updatedAt || null
+            }));
+          
+          // Sort by most popular (views) and get top 5
+          const featured = gamesWithoutCurrent
+            .sort((a, b) => b.views - a.views)
+            .slice(0, 5);
           
           setFeaturedGames(featured);
         } else {
@@ -122,6 +123,66 @@ export default function GamePage() {
       container.removeEventListener('mousemove', onMouseMove);
     };
   }, []);
+  
+  // Horizontal scrolling for featured games
+  useEffect(() => {
+    const container = featuredGamesContainerRef.current;
+    if (!container) return;
+    
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    const onMouseDown = (e) => {
+      isDown = true;
+      container.classList.add('cursor-grabbing');
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    };
+    
+    const onMouseLeave = () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    };
+    
+    const onMouseUp = () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    };
+    
+    const onMouseMove = (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    };
+    
+    container.addEventListener('mousedown', onMouseDown);
+    container.addEventListener('mouseleave', onMouseLeave);
+    container.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('mousemove', onMouseMove);
+    
+    return () => {
+      container.removeEventListener('mousedown', onMouseDown);
+      container.removeEventListener('mouseleave', onMouseLeave);
+      container.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('mousemove', onMouseMove);
+    };
+  }, [featuredGames]);
+
+  // Carousel navigation handlers
+  const scrollFeaturedLeft = () => {
+    if (featuredGamesContainerRef.current) {
+      featuredGamesContainerRef.current.scrollLeft -= 300;
+    }
+  };
+
+  const scrollFeaturedRight = () => {
+    if (featuredGamesContainerRef.current) {
+      featuredGamesContainerRef.current.scrollLeft += 300;
+    }
+  };
   
   const handleLike = () => {
     setLikeCount(prev => prev + 1);
@@ -382,13 +443,40 @@ export default function GamePage() {
       {/* GameDetail FeaturedGames Section */}
       <div className="border-t border-gray-800 py-8 mt-12">
         <div className="container-custom mx-auto px-4">
-          <h2 className="text-xl text-white font-semibold mb-6">GAME DETAIL FEATURED GAMES</h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl text-white font-semibold">GAME DETAIL FEATURED GAMES</h2>
+            
+            {/* Carousel Navigation */}
+            <div className="flex gap-2">
+              <button
+                onClick={scrollFeaturedLeft}
+                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
+                aria-label="Scroll left"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                onClick={scrollFeaturedRight}
+                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
+                aria-label="Scroll right"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
           
-          <div className="games-container overflow-x-auto scrollbar-hide">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div 
+            ref={featuredGamesContainerRef}
+            className="games-container overflow-x-auto scrollbar-hide cursor-grab"
+          >
+            <div className="flex gap-4 pb-4 min-w-max">
               {featuredGames.length > 0 ? (
                 featuredGames.map((featuredGame) => (
-                  <div key={featuredGame.id} className="game-card bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div key={featuredGame.id} className="game-card w-[280px] flex-shrink-0 bg-grok-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="relative">
                       <div className="aspect-video bg-grok-darker flex items-center justify-center">
                         {featuredGame.image ? (
