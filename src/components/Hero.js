@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import SubmitGameModal from './SubmitGameModal';
 import AuthAlert from './AuthAlert';
+import FeatureGameGrid from './FeatureGameGrid';
 
 export default function Hero() {
   const sponsorsContainerRef = useRef(null);
-  const [featuredGame, setFeaturedGame] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showAuthAlert, setShowAuthAlert] = useState(false);
   const { isAuthenticated } = useAuth();
@@ -25,27 +24,7 @@ export default function Hero() {
     }
   };
 
-  // Fetch a featured game
-  useEffect(() => {
-    const fetchFeaturedGame = async () => {
-      try {
-        const response = await fetch('/api/games?limit=1');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.games && data.games.length > 0) {
-            setFeaturedGame(data.games[0]);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching featured game:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchFeaturedGame();
-  }, []);
-
+  // Implement horizontal scrolling for sponsors
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
@@ -113,86 +92,8 @@ export default function Hero() {
             </div>
           </div>
           
-          {/* Featured Game */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0">
-            <div className="w-full max-w-[320px] sm:max-w-md bg-grok-card rounded-lg overflow-hidden shadow-lg relative">
-              {/* Featured Badge */}
-              <div className="absolute top-4 right-4 bg-grok-purple text-white text-xs font-semibold px-3 py-1 rounded-md z-10">
-                FEATURED
-              </div>
-              
-              {/* Game Icon */}
-              <div className="aspect-video bg-grok-darker flex items-center justify-center relative">
-                {featuredGame && featuredGame.image ? (
-                  <img 
-                    src={featuredGame.image} 
-                    alt={featuredGame.title} 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-grok-card rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="2" y="4" width="20" height="4" rx="1" fill="currentColor" />
-                      <rect x="2" y="10" width="8" height="4" rx="1" fill="currentColor" />
-                      <rect x="12" y="10" width="10" height="4" rx="1" fill="currentColor" />
-                      <rect x="2" y="16" width="14" height="4" rx="1" fill="currentColor" />
-                      <circle cx="12" cy="20" r="2" fill="currentColor" />
-                      <path d="M12 18V13" stroke="currentColor" strokeWidth="1.5" />
-                    </svg>
-                  </div>
-                )}
-                
-                {/* View count overlay - left side */}
-                <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
-                  {/* Eye icon for views */}
-                  <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="text-white text-xs">{featuredGame ? (featuredGame.views ?? 0) : 0}</span>
-                </div>
-                
-                {/* Play count overlay - right side */}
-                <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
-                  {/* Play button icon */}
-                  <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="text-white text-xs">{featuredGame ? (featuredGame.plays ?? 0) : 0}</span>
-                </div>
-              </div>
-              
-              {/* Game Info */}
-              <div className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
-                  {loading ? 'Loading...' : (featuredGame ? featuredGame.title : 'Brick Breaker')}
-                </h3>
-                <p className="text-grok-text-secondary mb-3 sm:mb-4">
-                  {loading ? '' : (featuredGame ? `By: ${featuredGame.creator}` : 'Featured Game')}
-                </p>
-                
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                  {featuredGame && (
-                    <Link 
-                      href={`/game/${featuredGame.id}`}
-                      className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-                    >
-                      View Game
-                    </Link>
-                  )}
-                  
-                  <a 
-                    href={featuredGame ? featuredGame.playUrl : '#games-section'} 
-                    target={featuredGame ? "_blank" : "_self"}
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-                  >
-                    Play Now
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Featured Games Grid */}
+          <FeatureGameGrid />
         </div>
         
         {/* Sponsors Bar */}
