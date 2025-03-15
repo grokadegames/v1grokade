@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import ChangePasswordForm from '@/components/ChangePasswordForm';
 
 export default function Dashboard() {
   const { user, loading, logout, isAuthenticated } = useAuth();
@@ -79,7 +80,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-semibold text-white mb-4">Your Games</h2>
             <p className="text-gray-400">You haven&apos;t created any games yet. Start creating now!</p>
@@ -102,6 +103,14 @@ export default function Dashboard() {
             <button className="mt-4 w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition">
               View Challenges
             </button>
+          </div>
+        </div>
+        
+        {/* Account Security Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">Account Security</h2>
+          <div className="grid grid-cols-1 gap-6">
+            <ChangePasswordForm />
           </div>
         </div>
       </main>
