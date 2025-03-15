@@ -74,8 +74,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
-      <div className="w-full max-w-md p-8 space-y-8 bg-gray-800 rounded-lg shadow-md">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-grok-darker">
+      <div className="w-full max-w-md p-8 space-y-8 bg-grok-card rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="mt-6 text-3xl font-extrabold text-white">Create Account</h1>
           <p className="mt-2 text-sm text-gray-400">
