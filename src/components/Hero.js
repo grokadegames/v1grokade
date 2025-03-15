@@ -111,9 +111,9 @@ export default function Hero() {
 
   return (
     <div className="py-16 bg-grok-dark border-b border-grok-card">
-      <div className="container-custom mx-auto">
+      <div className="container-custom mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center">
-          <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left px-4">
+          <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
@@ -138,7 +138,7 @@ export default function Hero() {
             <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
             <div 
               ref={sponsorsContainerRef}
-              className="sponsors-container overflow-x-auto scrollbar-hide"
+              className="sponsors-container overflow-x-auto scrollbar-hide cursor-grab"
             >
               <div className="flex gap-4 pb-4 min-w-max">
                 {/* Sponsor 1 */}

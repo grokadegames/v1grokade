@@ -198,7 +198,7 @@ export default function FeatureGameGrid() {
         
         {/* Game Info */}
         <div className="p-4 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-1 break-words whitespace-normal line-clamp-2">
             {game.title}
           </h3>
           <p className="text-grok-text-secondary mb-3 sm:mb-4">

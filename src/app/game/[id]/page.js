@@ -313,18 +313,8 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      {/* Hero Section - Fix mobile centering */}
-      <div className="container-custom mx-auto px-4 py-8 pt-20 text-center">
-        <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-2">
-          {game?.title || 'Game Details'}
-        </h1>
-        <p className="text-gray-400 max-w-2xl mx-auto text-center">
-          Explore and play the latest AI-generated games on Grokade
-        </p>
-      </div>
-      
-      {/* Sponsors Grid - Now with autoscroll and responsive styling */}
-      <div className="border-b border-gray-800 py-6 bg-grok-darker">
+      {/* Sponsors Grid - Now with additional top padding and matching home page style */}
+      <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
         <div className="container-custom mx-auto px-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-grok-purple font-semibold">SPONSORS</h3>
