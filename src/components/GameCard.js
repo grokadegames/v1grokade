@@ -10,6 +10,7 @@ export default function GameCard({ game }) {
     creator: 'Grokade Team',
     description: 'Classic brick breaking game with paddle and power-ups',
     plays: 120,
+    views: 240,
     isLive: true,
     image: null,
     playUrl: '#'
@@ -71,7 +72,7 @@ export default function GameCard({ game }) {
           </div>
         )}
       </div>
-      
+    
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex items-start justify-between mb-1">
           <h3 className="text-white font-semibold">{game.title}</h3>
@@ -82,25 +83,46 @@ export default function GameCard({ game }) {
         <p className="text-grok-text-secondary text-sm mb-4 flex-grow">
           {game.description}
         </p>
-        <div className="mt-4">
+      </div>
+      
+      <div className="px-4 pb-4">
+        <div className="flex gap-2 mt-4">
           <Link 
+            href={`/game/${game.id}`}
+            className="flex-1 text-center bg-orange-500 hover:bg-orange-600 text-black px-4 py-2 rounded-md transition-colors duration-200"
+          >
+            View Game
+          </Link>
+          <a 
             href={game.playUrl || '#'} 
-            className="block w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
           >
             Play Now
-          </Link>
+          </a>
         </div>
         <div className="flex justify-between items-center text-xs text-grok-text-secondary mt-3">
           <div className="flex items-center">
+            {/* Play button icon */}
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             {game.plays ?? 0} plays
           </div>
           <div className="flex items-center">
+            {/* Eye icon for views */}
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 8V16M12 8L8 12M12 8L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {game.views ?? 0} views
+          </div>
+          <div className="flex items-center">
+            {/* Clock icon for time */}
+            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 6L12 12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             {formattedDate}
           </div>

@@ -14,7 +14,8 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
-    plays: 120
+    plays: 120,
+    views: 245
   },
   {
     id: 'snake',
@@ -25,7 +26,8 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
-    plays: 85
+    plays: 85,
+    views: 167
   },
   {
     id: 'tetris',
@@ -36,7 +38,8 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
-    plays: 210
+    plays: 210,
+    views: 318
   }
 ];
 
