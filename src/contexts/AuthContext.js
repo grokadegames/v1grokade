@@ -129,7 +129,7 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         console.log('[Auth] Logout successful');
         setUser(null);
-        router.push('/login');
+        router.push('/');
       } else {
         console.error('[Auth] Logout failed');
       }
