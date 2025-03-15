@@ -264,7 +264,7 @@ export default function GamePage() {
     <div className="min-h-screen bg-grok-darker">
       <AuthNavbar />
       
-      {/* Sponsors Grid - Now with additional top padding */}
+      {/* Sponsors Grid - Now with additional top padding and matching home page style */}
       <div className="border-b border-gray-800 py-6 bg-grok-darker pt-20">
         <div className="container-custom mx-auto px-4">
           <h3 className="text-grok-purple font-semibold mb-4">SPONSORS</h3>
@@ -272,12 +272,88 @@ export default function GamePage() {
             ref={sponsorsContainerRef}
             className="overflow-x-auto scrollbar-hide"
           >
-            <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4 pb-2 min-w-max md:min-w-0">
-              {Array.from({length: 10}).map((_, index) => (
-                <div key={index} className="bg-grok-card px-4 py-2 rounded text-white text-center">
-                  Sponsor {index + 1}
+            <div className="flex gap-4 pb-4 min-w-max">
+              {/* Sponsor 1 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </div>
-              ))}
+                <span className="text-white font-medium">Sponsor 1</span>
+              </div>
+              
+              {/* Sponsor 2 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M4 9H20" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 2</span>
+              </div>
+              
+              {/* Sponsor 3 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 3</span>
+              </div>
+              
+              {/* Sponsor 4 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M8 15C8 15 9.5 17 12 17C14.5 17 16 15 16 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <circle cx="8" cy="9" r="1" fill="currentColor"/>
+                    <circle cx="16" cy="9" r="1" fill="currentColor"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 4</span>
+              </div>
+              
+              {/* Sponsor 5 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M16 12L8 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 5</span>
+              </div>
+              
+              {/* Sponsor 6 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2" rx="2"/>
+                    <path d="M9 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M12 9L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 6</span>
+              </div>
+              
+              {/* Sponsor 7 */}
+              <div className="bg-grok-card flex items-center px-4 py-3 rounded min-w-[175px]">
+                <div className="w-8 h-8 bg-grok-darker rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M14 10C14 10 12.5 8 9.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M10 14C10 14 11.5 16 14.5 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="text-white font-medium">Sponsor 7</span>
+              </div>
             </div>
           </div>
         </div>
