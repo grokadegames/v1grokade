@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function AuthAlert({ isOpen, onClose }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -38,7 +38,7 @@ export default function AuthAlert({ isOpen, onClose }) {
             className="text-gray-400 hover:text-white"
             aria-label="Close"
           >
-            <XIcon className="h-5 w-5" />
+            <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
         

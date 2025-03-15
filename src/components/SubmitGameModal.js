@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function SubmitGameModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -54,7 +54,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
             className="absolute top-6 right-6 text-white hover:text-gray-300"
             aria-label="Close modal"
           >
-            <XIcon className="h-6 w-6" />
+            <XMarkIcon className="h-6 w-6" />
           </button>
           
           <h2 className="text-2xl font-bold text-white mb-2">Submit New Game</h2>
