@@ -151,7 +151,7 @@ export default function GameGrid() {
   }, []);
 
   return (
-    <div className="py-12 bg-grok-dark" id="games-section">
+    <div className="pt-2 pb-12 bg-grok-dark" id="games-section">
       <div className="container-custom mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
           {/* Left side filters */}
