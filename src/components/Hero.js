@@ -2,12 +2,29 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
+import SubmitGameModal from './SubmitGameModal';
+import AuthAlert from './AuthAlert';
 
 export default function Hero() {
   const sponsorsContainerRef = useRef(null);
   const [featuredGame, setFeaturedGame] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showAuthAlert, setShowAuthAlert] = useState(false);
+  const { isAuthenticated } = useAuth();
   
+  // Handle Submit Game button click
+  const handleSubmitGameClick = (e) => {
+    e.preventDefault();
+    
+    if (isAuthenticated) {
+      setShowSubmitModal(true);
+    } else {
+      setShowAuthAlert(true);
+    }
+  };
+
   // Fetch a featured game
   useEffect(() => {
     const fetchFeaturedGame = async () => {
@@ -90,7 +107,9 @@ export default function Hero() {
             </p>
             <div className="flex space-x-4">
               <a href="#games-section" className="btn-primary">Play Now</a>
-              <Link href="/submit" className="btn-secondary">Submit Game</Link>
+              <button onClick={handleSubmitGameClick} className="btn-secondary">
+                Submit Game
+              </button>
             </div>
           </div>
           
@@ -308,6 +327,17 @@ export default function Hero() {
         <div className="absolute top-0 left-0 w-2/3 h-2/3 bg-grok-purple opacity-5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-2/3 h-2/3 bg-blue-600 opacity-5 rounded-full blur-3xl transform translate-x-1/3 translate-y-1/4"></div>
       </div>
+      
+      {/* Modals */}
+      <SubmitGameModal 
+        isOpen={showSubmitModal} 
+        onClose={() => setShowSubmitModal(false)} 
+      />
+      
+      <AuthAlert 
+        isOpen={showAuthAlert} 
+        onClose={() => setShowAuthAlert(false)} 
+      />
     </div>
   );
 } 
