@@ -190,6 +190,22 @@ export default function FeatureGameGrid() {
           <span className="text-white text-xs">{featuredGame.plays || 0}</span>
         </div>
         
+        {/* Pagination indicators - Moved INSIDE the game container at the bottom */}
+        {featuredGames.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+            {featuredGames.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-2 h-2 rounded-full focus:outline-none transition-colors duration-200 ${
+                  index === currentIndex ? 'bg-purple-500' : 'bg-gray-400 bg-opacity-50'
+                }`}
+                aria-label={`Go to game ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
+        
         {/* Slide-up action buttons overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
           <div className="p-4 w-full">
@@ -233,13 +249,13 @@ export default function FeatureGameGrid() {
         </div>
       </div>
       
-      {/* Navigation Arrows - moved outside the thumbnail */}
+      {/* Navigation Arrows - Fixed positioning relative to the game thumbnail */}
       {featuredGames.length > 1 && (
         <>
           {/* Left Arrow */}
           <button 
             onClick={goToPrevious}
-            className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            className="absolute left-0 lg:left-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
             aria-label="Previous game"
           >
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +266,7 @@ export default function FeatureGameGrid() {
           {/* Right Arrow */}
           <button 
             onClick={goToNext}
-            className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            className="absolute right-0 lg:right-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
             aria-label="Next game"
           >
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,24 +274,6 @@ export default function FeatureGameGrid() {
             </svg>
           </button>
         </>
-      )}
-      
-      {/* Pagination indicators - Moved outside the game container to appear below it */}
-      {featuredGames.length > 1 && (
-        <div className="w-full flex justify-center mt-4 mb-4">
-          <div className="flex space-x-2">
-            {featuredGames.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full focus:outline-none transition-colors duration-200 ${
-                  index === currentIndex ? 'bg-purple-500' : 'bg-gray-400 bg-opacity-50'
-                }`}
-                aria-label={`Go to game ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );
