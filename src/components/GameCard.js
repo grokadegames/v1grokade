@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function GameCard({ game }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
   // Default game object if none provided
   const defaultGame = {
     id: 'brick-breaker',
@@ -44,7 +47,11 @@ export default function GameCard({ game }) {
   }
 
   return (
-    <div className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col">
+    <div 
+      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="relative">
         {/* Game thumbnail/image */}
         <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center">
@@ -63,17 +70,39 @@ export default function GameCard({ game }) {
               </svg>
             </div>
           )}
+          
+          {/* Slide-up overlay for action buttons */}
+          <div 
+            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center space-y-2 transition-transform duration-300 ease-in-out ${
+              isHovered ? 'translate-y-0' : 'translate-y-full'
+            }`}
+          >
+            <Link 
+              href={`/game/${game.id}`}
+              className="w-3/4 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+            >
+              View Game
+            </Link>
+            <a 
+              href={game.playUrl || '#'} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-3/4 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+            >
+              Play Now
+            </a>
+          </div>
         </div>
         
         {/* Live indicator */}
         {game.isLive && (
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 right-2 z-10">
             <span className="bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded">LIVE</span>
           </div>
         )}
         
         {/* View count overlay - left side */}
-        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-10">
           {/* Eye icon for views */}
           <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -83,7 +112,7 @@ export default function GameCard({ game }) {
         </div>
         
         {/* Play count overlay - right side */}
-        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-10">
           {/* Play button icon */}
           <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -105,23 +134,7 @@ export default function GameCard({ game }) {
       </div>
       
       <div className="px-4 pb-4">
-        <div className="flex gap-2 mt-4">
-          <Link 
-            href={`/game/${game.id}`}
-            className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            View Game
-          </Link>
-          <a 
-            href={game.playUrl || '#'} 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            Play Now
-          </a>
-        </div>
-        <div className="flex justify-end items-center text-xs text-grok-text-secondary mt-3">
+        <div className="flex justify-end items-center text-xs text-grok-text-secondary">
           <div className="flex items-center">
             {/* Clock icon for time */}
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
