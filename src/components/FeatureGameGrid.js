@@ -257,9 +257,13 @@ export default function FeatureGameGrid() {
               <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          
-          {/* Pagination indicators */}
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 z-30">
+        </>
+      )}
+      
+      {/* Pagination indicators - Moved outside the game container to appear below it */}
+      {featuredGames.length > 1 && (
+        <div className="w-full flex justify-center mt-4 mb-4">
+          <div className="flex space-x-2">
             {featuredGames.map((_, index) => (
               <button
                 key={index}
@@ -271,7 +275,7 @@ export default function FeatureGameGrid() {
               />
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
