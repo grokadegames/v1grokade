@@ -1,4 +1,6 @@
-<svg width="32" height="32" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+  <title>Grokade Game Controller</title>
   <rect width="300" height="300" fill="#1e1e1e" rx="0" ry="0" />
   <g>
     <path d="M110 100 L190 100 Q240 100 240 150 Q240 200 190 200 L110 200 Q60 200 60 150 Q60 100 110 100 Z" fill="#9966FF" />
