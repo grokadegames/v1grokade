@@ -13,10 +13,14 @@
     "prisma:seed": "node prisma/seed.js",
     "netlify-build": "npx prisma generate && next build --no-lint"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
     "@heroicons/react": "2.2.0",
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
+    "cloudinary": "2.6.0",
     "csv-parser": "^3.2.0",
     "date-fns": "4.1.0",
     "jsonwebtoken": "^9.0.2",
