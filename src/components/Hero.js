@@ -14,8 +14,6 @@ export default function Hero() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showAuthAlert, setShowAuthAlert] = useState(false);
   const { isAuthenticated } = useAuth();
-  const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
-  const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
   const [sponsors, setSponsors] = useState([]);
   
   // Handle Submit Game button click
@@ -52,56 +50,7 @@ export default function Hero() {
     fetchSponsors();
   }, []);
 
-  // Enhanced autoscroll functionality for sponsors
-  useEffect(() => {
-    const container = sponsorsContainerRef.current;
-    if (!container) return;
-    
-    console.log('[Home Page] Setting up sponsors autoscroll');
-    
-    // Autoscroll functionality
-    let scrollInterval;
-    
-    const startAutoScroll = () => {
-      scrollInterval = setInterval(() => {
-        if (!isSponsorsHovered && container) {
-          // Adjust scroll speed for smoother animation
-          container.scrollLeft += scrollDirection * 1.5;
-          
-          // Calculate the maximum scroll position
-          const maxScroll = container.scrollWidth - container.clientWidth;
-          
-          // Check if we've reached the end or beginning to change direction
-          if (container.scrollLeft >= maxScroll - 5 && scrollDirection > 0) {
-            console.log('[Home Page] Reached right edge, scrolling left now');
-            setScrollDirection(-1); // Start scrolling left
-          } else if (container.scrollLeft <= 5 && scrollDirection < 0) {
-            console.log('[Home Page] Reached left edge, scrolling right now');
-            setScrollDirection(1); // Start scrolling right
-          }
-        }
-      }, 20); // Faster interval for smoother animation
-    };
-    
-    // Always reset scroll position and direction when the component mounts
-    if (container) {
-      container.scrollLeft = 0;
-      setScrollDirection(1);
-    }
-    
-    // Start the autoscroll after a delay to ensure DOM is ready and sponsors are loaded
-    const initTimeout = setTimeout(() => {
-      startAutoScroll();
-    }, 1000);
-    
-    return () => {
-      console.log('[Home Page] Cleaning up sponsors autoscroll');
-      clearInterval(scrollInterval);
-      clearTimeout(initTimeout);
-    };
-  }, [isSponsorsHovered, scrollDirection]);
-  
-  // Enhanced horizontal scrolling for sponsors with hover detection
+  // Manual scrolling for sponsors container
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
@@ -121,8 +70,6 @@ export default function Hero() {
     const onMouseLeave = () => {
       isDown = false;
       container.classList.remove('cursor-grabbing');
-      setIsSponsorsHovered(false);
-      console.log('[Home Page] Mouse left sponsor container, resuming autoscroll');
     };
     
     const onMouseUp = () => {
@@ -138,26 +85,16 @@ export default function Hero() {
       container.scrollLeft = scrollLeft - walk;
     };
     
-    const onMouseEnter = () => {
-      setIsSponsorsHovered(true);
-      console.log('[Home Page] Mouse entered sponsor container, pausing autoscroll');
-    };
-    
     // Touch event handlers for mobile - improved for smoother scrolling
     const onTouchStart = (e) => {
       isDown = true;
       // Don't add cursor-grabbing class on mobile as it's not visible/relevant
       startX = e.touches[0].pageX - container.offsetLeft;
       scrollLeft = container.scrollLeft;
-      setIsSponsorsHovered(true); // Pause autoscroll during touch
     };
     
     const onTouchEnd = () => {
       isDown = false;
-      setTimeout(() => {
-        // Small delay before resuming autoscroll to allow momentum scrolling to finish
-        setIsSponsorsHovered(false);
-      }, 100);
     };
     
     const onTouchMove = (e) => {
@@ -175,7 +112,6 @@ export default function Hero() {
     container.addEventListener('mouseleave', onMouseLeave);
     container.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseenter', onMouseEnter);
     
     // Add touch event listeners for mobile - using passive: true for better performance
     container.addEventListener('touchstart', onTouchStart, { passive: true });
@@ -189,7 +125,6 @@ export default function Hero() {
       container.removeEventListener('mouseleave', onMouseLeave);
       container.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mousemove', onMouseMove);
-      container.removeEventListener('mouseenter', onMouseEnter);
       
       // Remove touch event listeners
       container.removeEventListener('touchstart', onTouchStart);
@@ -224,7 +159,7 @@ export default function Hero() {
           </div>
         </div>
         
-        {/* Sponsors Bar - Updated version from game detail page */}
+        {/* Sponsors Bar - Static version without autoscroll */}
         <div className="mt-16 border-t border-gray-800 pt-6">
           <div 
             ref={sponsorsContainerRef}
