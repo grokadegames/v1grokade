@@ -6,6 +6,7 @@ import { trackGamePlay } from '@/lib/metricsUtil';
 
 export default function GameCard({ game, onMetricsUpdate }) {
   const [localPlays, setLocalPlays] = useState(game?.plays || 0);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   
   // Default game object if none provided
   const defaultGame = {
@@ -52,6 +53,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
     e.preventDefault();
     
     if (game && game.id) {
+      // Track the play
       trackGamePlay(game.id)
         .then(result => {
           console.log('Game play tracked from card:', result);
@@ -63,19 +65,28 @@ export default function GameCard({ game, onMetricsUpdate }) {
               onMetricsUpdate(game.id, { plays: result.metrics.plays });
             }
           }
-          window.open(game.playUrl, '_blank');
+          // Open in the same call stack as the click event to avoid popup blockers
+          window.location.href = game.playUrl;
         })
         .catch(error => {
           console.error('Error tracking game play from card:', error);
-          window.open(game.playUrl, '_blank');
+          window.location.href = game.playUrl;
         });
     } else if (game && game.playUrl) {
-      window.open(game.playUrl, '_blank');
+      window.location.href = game.playUrl;
     }
   };
 
+  // Toggle the overlay for mobile touch
+  const toggleOverlay = () => {
+    setIsOverlayVisible(!isOverlayVisible);
+  };
+
   return (
-    <div className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group">
+    <div 
+      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group"
+      onClick={toggleOverlay}
+    >
       <div className="relative">
         {/* Game thumbnail/image */}
         <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
@@ -167,18 +178,24 @@ export default function GameCard({ game, onMetricsUpdate }) {
         </div>
         
         {/* Slide-up action buttons overlay for the content section */}
-        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+        <div 
+          className={`absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transition-transform duration-300 ease-in-out ${
+            isOverlayVisible ? 'transform translate-y-0' : 'transform translate-y-full group-hover:translate-y-0'
+          }`}
+        >
           <Link 
             href={`/game/${game.id}`}
             className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+            onClick={(e) => e.stopPropagation()} // Prevent the overlay toggle
           >
             View Game
           </Link>
           <a 
             href={game.playUrl || '#'} 
-            onClick={handlePlayClick}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent the overlay toggle
+              handlePlayClick(e);
+            }}
             className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
           >
             Play Now

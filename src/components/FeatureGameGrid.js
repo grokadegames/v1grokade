@@ -104,14 +104,15 @@ export default function FeatureGameGrid() {
               )
             );
           }
-          window.open(game.playUrl, '_blank');
+          // Use window.location.href instead of window.open for better mobile compatibility
+          window.location.href = game.playUrl;
         })
         .catch(error => {
           console.error('Error tracking featured game play:', error);
-          window.open(game.playUrl, '_blank');
+          window.location.href = game.playUrl;
         });
     } else if (game && game.playUrl) {
-      window.open(game.playUrl, '_blank');
+      window.location.href = game.playUrl;
     }
   };
   
@@ -259,8 +260,6 @@ export default function FeatureGameGrid() {
             <a 
               href={featuredGame.playUrl || '#'} 
               onClick={(e) => handlePlayClick(e, featuredGame)}
-              target="_blank" 
-              rel="noopener noreferrer"
               className="w-full text-center bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
             >
               <svg className="w-4 h-4 mr-1.5 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
