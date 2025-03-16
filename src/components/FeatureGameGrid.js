@@ -130,7 +130,7 @@ export default function FeatureGameGrid() {
   
   if (loading) {
     return (
-      <div className="w-full lg:w-1/2 flex justify-center items-center">
+      <div className="w-full lg:w-3/5 flex justify-center items-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     );
@@ -143,8 +143,8 @@ export default function FeatureGameGrid() {
   const featuredGame = featuredGames[currentIndex];
   
   return (
-    <div className="w-full lg:w-1/2 flex justify-center relative">
-      <div className="relative w-full max-w-lg aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-lg group">
+    <div className="w-full lg:w-3/5 flex justify-center relative">
+      <div className="relative w-full max-w-2xl aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-lg group">
         {/* Featured game image */}
         <div className="w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
           {featuredGame.image ? (
