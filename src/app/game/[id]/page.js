@@ -354,66 +354,66 @@ export default function GamePage() {
           style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* Sponsor 1 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaLaravel className="text-2xl text-red-500" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaLaravel className="text-3xl text-red-500" />
             </div>
-            <h3 className="text-base font-semibold text-white">Laravel</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Backend framework provider</p>
+            <h3 className="text-base font-semibold text-white leading-tight">Laravel</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Backend framework provider</p>
           </div>
           
           {/* Sponsor 2 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaReact className="text-2xl text-blue-400" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaReact className="text-3xl text-blue-400" />
             </div>
-            <h3 className="text-base font-semibold text-white">React</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Frontend library partner</p>
+            <h3 className="text-base font-semibold text-white leading-tight">React</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Frontend library partner</p>
           </div>
           
           {/* Sponsor 3 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaNodeJs className="text-2xl text-green-500" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaNodeJs className="text-3xl text-green-500" />
             </div>
-            <h3 className="text-base font-semibold text-white">Node.js</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Server runtime environment</p>
+            <h3 className="text-base font-semibold text-white leading-tight">Node.js</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Server runtime environment</p>
           </div>
           
           {/* Sponsor 4 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaAws className="text-2xl text-yellow-500" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaAws className="text-3xl text-yellow-500" />
             </div>
-            <h3 className="text-base font-semibold text-white">AWS</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Cloud infrastructure partner</p>
+            <h3 className="text-base font-semibold text-white leading-tight">AWS</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Cloud infrastructure partner</p>
           </div>
           
           {/* Sponsor 5 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaDigitalOcean className="text-2xl text-blue-500" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaDigitalOcean className="text-3xl text-blue-500" />
             </div>
-            <h3 className="text-base font-semibold text-white">DigitalOcean</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Hosting services provider</p>
+            <h3 className="text-base font-semibold text-white leading-tight">DigitalOcean</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Hosting services provider</p>
           </div>
           
           {/* Sponsor 6 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaDatabase className="text-2xl text-purple-500" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaDatabase className="text-3xl text-purple-500" />
             </div>
-            <h3 className="text-base font-semibold text-white">MongoDB</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Database solutions</p>
+            <h3 className="text-base font-semibold text-white leading-tight">MongoDB</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Database solutions</p>
           </div>
           
           {/* Sponsor 7 */}
-          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-3 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-2">
-              <FaStripe className="text-2xl text-purple-600" />
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaStripe className="text-3xl text-purple-600" />
             </div>
-            <h3 className="text-base font-semibold text-white">Stripe</h3>
-            <p className="text-xs text-gray-300 text-center mt-1">Payment processing</p>
+            <h3 className="text-base font-semibold text-white leading-tight">Stripe</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Payment processing</p>
           </div>
         </div>
       </div>
