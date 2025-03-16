@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
-import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe } from 'react-icons/fa';
+import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
 
 export default function GamePage() {
   const params = useParams();
@@ -98,36 +98,49 @@ export default function GamePage() {
     
     // Autoscroll functionality
     let scrollInterval;
+    let hasReachedEnd = false;
+    let hasReachedStart = true;
     
     const startAutoScroll = () => {
       scrollInterval = setInterval(() => {
         if (!isSponsorsHovered && container) {
-          // Adjust scroll speed for smoother animation (increased slightly)
-          container.scrollLeft += scrollDirection * 2;
+          // Adjust scroll speed for smoother animation
+          container.scrollLeft += scrollDirection * 1.5;
           
           // Calculate the maximum scroll position
           const maxScroll = container.scrollWidth - container.clientWidth;
           
-          // Change direction when reaching the end or beginning
-          // Add a buffer (15px) to ensure smooth direction changes
-          if (container.scrollLeft >= maxScroll - 15) {
+          // Check if we've reached the end or beginning to change direction
+          // Use a larger buffer for smoother transition at the end
+          if (container.scrollLeft >= maxScroll - 30 && !hasReachedEnd) {
             console.log('[Sponsors] Reached right edge, scrolling left now');
             setScrollDirection(-1); // Start scrolling left
-          } else if (container.scrollLeft <= 15) {
+            hasReachedEnd = true;
+            hasReachedStart = false;
+          } else if (container.scrollLeft <= 20 && !hasReachedStart) {
             console.log('[Sponsors] Reached left edge, scrolling right now');
             setScrollDirection(1); // Start scrolling right
+            hasReachedStart = true;
+            hasReachedEnd = false;
+          }
+          
+          // Reset flags when we're not at the edges
+          if (container.scrollLeft < maxScroll - 50 && container.scrollLeft > 50) {
+            hasReachedEnd = false;
+            hasReachedStart = false;
           }
         }
-      }, 25); // Slightly faster interval (25ms instead of 30ms) for smoother scrolling
+      }, 30); // 30ms interval for smooth scrolling
     };
     
-    // Force an initial scroll position that's not at the edge
-    container.scrollLeft = 20;
+    // Always start from the beginning
+    container.scrollLeft = 0;
+    setScrollDirection(1); // Ensure we start by scrolling right
     
-    // Start the autoscroll after a delay to ensure DOM is ready
+    // Start the autoscroll after a delay to ensure DOM is ready and sponsors are loaded
     const initTimeout = setTimeout(() => {
       startAutoScroll();
-    }, 800); // Longer delay for better initial load
+    }, 1000); // Longer delay for better initial load
     
     return () => {
       console.log('[Sponsors] Cleaning up autoscroll');
@@ -414,6 +427,69 @@ export default function GamePage() {
             </div>
             <h3 className="text-base font-semibold text-white leading-tight">Stripe</h3>
             <p className="text-xs text-gray-300 text-center leading-tight">Payment processing</p>
+          </div>
+          
+          {/* Sponsor 8 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaGoogle className="text-3xl text-blue-500" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">Google Cloud</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Cloud services partner</p>
+          </div>
+          
+          {/* Sponsor 9 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaGithub className="text-3xl text-white" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">GitHub</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Development platform</p>
+          </div>
+          
+          {/* Sponsor 10 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaDocker className="text-3xl text-blue-400" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">Docker</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Container platform</p>
+          </div>
+          
+          {/* Sponsor 11 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaApple className="text-3xl text-gray-200" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">Apple</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Developer ecosystem</p>
+          </div>
+          
+          {/* Sponsor 12 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaNpm className="text-3xl text-red-600" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">npm</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Package registry</p>
+          </div>
+          
+          {/* Sponsor 13 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaPython className="text-3xl text-yellow-300" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">Python</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Programming language</p>
+          </div>
+          
+          {/* Sponsor 14 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+              <FaUbuntu className="text-3xl text-orange-500" />
+            </div>
+            <h3 className="text-base font-semibold text-white leading-tight">Ubuntu</h3>
+            <p className="text-xs text-gray-300 text-center leading-tight">Operating system</p>
           </div>
         </div>
       </div>
