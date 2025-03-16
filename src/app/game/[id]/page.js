@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
+import { trackGameView, trackGamePlay, trackGameLike, trackGameDislike } from '@/lib/metricsUtil';
 
 export default function GamePage() {
   const params = useParams();
+  const router = useRouter();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,11 +47,18 @@ export default function GamePage() {
         const foundGame = data.games.find(g => g.id === params.id);
         
         if (foundGame) {
-          // If the game doesn't have views, add a default value
-          if (!foundGame.views) {
-            foundGame.views = Math.floor(Math.random() * 300) + 100; // Random views between 100-400
-          }
           setGame(foundGame);
+          
+          // Track page view once game is loaded
+          if (params.id) {
+            trackGameView(params.id)
+              .then(result => {
+                console.log('View tracked:', result);
+              })
+              .catch(error => {
+                console.error('Error tracking view:', error);
+              });
+          }
           
           // Filter out the current game and use real data from API
           // Only fill in missing properties if absolutely necessary
@@ -291,12 +300,62 @@ export default function GamePage() {
     }
   };
   
+  // Track play click and redirect to game URL
+  const handlePlayClick = (e) => {
+    e.preventDefault();
+    
+    if (game && game.id) {
+      trackGamePlay(game.id)
+        .then(result => {
+          console.log('Play tracked:', result);
+          // After tracking, redirect to the game URL
+          window.open(game.playUrl, '_blank');
+        })
+        .catch(error => {
+          console.error('Error tracking play:', error);
+          // Still redirect even if tracking fails
+          window.open(game.playUrl, '_blank');
+        });
+    } else {
+      // If for some reason we don't have the game data, just redirect
+      if (game && game.playUrl) {
+        window.open(game.playUrl, '_blank');
+      }
+    }
+  };
+
   const handleLike = () => {
-    setLikeCount(prev => prev + 1);
+    if (game && game.id) {
+      trackGameLike(game.id)
+        .then(result => {
+          console.log('Like tracked:', result);
+          setLikeCount(prev => prev + 1);
+        })
+        .catch(error => {
+          console.error('Error tracking like:', error);
+          // Still update UI even if tracking fails
+          setLikeCount(prev => prev + 1);
+        });
+    } else {
+      setLikeCount(prev => prev + 1);
+    }
   };
 
   const handleDislike = () => {
-    setDislikeCount(prev => prev + 1);
+    if (game && game.id) {
+      trackGameDislike(game.id)
+        .then(result => {
+          console.log('Dislike tracked:', result);
+          setDislikeCount(prev => prev + 1);
+        })
+        .catch(error => {
+          console.error('Error tracking dislike:', error);
+          // Still update UI even if tracking fails
+          setDislikeCount(prev => prev + 1);
+        });
+    } else {
+      setDislikeCount(prev => prev + 1);
+    }
   };
   
   // Format date to match production grid format
@@ -458,18 +517,16 @@ export default function GamePage() {
                 </a>
                 
                 <a 
-                  href={game.playUrl} 
+                  href={game.playUrl || '#'}
+                  onClick={handlePlayClick}
                   target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-grok-dark border border-gray-700 text-gray-300 py-2 px-4 rounded-md flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  rel="noopener noreferrer" 
+                  className="flex-1 flex justify-center items-center gap-2 bg-grok-purple hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors"
                 >
-                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                    <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" strokeWidth="2" />
-                    <path d="M8 12L16 12" stroke="currentColor" strokeWidth="2" />
-                    <path d="M12 8L12 16" stroke="currentColor" strokeWidth="2" />
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                   </svg>
-                  Play on Official Site
+                  Play Game
                 </a>
               </div>
               
@@ -710,6 +767,23 @@ export default function GamePage() {
                           
                           <a 
                             href={featuredGame.playUrl || '#'} 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              // Track play for featured game
+                              if (featuredGame && featuredGame.id) {
+                                trackGamePlay(featuredGame.id)
+                                  .then(result => {
+                                    console.log('Featured game play tracked:', result);
+                                    window.open(featuredGame.playUrl, '_blank');
+                                  })
+                                  .catch(error => {
+                                    console.error('Error tracking featured game play:', error);
+                                    window.open(featuredGame.playUrl, '_blank');
+                                  });
+                              } else if (featuredGame && featuredGame.playUrl) {
+                                window.open(featuredGame.playUrl, '_blank');
+                              }
+                            }}
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"

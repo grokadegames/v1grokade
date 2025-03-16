@@ -28,12 +28,13 @@ model Game {
   imageUrl    String?
   playUrl     String
   authorId    String
-  tagcategory String?        
-  xaccount    String?        
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+  tagcategory String?
+  xaccount    String?
   favoritedBy GameFavorite[]
   author      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  metrics     GameMetrics?
 
   @@map("games")
 }
@@ -59,4 +60,17 @@ model Sponsor {
   updatedAt   DateTime @updatedAt
 
   @@map("sponsors")
+}
+
+model GameMetrics {
+  id            String   @id @default(uuid())
+  gameId        String   @unique
+  views         Int      @default(0)
+  plays         Int      @default(0)
+  likes         Int      @default(0)
+  dislikes      Int      @default(0)
+  lastUpdated   DateTime @default(now()) @updatedAt
+  game          Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("game_metrics")
 }

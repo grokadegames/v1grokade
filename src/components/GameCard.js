@@ -2,8 +2,11 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { trackGamePlay } from '@/lib/metricsUtil';
 
 export default function GameCard({ game }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
   // Default game object if none provided
   const defaultGame = {
     id: 'brick-breaker',
@@ -44,8 +47,31 @@ export default function GameCard({ game }) {
     return `${diffYears} ${diffYears === 1 ? 'year' : 'years'} ago`;
   }
 
+  // Handle play button click
+  const handlePlayClick = (e) => {
+    e.preventDefault();
+    
+    if (game && game.id) {
+      trackGamePlay(game.id)
+        .then(result => {
+          console.log('Game play tracked from card:', result);
+          window.open(game.playUrl, '_blank');
+        })
+        .catch(error => {
+          console.error('Error tracking game play from card:', error);
+          window.open(game.playUrl, '_blank');
+        });
+    } else if (game && game.playUrl) {
+      window.open(game.playUrl, '_blank');
+    }
+  };
+
   return (
-    <div className="game-card-container bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group">
+    <div 
+      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="relative">
         {/* Game thumbnail/image */}
         <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
@@ -64,6 +90,30 @@ export default function GameCard({ game }) {
               </svg>
             </div>
           )}
+          
+          {/* Slide-up action buttons (bottom overlay only) */}
+          <div 
+            className={`absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 py-3 px-4 flex flex-col gap-2 transition-transform duration-300 ease-in-out transform ${
+              isHovered ? 'translate-y-0' : 'translate-y-full'
+            }`}
+            style={{ zIndex: 15 }}
+          >
+            <Link 
+              href={`/game/${game.id}`}
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
+            >
+              View Game
+            </Link>
+            <a 
+              href={game.playUrl || '#'} 
+              onClick={handlePlayClick}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
+            >
+              Play Now
+            </a>
+          </div>
         </div>
         
         {/* Live indicator */}
@@ -93,51 +143,28 @@ export default function GameCard({ game }) {
         </div>
       </div>
     
-      {/* Card info and action buttons container */}
-      <div className="relative flex-grow flex flex-col">
-        {/* Info section */}
-        <div className="p-4 flex flex-col">
-          <div className="flex items-start justify-between mb-1">
-            <h3 className="text-white font-semibold">{game.title}</h3>
-          </div>
-          <div className="text-xs text-grok-text-secondary mb-2">
-            By: {game.creator}
-          </div>
-          <p className="text-grok-text-secondary text-sm mb-4">
-            {game.description}
-          </p>
+      <div className="p-4 flex flex-col flex-grow">
+        <div className="flex items-start justify-between mb-1">
+          <h3 className="text-white font-semibold">{game.title}</h3>
         </div>
-        
-        {/* Timestamp at bottom */}
-        <div className="px-4 pb-4 mt-auto">
-          <div className="flex justify-end items-center text-xs text-grok-text-secondary">
-            <div className="flex items-center">
-              {/* Clock icon for time */}
-              <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12 6L12 12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              {formattedDate}
-            </div>
-          </div>
+        <div className="text-xs text-grok-text-secondary mb-2">
+          By: {game.creator}
         </div>
-        
-        {/* Slide-up action buttons overlay - positioned over text content */}
-        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-          <Link 
-            href={`/game/${game.id}`}
-            className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200"
-          >
-            View Game
-          </Link>
-          <a 
-            href={game.playUrl || '#'} 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200"
-          >
-            Play Now
-          </a>
+        <p className="text-grok-text-secondary text-sm mb-4 flex-grow">
+          {game.description}
+        </p>
+      </div>
+      
+      <div className="px-4 pb-4">
+        <div className="flex justify-end items-center text-xs text-grok-text-secondary">
+          <div className="flex items-center">
+            {/* Clock icon for time */}
+            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 6L12 12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {formattedDate}
+          </div>
         </div>
       </div>
     </div>

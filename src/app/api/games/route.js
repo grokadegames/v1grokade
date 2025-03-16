@@ -151,6 +151,7 @@ export async function GET(request) {
               username: true,
             },
           },
+          metrics: true, // Include metrics
         },
       });
       
@@ -176,7 +177,10 @@ export async function GET(request) {
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,
         isLive: true, // Assuming all games from DB are live
-        plays: 0, // Placeholder for future play count feature
+        plays: game.metrics?.plays || 0, // Use real metrics data if available
+        views: game.metrics?.views || 0, // Use real metrics data if available
+        likes: game.metrics?.likes || 0, // Use real metrics data if available
+        dislikes: game.metrics?.dislikes || 0, // Use real metrics data if available
         tags: game.tagcategory || '',
         xaccount: game.xaccount || ''
       }));
