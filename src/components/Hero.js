@@ -138,8 +138,8 @@ export default function Hero() {
     <div className="py-16 bg-grok-dark border-b border-grok-card">
       <div className="container-custom mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between">
-          <div className="w-full lg:w-2/5 xl:w-2/5 mb-8 lg:mb-0 text-center lg:text-left lg:pl-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-3">
+          <div className="w-full lg:w-1/2 xl:w-1/2 mb-8 lg:mb-0 text-center lg:text-left lg:pl-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-3">
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
             <p className="text-gray-300 text-base mb-5 mx-auto lg:mx-0">
@@ -153,8 +153,8 @@ export default function Hero() {
             </div>
           </div>
           
-          {/* Featured Games Grid - Reduced size and added spacing */}
-          <div className="w-full lg:w-1/2 flex justify-center mt-12 lg:mt-0 lg:pl-8">
+          {/* Featured Games Grid - Adjusted size for balance */}
+          <div className="w-full lg:w-1/2 flex justify-center mt-12 lg:mt-0 lg:pl-4">
             <div className="w-full max-w-2xl">
               <FeatureGameGrid />
             </div>
