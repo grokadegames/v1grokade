@@ -57,12 +57,10 @@ export default function Hero() {
     const container = sponsorsContainerRef.current;
     if (!container) return;
     
-    console.log('[Sponsors] Setting up autoscroll');
+    console.log('[Home Page] Setting up sponsors autoscroll');
     
     // Autoscroll functionality
     let scrollInterval;
-    let hasReachedEnd = false;
-    let hasReachedStart = true;
     
     const startAutoScroll = () => {
       scrollInterval = setInterval(() => {
@@ -74,31 +72,30 @@ export default function Hero() {
           const maxScroll = container.scrollWidth - container.clientWidth;
           
           // Check if we've reached the end or beginning to change direction
-          // Use a larger buffer for smoother transition at the end
-          if (container.scrollLeft >= maxScroll - 10 && scrollDirection > 0) {
-            console.log('[Sponsors] Reached right edge, scrolling left now');
+          if (container.scrollLeft >= maxScroll - 5 && scrollDirection > 0) {
+            console.log('[Home Page] Reached right edge, scrolling left now');
             setScrollDirection(-1); // Start scrolling left
-            hasReachedEnd = true;
-            hasReachedStart = false;
-          } else if (container.scrollLeft <= 10 && scrollDirection < 0) {
-            console.log('[Sponsors] Reached left edge, scrolling right now');
+          } else if (container.scrollLeft <= 5 && scrollDirection < 0) {
+            console.log('[Home Page] Reached left edge, scrolling right now');
             setScrollDirection(1); // Start scrolling right
-            hasReachedStart = true;
-            hasReachedEnd = false;
           }
         }
-      }, 30); // 30ms interval for smooth scrolling
+      }, 20); // Faster interval for smoother animation
     };
+    
+    // Always reset scroll position and direction when the component mounts
+    if (container) {
+      container.scrollLeft = 0;
+      setScrollDirection(1);
+    }
     
     // Start the autoscroll after a delay to ensure DOM is ready and sponsors are loaded
     const initTimeout = setTimeout(() => {
-      // Set initial direction to scroll right at start
-      setScrollDirection(1);
       startAutoScroll();
-    }, 1000); // Longer delay for better initial load
+    }, 1000);
     
     return () => {
-      console.log('[Sponsors] Cleaning up autoscroll');
+      console.log('[Home Page] Cleaning up sponsors autoscroll');
       clearInterval(scrollInterval);
       clearTimeout(initTimeout);
     };
@@ -124,9 +121,7 @@ export default function Hero() {
       isDown = false;
       container.classList.remove('cursor-grabbing');
       setIsSponsorsHovered(false);
-      console.log('[Sponsors] Mouse left, resuming autoscroll');
-      
-      // Don't reset direction when leaving - continue in current direction
+      console.log('[Home Page] Mouse left sponsor container, resuming autoscroll');
     };
     
     const onMouseUp = () => {
@@ -144,7 +139,7 @@ export default function Hero() {
     
     const onMouseEnter = () => {
       setIsSponsorsHovered(true);
-      console.log('[Sponsors] Mouse entered, pausing autoscroll');
+      console.log('[Home Page] Mouse entered sponsor container, pausing autoscroll');
     };
     
     container.addEventListener('mousedown', onMouseDown);
