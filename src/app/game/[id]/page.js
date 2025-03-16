@@ -462,67 +462,8 @@ export default function GamePage() {
       
       <div className="container-custom mx-auto px-4 py-8 pt-16">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Game Preview Section (Left Side) */}
-          <div className="w-full lg:w-2/3 rounded-lg overflow-hidden">
-            <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-              {selectedGalleryImage === 0 && game.image ? (
-                <img 
-                  src={game.image} 
-                  alt={game.title} 
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-grok-dark">
-                  <svg className="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                    <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
-                    <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
-                  </svg>
-                  <p className="text-gray-400 mt-4">No image available</p>
-                </div>
-              )}
-            </div>
-            
-            {/* Reaction Buttons - Removed as requested */}
-            
-            {/* Game Screenshots Carousel */}
-            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-4 px-2 md:px-4 py-2 overflow-hidden">
-              {/* Thumbnail for main image */}
-              <div 
-                key="main" 
-                className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
-                onClick={() => setSelectedGalleryImage(0)}
-              >
-                {game.image ? (
-                  <img 
-                    src={game.image} 
-                    alt={`${game.title} thumbnail`}
-                    className="w-full h-full object-cover" 
-                  />
-                ) : (
-                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
-                    <span className="text-xs text-gray-500">No image</span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Gallery images */}
-              {[1, 2, 3, 4].map((_, index) => (
-                <div 
-                  key={index} 
-                  className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
-                  onClick={() => setSelectedGalleryImage(index + 1)}
-                >
-                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
-                    <span className="text-xs text-gray-500">Gallery {index + 1}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Game Details Panel (Right Side) - Fix mobile title display */}
-          <div className="w-full lg:w-1/3 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg p-6">
+          {/* Game Details Panel - ORDER CHANGED: Now first on mobile */}
+          <div className="w-full lg:w-1/3 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg p-6 order-1 lg:order-2">
             <div className="flex flex-col h-full">
               <div className="mb-2">
                 <h1 className="text-2xl font-bold text-white break-words">
@@ -643,6 +584,63 @@ export default function GamePage() {
                   Share
                 </button>
               </div>
+            </div>
+          </div>
+          
+          {/* Game Preview Section - ORDER CHANGED: Now second on mobile */}
+          <div className="w-full lg:w-2/3 rounded-lg overflow-hidden order-2 lg:order-1 mt-6 lg:mt-0">
+            <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+              {selectedGalleryImage === 0 && game.image ? (
+                <img 
+                  src={game.image} 
+                  alt={game.title} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-grok-dark">
+                  <svg className="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                    <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
+                    <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                  <p className="text-gray-400 mt-4">No image available</p>
+                </div>
+              )}
+            </div>
+            
+            {/* Game Screenshots Carousel */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-4 px-2 md:px-4 py-2 overflow-hidden">
+              {/* Thumbnail for main image */}
+              <div 
+                key="main" 
+                className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                onClick={() => setSelectedGalleryImage(0)}
+              >
+                {game.image ? (
+                  <img 
+                    src={game.image} 
+                    alt={`${game.title} thumbnail`}
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
+                    <span className="text-xs text-gray-500">No image</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Gallery images */}
+              {[1, 2, 3, 4].map((_, index) => (
+                <div 
+                  key={index} 
+                  className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                  onClick={() => setSelectedGalleryImage(index + 1)}
+                >
+                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
+                    <span className="text-xs text-gray-500">Gallery {index + 1}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
