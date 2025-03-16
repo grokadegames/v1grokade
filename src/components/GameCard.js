@@ -95,53 +95,31 @@ export default function GameCard({ game, onMetricsUpdate }) {
             </div>
           )}
           
-          {/* Slide-up action buttons (bottom overlay only) */}
-          <div 
-            className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 py-3 px-4 flex flex-col gap-2 transition-transform duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0"
-            style={{ zIndex: 15 }}
-          >
-            <Link 
-              href={`/game/${game.id}`}
-              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
-            >
-              View Game
-            </Link>
-            <a 
-              href={game.playUrl || '#'} 
-              onClick={handlePlayClick}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
-            >
-              Play Now
-            </a>
+          {/* Live indicator */}
+          {game.isLive && (
+            <div className="absolute top-2 right-2 z-10">
+              <span className="bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded">LIVE</span>
+            </div>
+          )}
+          
+          {/* View count overlay - left side */}
+          <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
+            {/* Eye icon for views */}
+            <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="text-white text-xs">{game.views ?? 0}</span>
           </div>
-        </div>
-        
-        {/* Live indicator */}
-        {game.isLive && (
-          <div className="absolute top-2 right-2 z-10">
-            <span className="bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded">LIVE</span>
+          
+          {/* Play count overlay - right side */}
+          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
+            {/* Play button icon */}
+            <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="text-white text-xs">{localPlays}</span>
           </div>
-        )}
-        
-        {/* View count overlay - left side */}
-        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
-          {/* Eye icon for views */}
-          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-white text-xs">{game.views ?? 0}</span>
-        </div>
-        
-        {/* Play count overlay - right side */}
-        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
-          {/* Play button icon */}
-          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-white text-xs">{localPlays}</span>
         </div>
       </div>
     
