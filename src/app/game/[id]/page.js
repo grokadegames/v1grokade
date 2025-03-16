@@ -88,10 +88,12 @@ export default function GamePage() {
     }
   }, [params.id]);
   
-  // Add autoscroll functionality for sponsors
+  // Enhanced autoscroll functionality for sponsors
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
+    
+    console.log('[Sponsors] Setting up autoscroll');
     
     // Autoscroll functionality
     let scrollInterval;
@@ -102,23 +104,27 @@ export default function GamePage() {
           container.scrollLeft += scrollDirection;
           
           // Change direction when reaching the end or beginning
+          // Add a small buffer (10px) to ensure we detect the edges properly
           if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 10) {
+            console.log('[Sponsors] Reached right edge, scrolling left now');
             setScrollDirection(-1); // Start scrolling left
           } else if (container.scrollLeft <= 10) {
+            console.log('[Sponsors] Reached left edge, scrolling right now');
             setScrollDirection(1); // Start scrolling right
           }
         }
-      }, 30); // Adjust speed by changing interval time
+      }, 30); // 30ms interval for smooth scrolling
     };
     
     startAutoScroll();
     
     return () => {
+      console.log('[Sponsors] Cleaning up autoscroll');
       clearInterval(scrollInterval);
     };
   }, [isSponsorsHovered, scrollDirection]);
   
-  // Horizontal scrolling for sponsors with hover detection
+  // Enhanced horizontal scrolling for sponsors with hover detection
   useEffect(() => {
     const container = sponsorsContainerRef.current;
     if (!container) return;
@@ -138,6 +144,7 @@ export default function GamePage() {
       isDown = false;
       container.classList.remove('cursor-grabbing');
       setIsSponsorsHovered(false);
+      console.log('[Sponsors] Mouse left, resuming autoscroll');
     };
     
     const onMouseUp = () => {
@@ -155,6 +162,7 @@ export default function GamePage() {
     
     const onMouseEnter = () => {
       setIsSponsorsHovered(true);
+      console.log('[Sponsors] Mouse entered, pausing autoscroll');
     };
     
     container.addEventListener('mousedown', onMouseDown);
@@ -355,7 +363,7 @@ export default function GamePage() {
           </div>
           <div 
             ref={sponsorsContainerRef}
-            className="overflow-x-auto scrollbar-hide cursor-grab"
+            className="sponsors-container overflow-x-auto scrollbar-hide cursor-grab"
           >
             <div className="flex gap-4 pb-4 min-w-max sponsors-wrapper">
               {/* Sponsor 1 */}
