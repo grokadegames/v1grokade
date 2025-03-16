@@ -143,8 +143,32 @@ export default function FeatureGameGrid() {
   const featuredGame = featuredGames[currentIndex];
   
   return (
-    <div className="w-full lg:w-3/5 flex justify-center relative">
-      <div className="relative w-full max-w-2xl aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-lg group">
+    <div className="w-full relative">
+      {/* Navigation buttons - MOVED OUTSIDE the game container */}
+      {featuredGames.length > 1 && (
+        <>
+          <button 
+            onClick={goToPrevious} 
+            className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
+            aria-label="Previous game"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            onClick={goToNext} 
+            className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
+            aria-label="Next game"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+
+      <div className="relative w-full aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-xl group">
         {/* Featured game image */}
         <div className="w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
           {featuredGame.image ? (
@@ -161,19 +185,37 @@ export default function FeatureGameGrid() {
           )}
         </div>
         
-        {/* Featured badge */}
-        <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">
-          FEATURED
+        {/* Status badges and view/play counts - TOP LEVEL INFO */}
+        <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-2">
+          <div className="flex items-center space-x-2">
+            <div className="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded flex items-center">
+              FEATURED
+            </div>
+            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+              <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span>{featuredGame.views || 0}</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+              <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+              </svg>
+              <span>{featuredGame.plays || 0}</span>
+            </div>
+            {featuredGame.isLive && (
+              <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                LIVE
+              </div>
+            )}
+          </div>
         </div>
         
-        {/* Live badge - Conditionally shown */}
-        {featuredGame.isLive && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            LIVE
-          </div>
-        )}
-        
-        {/* Pagination indicators - Moved INSIDE the game container at the bottom */}
+        {/* Pagination indicators - BELOW the game container */}
         {featuredGames.length > 1 && (
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {featuredGames.map((_, index) => (
@@ -189,38 +231,18 @@ export default function FeatureGameGrid() {
           </div>
         )}
         
-        {/* Slide-up action buttons overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-          <div className="p-4 w-full">
+        {/* Slide-up action buttons overlay - IMPROVED */}
+        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-6 gap-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+          <div className="w-full">
             <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2 text-xl mb-1">{featuredGame.title}</h3>
             <p className="text-gray-400 text-sm truncate">By: {featuredGame.creator || 'Unknown'}</p>
             
-            <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
+            <p className="text-gray-300 text-sm mt-3 mb-4 line-clamp-3">
               {featuredGame.description || 'No description available'}
             </p>
             
-            {/* Metrics data - Moved to slide-up overlay */}
-            <div className="flex items-center justify-between mb-4">
-              {/* View count */}
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="text-gray-300 text-xs">{featuredGame.views || 0} views</span>
-              </div>
-              
-              {/* Play count */}
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-                </svg>
-                <span className="text-gray-300 text-xs">{featuredGame.plays || 0} plays</span>
-              </div>
-            </div>
-            
             {/* Time indicator */}
-            <div className="flex items-center mt-1 mb-4">
+            <div className="flex items-center mt-2 mb-6">
               <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                 <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -231,53 +253,28 @@ export default function FeatureGameGrid() {
             </div>
           </div>
           
-          <Link 
-            href={`/game/${featuredGame.id}`} 
-            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            View Game
-          </Link>
-          <a 
-            href={featuredGame.playUrl || '#'} 
-            onClick={(e) => handlePlayClick(e, featuredGame)}
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
-            </svg>
-            Play Now
-          </a>
+          <div className="w-full flex flex-col md:flex-row gap-3 mt-auto">
+            <Link 
+              href={`/game/${featuredGame.id}`} 
+              className="flex-1 text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition-colors duration-200 font-medium"
+            >
+              View Game
+            </Link>
+            <a 
+              href={featuredGame.playUrl || '#'} 
+              onClick={(e) => handlePlayClick(e, featuredGame)}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 text-center bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition-colors duration-200 font-medium"
+            >
+              <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
+              </svg>
+              Play Now
+            </a>
+          </div>
         </div>
       </div>
-      
-      {/* Navigation Arrows - Fixed positioning relative to the game thumbnail */}
-      {featuredGames.length > 1 && (
-        <>
-          {/* Left Arrow */}
-          <button 
-            onClick={goToPrevious}
-            className="absolute left-[-40px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
-            aria-label="Previous game"
-          >
-            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          
-          {/* Right Arrow */}
-          <button 
-            onClick={goToNext}
-            className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
-            aria-label="Next game"
-          >
-            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-        </>
-      )}
     </div>
   );
 } 

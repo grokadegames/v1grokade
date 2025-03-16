@@ -153,9 +153,9 @@ export default function Hero() {
             </div>
           </div>
           
-          {/* Featured Games Grid - Increased size by approximately 40% */}
+          {/* Featured Games Grid - Larger size for better display */}
           <div className="w-full lg:w-3/5 flex justify-center mt-8 lg:mt-0">
-            <div className="w-full lg:w-11/12 xl:w-full">
+            <div className="w-full">
               <FeatureGameGrid />
             </div>
           </div>
