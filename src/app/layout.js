@@ -16,7 +16,10 @@ export const metadata = {
       { url: '/apple-touch-icon.svg', type: 'image/svg+xml' }
     ]
   },
-  manifest: '/site.webmanifest',
+  manifest: '/site.webmanifest'
+}
+
+export const viewport = {
   themeColor: '#9966FF'
 }
 
