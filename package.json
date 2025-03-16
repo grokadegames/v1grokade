@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build --no-lint",
+    "dev": "next dev -p 3001",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seed": "node prisma/seed.js",
+    "seed-metrics": "node prisma/seedMetrics.js",
     "setup-db": "./scripts/setup-db.sh",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "node prisma/seed.js",
-    "netlify-build": "npx prisma generate && next build --no-lint"
+    "netlify-build": "npx prisma generate && next build --no-lint",
+    "backup": "node scripts/backup-db.js",
+    "export-table": "node scripts/export-table.js",
+    "export-games": "node scripts/export-table.js Game",
+    "export-users": "node scripts/export-table.js User",
+    "export-sponsors": "node scripts/export-table.js Sponsor",
+    "prisma:snapshot": "prisma migrate dev --create-only --name backup_$(date +%Y%m%d_%H%M%S)"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
