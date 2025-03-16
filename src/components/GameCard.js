@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { trackGamePlay } from '@/lib/metricsUtil';
 
 export default function GameCard({ game, onMetricsUpdate }) {
-  const [isHovered, setIsHovered] = useState(false);
   const [localPlays, setLocalPlays] = useState(game?.plays || 0);
   
   // Default game object if none provided
@@ -76,11 +75,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
   };
 
   return (
-    <div 
-      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group">
       <div className="relative">
         {/* Game thumbnail/image */}
         <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
@@ -102,9 +97,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
           
           {/* Slide-up action buttons (bottom overlay only) */}
           <div 
-            className={`absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 py-3 px-4 flex flex-col gap-2 transition-transform duration-300 ease-in-out transform ${
-              isHovered ? 'translate-y-0' : 'translate-y-full'
-            }`}
+            className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 py-3 px-4 flex flex-col gap-2 transition-transform duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0"
             style={{ zIndex: 15 }}
           >
             <Link 
@@ -152,7 +145,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
         </div>
       </div>
     
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col flex-grow relative">
         <div className="flex items-start justify-between mb-1">
           <h3 className="text-white font-semibold">{game.title}</h3>
         </div>
@@ -162,9 +155,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
         <p className="text-grok-text-secondary text-sm mb-4 flex-grow">
           {game.description}
         </p>
-      </div>
-      
-      <div className="px-4 pb-4">
+        
         <div className="flex justify-end items-center text-xs text-grok-text-secondary">
           <div className="flex items-center">
             {/* Clock icon for time */}
@@ -174,6 +165,25 @@ export default function GameCard({ game, onMetricsUpdate }) {
             </svg>
             {formattedDate}
           </div>
+        </div>
+        
+        {/* Slide-up action buttons overlay for the content section */}
+        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+          <Link 
+            href={`/game/${game.id}`}
+            className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+          >
+            View Game
+          </Link>
+          <a 
+            href={game.playUrl || '#'} 
+            onClick={handlePlayClick}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+          >
+            Play Now
+          </a>
         </div>
       </div>
     </div>
