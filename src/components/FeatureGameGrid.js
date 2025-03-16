@@ -166,13 +166,12 @@ export default function FeatureGameGrid() {
           FEATURED
         </div>
         
-        {/* View count - moved below Featured badge */}
+        {/* Play count - now on left side below Featured badge */}
         <div className="absolute top-10 left-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
           <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
           </svg>
-          <span className="text-white text-xs">{featuredGame.views || 0}</span>
+          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
         </div>
         
         {/* Live badge - Conditionally shown */}
@@ -182,12 +181,13 @@ export default function FeatureGameGrid() {
           </div>
         )}
         
-        {/* Play count - moved below Live badge or at top-right if no Live badge */}
+        {/* View count - now on right side below Live badge */}
         <div className="absolute top-10 right-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
           <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
+          <span className="text-white text-xs">{featuredGame.views || 0}</span>
         </div>
         
         {/* Slide-up action buttons overlay */}
