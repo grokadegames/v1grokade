@@ -134,7 +134,7 @@ export default function Hero() {
       if(!isDown) return;
       e.preventDefault();
       const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2;
+      const walk = (x - startX) * 1.5; // Reduced multiplier for smoother scrolling
       container.scrollLeft = scrollLeft - walk;
     };
     
@@ -143,10 +143,10 @@ export default function Hero() {
       console.log('[Home Page] Mouse entered sponsor container, pausing autoscroll');
     };
     
-    // Touch event handlers for mobile
+    // Touch event handlers for mobile - improved for smoother scrolling
     const onTouchStart = (e) => {
       isDown = true;
-      container.classList.add('cursor-grabbing');
+      // Don't add cursor-grabbing class on mobile as it's not visible/relevant
       startX = e.touches[0].pageX - container.offsetLeft;
       scrollLeft = container.scrollLeft;
       setIsSponsorsHovered(true); // Pause autoscroll during touch
@@ -154,16 +154,19 @@ export default function Hero() {
     
     const onTouchEnd = () => {
       isDown = false;
-      container.classList.remove('cursor-grabbing');
-      setIsSponsorsHovered(false); // Resume autoscroll after touch
-      console.log('[Home Page] Touch ended on sponsor container, resuming autoscroll');
+      setTimeout(() => {
+        // Small delay before resuming autoscroll to allow momentum scrolling to finish
+        setIsSponsorsHovered(false);
+      }, 100);
     };
     
     const onTouchMove = (e) => {
       if (!isDown) return;
-      e.preventDefault();
+      
+      // Don't prevent default on mobile to allow native scrolling behavior
+      // This is crucial for smooth scrolling on touch devices
       const x = e.touches[0].pageX - container.offsetLeft;
-      const walk = (x - startX) * 2;
+      const walk = (x - startX) * 1; // Use 1:1 ratio for natural feel on mobile
       container.scrollLeft = scrollLeft - walk;
     };
     
@@ -174,11 +177,11 @@ export default function Hero() {
     container.addEventListener('mousemove', onMouseMove);
     container.addEventListener('mouseenter', onMouseEnter);
     
-    // Add touch event listeners for mobile
-    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    // Add touch event listeners for mobile - using passive: true for better performance
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
     container.addEventListener('touchend', onTouchEnd);
     container.addEventListener('touchcancel', onTouchEnd);
-    container.addEventListener('touchmove', onTouchMove, { passive: false });
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
     
     return () => {
       // Remove mouse event listeners
@@ -231,7 +234,8 @@ export default function Hero() {
               WebkitOverflowScrolling: 'touch', 
               scrollbarWidth: 'none', 
               msOverflowStyle: 'none',
-              scrollSnapType: 'x mandatory',
+              scrollSnapType: 'x proximity',
+              scrollBehavior: 'smooth',
               position: 'relative'
             }}
           >
@@ -243,7 +247,7 @@ export default function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all relative group overflow-hidden"
-                  style={{ scrollSnapAlign: 'start' }}
+                  style={{ scrollSnapAlign: 'center' }}
                 >
                   <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
                     {sponsor.logoUrl ? (

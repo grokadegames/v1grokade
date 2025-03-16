@@ -84,6 +84,9 @@ body {
     scroll-behavior: smooth;
     width: 100%;
     min-height: 220px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x;
+    will-change: scroll-position;
   }
   
   .sponsors-container:active {
