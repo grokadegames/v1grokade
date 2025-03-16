@@ -110,6 +110,7 @@ export default function Hero() {
     let startX;
     let scrollLeft;
     
+    // Mouse event handlers
     const onMouseDown = (e) => {
       isDown = true;
       container.classList.add('cursor-grabbing');
@@ -142,18 +143,56 @@ export default function Hero() {
       console.log('[Home Page] Mouse entered sponsor container, pausing autoscroll');
     };
     
+    // Touch event handlers for mobile
+    const onTouchStart = (e) => {
+      isDown = true;
+      container.classList.add('cursor-grabbing');
+      startX = e.touches[0].pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+      setIsSponsorsHovered(true); // Pause autoscroll during touch
+    };
+    
+    const onTouchEnd = () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+      setIsSponsorsHovered(false); // Resume autoscroll after touch
+      console.log('[Home Page] Touch ended on sponsor container, resuming autoscroll');
+    };
+    
+    const onTouchMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.touches[0].pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    };
+    
+    // Add mouse event listeners
     container.addEventListener('mousedown', onMouseDown);
     container.addEventListener('mouseleave', onMouseLeave);
     container.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
     container.addEventListener('mouseenter', onMouseEnter);
     
+    // Add touch event listeners for mobile
+    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    container.addEventListener('touchend', onTouchEnd);
+    container.addEventListener('touchcancel', onTouchEnd);
+    container.addEventListener('touchmove', onTouchMove, { passive: false });
+    
     return () => {
+      // Remove mouse event listeners
       container.removeEventListener('mousedown', onMouseDown);
       container.removeEventListener('mouseleave', onMouseLeave);
       container.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mousemove', onMouseMove);
       container.removeEventListener('mouseenter', onMouseEnter);
+      
+      // Remove touch event listeners
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchcancel', onTouchEnd);
+      container.removeEventListener('touchmove', onTouchMove);
     };
   }, []);
 
@@ -176,8 +215,10 @@ export default function Hero() {
             </div>
           </div>
           
-          {/* Featured Games Grid */}
-          <FeatureGameGrid />
+          {/* Featured Games Grid - Ensure visibility on mobile */}
+          <div className="w-full flex justify-center mt-8 lg:mt-0 lg:w-1/2">
+            <FeatureGameGrid />
+          </div>
         </div>
         
         {/* Sponsors Bar - Updated version from game detail page */}
@@ -185,7 +226,14 @@ export default function Hero() {
           <div 
             ref={sponsorsContainerRef}
             className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
-            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            style={{ 
+              overflowX: 'auto', 
+              WebkitOverflowScrolling: 'touch', 
+              scrollbarWidth: 'none', 
+              msOverflowStyle: 'none',
+              scrollSnapType: 'x mandatory',
+              position: 'relative'
+            }}
           >
             {sponsors.length > 0 ? (
               sponsors.map((sponsor) => (
@@ -195,6 +243,7 @@ export default function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all relative group overflow-hidden"
+                  style={{ scrollSnapAlign: 'start' }}
                 >
                   <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
                     {sponsor.logoUrl ? (
