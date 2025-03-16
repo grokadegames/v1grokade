@@ -4,8 +4,14 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { trackGamePlay } from '@/lib/metricsUtil';
 
-export default function GameCard({ game, onMetricsUpdate }) {
+export default function GameCard({ game, onMetricsUpdate, className = '', ...props }) {
   const [localPlays, setLocalPlays] = useState(game?.plays || 0);
+  const [metrics, setMetrics] = useState({
+    views: game?.views || 0,
+    plays: game?.plays || 0,
+    likes: game?.likes || 0,
+    dislikes: game?.dislikes || 0
+  });
   
   // Default game object if none provided
   const defaultGame = {
@@ -15,9 +21,12 @@ export default function GameCard({ game, onMetricsUpdate }) {
     description: 'Classic brick breaking game with paddle and power-ups',
     plays: 120,
     views: 240,
+    likes: 50,
+    dislikes: 5,
     isLive: true,
-    image: null,
-    playUrl: '#'
+    thumbnail: 'https://placehold.co/600x400/222/444?text=Game',
+    playUrl: '#',
+    tags: 'Arcade'
   };
 
   // Use provided game or default
@@ -58,6 +67,10 @@ export default function GameCard({ game, onMetricsUpdate }) {
           // Update the local plays count if available from API
           if (result && result.metrics && result.metrics.plays !== undefined) {
             setLocalPlays(result.metrics.plays);
+            setMetrics(prevMetrics => ({ 
+              ...prevMetrics, 
+              plays: result.metrics.plays 
+            }));
             // If there's a callback for metrics updates, call it
             if (onMetricsUpdate) {
               onMetricsUpdate(game.id, { plays: result.metrics.plays });
@@ -83,7 +96,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
         {/* Game thumbnail */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50"></div>
         <img 
-          src={game.image || defaultGame.image} 
+          src={game.thumbnail || defaultGame.thumbnail} 
           alt={game.title} 
           className="w-full h-full object-cover"
         />
