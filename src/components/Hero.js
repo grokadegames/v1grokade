@@ -139,15 +139,15 @@ export default function Hero() {
       <div className="container-custom mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="w-full lg:w-2/5 mb-8 lg:mb-0 text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-3">
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
-            <p className="text-gray-300 text-lg mb-6 mx-auto lg:mx-0 max-w-md">
+            <p className="text-gray-300 text-base mb-5 mx-auto lg:mx-0 max-w-sm">
               Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.
             </p>
             <div className="flex space-x-4 justify-center lg:justify-start">
-              <a href="#games-section" className="btn-primary">Play Now</a>
-              <button onClick={handleSubmitGameClick} className="btn-secondary">
+              <a href="#games-section" className="btn-primary text-sm">Play Now</a>
+              <button onClick={handleSubmitGameClick} className="btn-secondary text-sm">
                 Submit Game
               </button>
             </div>
