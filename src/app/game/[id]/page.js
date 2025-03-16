@@ -455,12 +455,6 @@ export default function GamePage() {
                   alt={game.title} 
                   className="w-full h-full object-cover"
                 />
-              ) : selectedGalleryImage > 0 && galleryImages[selectedGalleryImage - 1] ? (
-                <img 
-                  src={galleryImages[selectedGalleryImage - 1]} 
-                  alt={`${game.title} gallery ${selectedGalleryImage}`} 
-                  className="w-full h-full object-cover"
-                />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-grok-dark">
                   <svg className="w-24 h-24 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -490,7 +484,9 @@ export default function GamePage() {
                     className="w-full h-full object-cover" 
                   />
                 ) : (
-                  <div className="w-full h-full bg-grok-dark"></div>
+                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
+                    <span className="text-xs text-gray-500">No image</span>
+                  </div>
                 )}
               </div>
               
@@ -501,11 +497,8 @@ export default function GamePage() {
                   className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
                   onClick={() => setSelectedGalleryImage(index + 1)}
                 >
-                  <div className="w-full h-full bg-grok-dark">
-                    {/* Placeholder for gallery images */}
-                    <div className="h-full w-full flex items-center justify-center text-gray-500">
-                      Gallery {index + 1}
-                    </div>
+                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
+                    <span className="text-xs text-gray-500">Gallery {index + 1}</span>
                   </div>
                 </div>
               ))}
