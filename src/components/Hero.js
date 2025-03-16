@@ -7,15 +7,40 @@ import SubmitGameModal from './SubmitGameModal';
 import AuthAlert from './AuthAlert';
 import FeatureGameGrid from './FeatureGameGrid';
 import CTA from './CTA';
-import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
 
 export default function Hero() {
   const sponsorsContainerRef = useRef(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showAuthAlert, setShowAuthAlert] = useState(false);
+  const [sponsors, setSponsors] = useState([]);
   const { isAuthenticated } = useAuth();
   const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
   const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
+  
+  // Fetch sponsors from the API
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        console.log('[Hero] Fetching sponsors from API...');
+        const response = await fetch('/api/sponsors');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch sponsors data');
+        }
+        
+        const data = await response.json();
+        console.log('[Hero] Received sponsors:', data.sponsors?.length || 0);
+        
+        if (data.sponsors && data.sponsors.length > 0) {
+          setSponsors(data.sponsors);
+        }
+      } catch (err) {
+        console.error('[Hero] Error fetching sponsors:', err);
+      }
+    };
+    
+    fetchSponsors();
+  }, []);
   
   // Handle Submit Game button click
   const handleSubmitGameClick = (e) => {
@@ -174,131 +199,28 @@ export default function Hero() {
             className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
             style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {/* Sponsor 1 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaLaravel className="text-3xl text-red-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Laravel</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Backend framework provider</p>
-            </div>
-            
-            {/* Sponsor 2 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaReact className="text-3xl text-blue-400" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">React</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Frontend library partner</p>
-            </div>
-            
-            {/* Sponsor 3 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaNodeJs className="text-3xl text-green-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Node.js</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Server runtime environment</p>
-            </div>
-            
-            {/* Sponsor 4 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaAws className="text-3xl text-yellow-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">AWS</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Cloud infrastructure partner</p>
-            </div>
-            
-            {/* Sponsor 5 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaDigitalOcean className="text-3xl text-blue-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">DigitalOcean</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Hosting services provider</p>
-            </div>
-            
-            {/* Sponsor 6 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaDatabase className="text-3xl text-purple-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">MongoDB</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Database solutions</p>
-            </div>
-            
-            {/* Sponsor 7 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaStripe className="text-3xl text-purple-600" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Stripe</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Payment processing</p>
-            </div>
-            
-            {/* Sponsor 8 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaGoogle className="text-3xl text-blue-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Google Cloud</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Cloud services partner</p>
-            </div>
-            
-            {/* Sponsor 9 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaGithub className="text-3xl text-white" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">GitHub</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Development platform</p>
-            </div>
-            
-            {/* Sponsor 10 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaDocker className="text-3xl text-blue-400" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Docker</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Container platform</p>
-            </div>
-            
-            {/* Sponsor 11 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaApple className="text-3xl text-gray-200" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Apple</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Developer ecosystem</p>
-            </div>
-            
-            {/* Sponsor 12 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaNpm className="text-3xl text-red-600" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">npm</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Package registry</p>
-            </div>
-            
-            {/* Sponsor 13 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaPython className="text-3xl text-yellow-300" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Python</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Programming language</p>
-            </div>
-            
-            {/* Sponsor 14 */}
-            <div className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                <FaUbuntu className="text-3xl text-orange-500" />
-              </div>
-              <h3 className="text-base font-semibold text-white leading-tight">Ubuntu</h3>
-              <p className="text-xs text-gray-300 text-center leading-tight">Operating system</p>
-            </div>
+            {sponsors.length > 0 ? (
+              // Map through sponsors from the API
+              sponsors.map((sponsor) => (
+                <div 
+                  key={sponsor.id}
+                  className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center"
+                >
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+                    <img 
+                      src={sponsor.logoUrl} 
+                      alt={`${sponsor.name} logo`} 
+                      className="w-10 h-10 object-contain"
+                    />
+                  </div>
+                  <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
+                  <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
+                </div>
+              ))
+            ) : (
+              // Loading state or fallback
+              <div className="w-full text-center py-4 text-gray-400">Loading sponsors...</div>
+            )}
           </div>
         </div>
       </div>
