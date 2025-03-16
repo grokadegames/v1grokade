@@ -29,12 +29,24 @@ export default function AuthNavbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/" className="text-white hover:text-purple-500 transition-colors text-sm">Games</Link>
-            <Link href="/gigs" className="text-white hover:text-purple-500 transition-colors text-sm">Gigs</Link>
-            <Link href="/talent" className="text-white hover:text-purple-500 transition-colors text-sm">Talent</Link>
-            <Link href="/rankings" className="text-white hover:text-purple-500 transition-colors text-sm">Rankings</Link>
-            <Link href="/competitions" className="text-white hover:text-purple-500 transition-colors text-sm">Competitions</Link>
-            <Link href="/about" className="text-white hover:text-purple-500 transition-colors text-sm">About</Link>
+            <Link href="/" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Games
+            </Link>
+            <Link href="/coming-soon?feature=Gigs" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Gigs
+            </Link>
+            <Link href="/coming-soon?feature=Talent" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Talent
+            </Link>
+            <Link href="/rankings" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Rankings
+            </Link>
+            <Link href="/coming-soon?feature=Competitions" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Competitions
+            </Link>
+            <Link href="/about" className="text-white hover:text-purple-500 transition-colors mx-3">
+              About
+            </Link>
           </div>
 
           {/* Action Buttons - Desktop */}
@@ -87,58 +99,58 @@ export default function AuthNavbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-2 pb-3">
-            <div className="flex flex-col space-y-2">
+          <div className="md:hidden mt-4 pb-4">
+            <div className="flex flex-col space-y-3">
               <Link 
                 href="/" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Games
               </Link>
               <Link 
-                href="/gigs" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                href="/coming-soon?feature=Gigs" 
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Gigs
               </Link>
               <Link 
-                href="/talent" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                href="/coming-soon?feature=Talent" 
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Talent
               </Link>
               <Link 
                 href="/rankings" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Rankings
               </Link>
               <Link 
-                href="/competitions" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                href="/coming-soon?feature=Competitions" 
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Competitions
               </Link>
               <Link 
                 href="/about" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1 text-sm"
+                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               
-              <div className="pt-2 flex flex-col space-y-2">
+              <div className="pt-2 flex flex-col space-y-3">
                 <Link 
                   href="/roadmap" 
-                  className="bg-black border-2 border-orange-500 text-orange-500 px-3 py-1 rounded-md flex items-center justify-center hover:bg-orange-500 hover:text-black transition-colors duration-300 text-sm"
+                  className="bg-black border-2 border-orange-500 text-orange-500 px-4 py-2 rounded-md flex items-center justify-center hover:bg-orange-500 hover:text-black transition-colors duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 17H7V13H3V17ZM10 17H14V8H10V17ZM17 17H21V3H17V17Z" fill="currentColor" />
                   </svg>
                   Roadmap
@@ -147,7 +159,7 @@ export default function AuthNavbar() {
                   <>
                     <Link 
                       href="/dashboard" 
-                      className="bg-gray-800 text-white px-3 py-1 rounded-md text-center text-sm"
+                      className="bg-gray-800 text-white px-4 py-2 rounded-md text-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Dashboard
@@ -157,7 +169,7 @@ export default function AuthNavbar() {
                         logout();
                         setIsMenuOpen(false);
                       }}
-                      className="bg-purple-600 text-white px-3 py-1 rounded-md text-center text-sm"
+                      className="bg-purple-600 text-white px-4 py-2 rounded-md text-center"
                     >
                       Logout
                     </button>
@@ -169,7 +181,7 @@ export default function AuthNavbar() {
                       setIsMenuOpen(false);
                       router.push('/login');
                     }}
-                    className="bg-purple-600 text-white px-3 py-1 rounded-md text-center text-sm"
+                    className="bg-purple-600 text-white px-4 py-2 rounded-md text-center"
                   >
                     Login
                   </button>
