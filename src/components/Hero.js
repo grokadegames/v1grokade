@@ -300,7 +300,7 @@ export default function Hero() {
               <p className="text-xs text-gray-300 text-center leading-tight">Operating system</p>
             </div>
           </div>
-          <p className="text-orange-500 text-center mt-4 mb-2 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
+          <p className="text-white text-center mt-4 mb-2 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
         </div>
       </div>
       
