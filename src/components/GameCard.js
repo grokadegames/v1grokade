@@ -54,7 +54,7 @@ export default function GameCard({ game }) {
     >
       <div className="relative">
         {/* Game thumbnail/image */}
-        <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center">
+        <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
           {game.image ? (
             <img 
               src={game.image} 
@@ -71,15 +71,16 @@ export default function GameCard({ game }) {
             </div>
           )}
           
-          {/* Slide-up overlay for action buttons */}
+          {/* Slide-up action buttons (bottom overlay only) */}
           <div 
-            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center space-y-2 transition-transform duration-300 ease-in-out ${
+            className={`absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 py-3 px-4 flex flex-col gap-2 transition-transform duration-300 ease-in-out transform ${
               isHovered ? 'translate-y-0' : 'translate-y-full'
             }`}
+            style={{ zIndex: 15 }}
           >
             <Link 
               href={`/game/${game.id}`}
-              className="w-3/4 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
             >
               View Game
             </Link>
@@ -87,7 +88,7 @@ export default function GameCard({ game }) {
               href={game.playUrl || '#'} 
               target="_blank"
               rel="noopener noreferrer"
-              className="w-3/4 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-1.5 rounded-md transition-colors duration-200 text-sm"
             >
               Play Now
             </a>
@@ -102,7 +103,7 @@ export default function GameCard({ game }) {
         )}
         
         {/* View count overlay - left side */}
-        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-10">
+        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
           {/* Eye icon for views */}
           <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -112,7 +113,7 @@ export default function GameCard({ game }) {
         </div>
         
         {/* Play count overlay - right side */}
-        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-10">
+        <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
           {/* Play button icon */}
           <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
