@@ -223,7 +223,7 @@ export default function Hero() {
                   
                   {/* Slide-up action button overlay - similar to game cards */}
                   <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-                    <div className="text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200 text-sm w-full">
+                    <div className="text-center bg-white hover:bg-gray-100 text-purple-600 font-medium px-4 py-2 rounded-md transition-colors duration-200 text-sm w-full border border-purple-500">
                       Visit Sponsor
                     </div>
                   </div>
