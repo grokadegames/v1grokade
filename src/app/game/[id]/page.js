@@ -23,6 +23,7 @@ export default function GamePage() {
   const [isSponsorsHovered, setIsSponsorsHovered] = useState(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(0);
   const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
+  const [visibleOverlays, setVisibleOverlays] = useState({}); // Track which overlays are visible
   
   // Example gallery images - in a real app these would come from the API
   const galleryImages = [
@@ -412,6 +413,14 @@ export default function GamePage() {
     }
   };
   
+  // Toggle overlay visibility for a specific game card
+  const toggleOverlay = (gameId) => {
+    setVisibleOverlays(prev => ({
+      ...prev,
+      [gameId]: !prev[gameId]
+    }));
+  };
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
@@ -719,7 +728,9 @@ export default function GamePage() {
               <div className="flex gap-4 pb-4 min-w-max">
                 {featuredGames.length > 0 ? (
                   featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      onClick={() => toggleOverlay(featuredGame.id)}
+                    >
                       <div className="relative">
                         <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center">
                           {featuredGame.image ? (
@@ -786,10 +797,13 @@ export default function GamePage() {
                         </div>
                         
                         {/* Slide-up action buttons overlay - positioned over text content */}
-                        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+                        <div className={`absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transition-transform duration-300 ease-in-out ${
+                          visibleOverlays[featuredGame.id] ? 'transform translate-y-0' : 'transform translate-y-full group-hover:translate-y-0'
+                        }`}>
                           <Link 
                             href={`/game/${featuredGame.id}`}
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                            onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                           >
                             View Game
                           </Link>
@@ -798,6 +812,7 @@ export default function GamePage() {
                             href={featuredGame.playUrl || '#'} 
                             onClick={(e) => {
                               e.preventDefault();
+                              e.stopPropagation(); // Prevent toggle overlay
                               // Track play for featured game
                               if (featuredGame && featuredGame.id) {
                                 trackGamePlay(featuredGame.id)
@@ -813,18 +828,17 @@ export default function GamePage() {
                                         )
                                       );
                                     }
-                                    window.open(featuredGame.playUrl, '_blank');
+                                    // Use window.location.href instead of window.open for better mobile compatibility
+                                    window.location.href = featuredGame.playUrl;
                                   })
                                   .catch(error => {
                                     console.error('Error tracking featured game play:', error);
-                                    window.open(featuredGame.playUrl, '_blank');
+                                    window.location.href = featuredGame.playUrl;
                                   });
                               } else if (featuredGame && featuredGame.playUrl) {
-                                window.open(featuredGame.playUrl, '_blank');
+                                window.location.href = featuredGame.playUrl;
                               }
                             }}
-                            target="_blank" 
-                            rel="noopener noreferrer"
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                           >
                             <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
