@@ -169,7 +169,7 @@ export default function Hero() {
         
         {/* Sponsors Bar - Updated version from game detail page */}
         <div className="mt-16 border-t border-gray-800 pt-6">
-          <p className="text-orange-500 text-center mb-4 font-medium">Your sponsorship drives Grokade's growth and spotlights the rising industry of vibe-coded, AI-crafted games.</p>
+          <p className="text-orange-500 text-center mb-4 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
           <div 
             ref={sponsorsContainerRef}
             className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
