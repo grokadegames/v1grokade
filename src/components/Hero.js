@@ -75,33 +75,25 @@ export default function Hero() {
           
           // Check if we've reached the end or beginning to change direction
           // Use a larger buffer for smoother transition at the end
-          if (container.scrollLeft >= maxScroll - 30 && !hasReachedEnd) {
+          if (container.scrollLeft >= maxScroll - 10 && scrollDirection > 0) {
             console.log('[Sponsors] Reached right edge, scrolling left now');
             setScrollDirection(-1); // Start scrolling left
             hasReachedEnd = true;
             hasReachedStart = false;
-          } else if (container.scrollLeft <= 20 && !hasReachedStart) {
+          } else if (container.scrollLeft <= 10 && scrollDirection < 0) {
             console.log('[Sponsors] Reached left edge, scrolling right now');
             setScrollDirection(1); // Start scrolling right
             hasReachedStart = true;
             hasReachedEnd = false;
           }
-          
-          // Reset flags when we're not at the edges
-          if (container.scrollLeft < maxScroll - 50 && container.scrollLeft > 50) {
-            hasReachedEnd = false;
-            hasReachedStart = false;
-          }
         }
       }, 30); // 30ms interval for smooth scrolling
     };
     
-    // Always start from the beginning
-    container.scrollLeft = 0;
-    setScrollDirection(1); // Ensure we start by scrolling right
-    
     // Start the autoscroll after a delay to ensure DOM is ready and sponsors are loaded
     const initTimeout = setTimeout(() => {
+      // Set initial direction to scroll right at start
+      setScrollDirection(1);
       startAutoScroll();
     }, 1000); // Longer delay for better initial load
     
@@ -133,6 +125,8 @@ export default function Hero() {
       container.classList.remove('cursor-grabbing');
       setIsSponsorsHovered(false);
       console.log('[Sponsors] Mouse left, resuming autoscroll');
+      
+      // Don't reset direction when leaving - continue in current direction
     };
     
     const onMouseUp = () => {
