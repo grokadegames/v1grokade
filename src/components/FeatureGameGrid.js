@@ -166,12 +166,13 @@ export default function FeatureGameGrid() {
           FEATURED
         </div>
         
-        {/* Play count - now on left side below Featured badge */}
-        <div className="absolute top-10 left-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
+        {/* View count - now next to Featured label on right */}
+        <div className="absolute top-2 left-20 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
           <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
+          <span className="text-white text-xs">{featuredGame.views || 0}</span>
         </div>
         
         {/* Live badge - Conditionally shown */}
@@ -181,13 +182,12 @@ export default function FeatureGameGrid() {
           </div>
         )}
         
-        {/* View count - now on right side below Live badge */}
-        <div className="absolute top-10 right-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
+        {/* Play count - now next to Live badge on right */}
+        <div className="absolute top-2 right-16 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
           <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
           </svg>
-          <span className="text-white text-xs">{featuredGame.views || 0}</span>
+          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
         </div>
         
         {/* Slide-up action buttons overlay */}
@@ -231,48 +231,48 @@ export default function FeatureGameGrid() {
             Play Now
           </a>
         </div>
-        
-        {/* Navigation Arrows */}
-        {featuredGames.length > 1 && (
-          <>
-            {/* Left Arrow */}
-            <button 
-              onClick={goToPrevious}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
-              aria-label="Previous game"
-            >
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            
-            {/* Right Arrow */}
-            <button 
-              onClick={goToNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
-              aria-label="Next game"
-            >
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            
-            {/* Pagination indicators */}
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 z-30">
-              {featuredGames.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full focus:outline-none transition-colors duration-200 ${
-                    index === currentIndex ? 'bg-purple-500' : 'bg-gray-400 bg-opacity-50'
-                  }`}
-                  aria-label={`Go to game ${index + 1}`}
-                />
-              ))}
-            </div>
-          </>
-        )}
       </div>
+      
+      {/* Navigation Arrows - moved outside the thumbnail */}
+      {featuredGames.length > 1 && (
+        <>
+          {/* Left Arrow */}
+          <button 
+            onClick={goToPrevious}
+            className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            aria-label="Previous game"
+          >
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          
+          {/* Right Arrow */}
+          <button 
+            onClick={goToNext}
+            className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            aria-label="Next game"
+          >
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          
+          {/* Pagination indicators */}
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 z-30">
+            {featuredGames.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-2 h-2 rounded-full focus:outline-none transition-colors duration-200 ${
+                  index === currentIndex ? 'bg-purple-500' : 'bg-gray-400 bg-opacity-50'
+                }`}
+                aria-label={`Go to game ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 } 
