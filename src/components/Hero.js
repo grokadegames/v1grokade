@@ -138,11 +138,11 @@ export default function Hero() {
     <div className="py-16 bg-grok-dark border-b border-grok-card">
       <div className="container-custom mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between">
-          <div className="w-full lg:w-3/5 mb-8 lg:mb-0 text-center lg:text-left">
+          <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="text-purple-500">AI Gaming</span> Vibe Hub
             </h1>
-            <p className="text-gray-300 text-lg mb-6 mx-auto lg:mx-0">
+            <p className="text-gray-300 text-lg mb-6 mx-auto lg:mx-0 max-w-md">
               Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.
             </p>
             <div className="flex space-x-4 justify-center lg:justify-start">
@@ -154,7 +154,7 @@ export default function Hero() {
           </div>
           
           {/* Featured Games Grid - Adjusted size for better layout balance */}
-          <div className="w-full lg:w-2/5 flex justify-center mt-8 lg:mt-0">
+          <div className="w-full lg:w-1/2 flex justify-center mt-8 lg:mt-0">
             <FeatureGameGrid />
           </div>
         </div>
