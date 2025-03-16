@@ -122,6 +122,15 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       console.log('[Auth] Attempting logout');
+      
+      // First clear the user state locally to prevent any login page redirect
+      setUser(null);
+      
+      // Immediately redirect to home page
+      console.log('[Auth] Redirecting to home page after logout');
+      router.push('/');
+      
+      // Then perform the logout on the server after redirection has started
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -130,18 +139,10 @@ export function AuthProvider({ children }) {
         cache: 'no-store',
       });
 
-      if (response.ok) {
-        console.log('[Auth] Logout successful');
-        // Clear the user state
-        setUser(null);
-        
-        // Important: Add a small delay before redirecting to ensure state is properly cleared
-        setTimeout(() => {
-          console.log('[Auth] Redirecting to home page after logout');
-          router.push('/');
-        }, 300);
+      if (!response.ok) {
+        console.error('[Auth] Logout failed on server');
       } else {
-        console.error('[Auth] Logout failed');
+        console.log('[Auth] Logout successful on server');
       }
     } catch (error) {
       console.error('[Auth] Logout error:', error);
