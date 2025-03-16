@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <rect width="800" height="450" fill="url(#paint0_linear)" />
+  
+  <!-- Circular glow -->
+  <circle cx="400" cy="225" r="120" fill="url(#paint1_radial)" opacity="0.7" />
+  
+  <!-- Game controller shape -->
+  <path d="M500 175C500 158.431 486.569 145 470 145H330C313.431 145 300 158.431 300 175V275C300 291.569 313.431 305 330 305H470C486.569 305 500 291.569 500 275V175Z" stroke="#8B5CF6" stroke-width="6" />
+  
+  <!-- D-pad -->
+  <rect x="330" y="215" width="60" height="20" fill="#8B5CF6" />
+  <rect x="350" y="195" width="20" height="60" fill="#8B5CF6" />
+  
+  <!-- Action buttons -->
+  <circle cx="440" cy="225" r="15" fill="#8B5CF6" />
+  <circle cx="470" cy="225" r="15" fill="#8B5CF6" />
+  
+  <!-- Text -->
+  <text x="400" y="370" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#8B5CF6" text-anchor="middle">GROKADE GAME</text>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F0F16" />
+      <stop offset="1" stop-color="#1A1A2E" />
+    </linearGradient>
+    <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 225) rotate(90) scale(120)">
+      <stop stop-color="#8B5CF6" stop-opacity="0.3" />
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+</svg> 

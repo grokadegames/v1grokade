@@ -80,26 +80,43 @@ export default function GameCard({ game, onMetricsUpdate }) {
         {/* Game thumbnail/image */}
         <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
           {(() => {
-            console.log(`[GameCard] Game ${game.id} image URL:`, game.image);
-            return game.image ? (
-              <img 
-                src={game.image} 
-                alt={game.title} 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  console.error(`[GameCard] Failed to load image for game ${game.id}:`, game.image);
-                  e.target.style.display = 'none';
-                }}
-              />
-            ) : (
-              <div className="w-16 h-16 flex items-center justify-center">
-                <svg className="w-12 h-12 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                  <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
-                  <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
-                </svg>
-              </div>
-            );
+            // Default image path
+            const defaultImageUrl = '/images/default-game-cover.svg';
+            
+            // Check if image is a valid URL (Cloudinary URLs should start with http/https)
+            const hasValidImage = game.image && typeof game.image === 'string' && game.image.trim() !== '';
+            
+            console.log(`[GameCard] Game ${game.id} image validation:`, { 
+              id: game.id,
+              title: game.title,
+              imageUrl: game.image
+            });
+            
+            if (hasValidImage) {
+              return (
+                <img 
+                  src={game.image} 
+                  alt={game.title} 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error(`[GameCard] Failed to load image for game ${game.id}:`, game.image);
+                    e.target.src = defaultImageUrl;
+                  }}
+                />
+              );
+            } else {
+              // Show a styled placeholder with game initial if no image
+              return (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-purple-900/30 to-black">
+                  <div className="text-4xl font-bold text-grok-purple mb-2">
+                    {game.title.slice(0, 1).toUpperCase()}
+                  </div>
+                  <div className="text-sm text-grok-purple/80 text-center px-4">
+                    {game.title}
+                  </div>
+                </div>
+              );
+            }
           })()}
           
           {/* Live indicator */}
