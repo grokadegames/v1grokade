@@ -16,7 +16,7 @@ async function main() {
     {
       name: 'React',
       description: 'Frontend library partner',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/react-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/react-logo.svg',
       website: 'https://reactjs.org'
     },
     {
@@ -28,25 +28,25 @@ async function main() {
     {
       name: 'AWS',
       description: 'Cloud infrastructure partner',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/aws-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/aws-logo.svg',
       website: 'https://aws.amazon.com'
     },
     {
       name: 'DigitalOcean',
       description: 'Hosting services provider',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/digitalocean-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/digitalocean-logo.svg',
       website: 'https://digitalocean.com'
     },
     {
       name: 'MongoDB',
       description: 'Database solutions',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/mongodb-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/mongodb-logo.svg',
       website: 'https://mongodb.com'
     },
     {
       name: 'Stripe',
       description: 'Payment processing',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/stripe-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/stripe-logo.svg',
       website: 'https://stripe.com'
     },
     {
@@ -70,19 +70,19 @@ async function main() {
     {
       name: 'Apple',
       description: 'Developer ecosystem',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/apple-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/apple-logo.svg',
       website: 'https://developer.apple.com'
     },
     {
       name: 'npm',
       description: 'Package registry',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/npm-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/npm-logo.svg',
       website: 'https://www.npmjs.com'
     },
     {
       name: 'Python',
       description: 'Programming language',
-      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/python-logo.png',
+      logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/python-logo.svg',
       website: 'https://python.org'
     },
     {
