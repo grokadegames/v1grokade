@@ -79,10 +79,11 @@ body {
   .sponsors-container {
     position: relative;
     cursor: grab;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    scroll-behavior: smooth;           /* Smooth scrolling on modern browsers */
     overflow-x: auto;
-    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    width: 100%;
+    min-height: 220px;
   }
   
   .sponsors-container:active {
@@ -99,4 +100,51 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+/* Custom scrollbar styling for the entire page */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(31, 31, 31, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #636363;
+}
+
+/* Hide scrollbar for sponsors container */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Button styling */
+.btn-primary {
+  @apply bg-grok-purple text-white font-medium py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-300;
+}
+
+.btn-secondary {
+  @apply bg-grok-card text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-300;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: white;
+  background-color: theme('colors.grok.dark');
 }

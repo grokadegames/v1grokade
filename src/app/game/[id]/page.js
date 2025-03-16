@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe } from 'react-icons/fa';
 
 export default function GamePage() {
   const params = useParams();
@@ -101,11 +102,15 @@ export default function GamePage() {
     const startAutoScroll = () => {
       scrollInterval = setInterval(() => {
         if (!isSponsorsHovered && container) {
-          container.scrollLeft += scrollDirection;
+          // Increase the scroll speed a bit for more noticeable movement
+          container.scrollLeft += scrollDirection * 1.5;
+          
+          // Calculate the maximum scroll position
+          const maxScroll = container.scrollWidth - container.clientWidth;
           
           // Change direction when reaching the end or beginning
           // Add a small buffer (10px) to ensure we detect the edges properly
-          if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 10) {
+          if (container.scrollLeft >= maxScroll - 10) {
             console.log('[Sponsors] Reached right edge, scrolling left now');
             setScrollDirection(-1); // Start scrolling left
           } else if (container.scrollLeft <= 10) {
@@ -116,11 +121,18 @@ export default function GamePage() {
       }, 30); // 30ms interval for smooth scrolling
     };
     
-    startAutoScroll();
+    // Force an initial scroll position to make sure it's scrollable
+    container.scrollLeft = 10;
+    
+    // Start the autoscroll after a small delay to ensure DOM is ready
+    const initTimeout = setTimeout(() => {
+      startAutoScroll();
+    }, 500);
     
     return () => {
       console.log('[Sponsors] Cleaning up autoscroll');
       clearInterval(scrollInterval);
+      clearTimeout(initTimeout);
     };
   }, [isSponsorsHovered, scrollDirection]);
   
@@ -333,121 +345,75 @@ export default function GamePage() {
     <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
       <AuthNavbar />
       
-      {/* Sponsors Grid - Now with additional top padding and matching home page style */}
-      <div className="border-b border-gray-800 py-6 bg-transparent pt-16">
-        <div className="container-custom mx-auto px-4">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-white font-semibold">SPONSORS</h3>
-            
-            {/* Sponsor Carousel Navigation */}
-            <div className="flex gap-2">
-              <button
-                onClick={scrollSponsorsLeft}
-                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
-                aria-label="Scroll sponsors left"
-              >
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <button
-                onClick={scrollSponsorsRight}
-                className="bg-grok-card hover:bg-gray-800 p-2 rounded-full transition-colors"
-                aria-label="Scroll sponsors right"
-              >
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+      {/* Sponsors Section */}
+      <div className="mt-12 mb-8">
+        <h2 className="text-2xl font-bold text-white mb-4">Sponsors</h2>
+        <div 
+          ref={sponsorsContainerRef}
+          className="sponsors-container flex overflow-x-auto gap-4 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
+          style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {/* Sponsor 1 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaLaravel className="text-3xl text-red-500" />
             </div>
+            <h3 className="text-lg font-semibold text-white">Laravel</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Backend framework provider</p>
           </div>
-          <div 
-            ref={sponsorsContainerRef}
-            className="sponsors-container overflow-x-auto scrollbar-hide cursor-grab"
-          >
-            <div className="flex gap-4 pb-4 min-w-max sponsors-wrapper">
-              {/* Sponsor 1 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 1</span>
-              </div>
-              
-              {/* Sponsor 2 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M4 9H20" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 2</span>
-              </div>
-              
-              {/* Sponsor 3 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 3</span>
-              </div>
-              
-              {/* Sponsor 4 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 15C8 15 9.5 17 12 17C14.5 17 16 15 16 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <circle cx="8" cy="9" r="1" fill="currentColor"/>
-                    <circle cx="16" cy="9" r="1" fill="currentColor"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 4</span>
-              </div>
-              
-              {/* Sponsor 5 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M16 12L8 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 5</span>
-              </div>
-              
-              {/* Sponsor 6 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2" rx="2"/>
-                    <path d="M9 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M12 9L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 6</span>
-              </div>
-              
-              {/* Sponsor 7 */}
-              <div className="bg-black bg-opacity-50 backdrop-blur-sm flex items-center px-4 py-3 rounded min-w-[175px]">
-                <div className="w-8 h-8 bg-black bg-opacity-70 rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-grok-purple" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M14 10C14 10 12.5 8 9.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    <path d="M10 14C10 14 11.5 16 14.5 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium">Sponsor 7</span>
-              </div>
+          
+          {/* Sponsor 2 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaReact className="text-3xl text-blue-400" />
             </div>
+            <h3 className="text-lg font-semibold text-white">React</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Frontend library partner</p>
+          </div>
+          
+          {/* Sponsor 3 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaNodeJs className="text-3xl text-green-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">Node.js</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Server runtime environment</p>
+          </div>
+          
+          {/* Sponsor 4 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaAws className="text-3xl text-yellow-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">AWS</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Cloud infrastructure partner</p>
+          </div>
+          
+          {/* Sponsor 5 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaDigitalOcean className="text-3xl text-blue-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">DigitalOcean</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Hosting services provider</p>
+          </div>
+          
+          {/* Sponsor 6 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaDatabase className="text-3xl text-purple-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">MongoDB</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Database solutions</p>
+          </div>
+          
+          {/* Sponsor 7 */}
+          <div className="sponsor-card flex-shrink-0 min-w-[200px] w-[200px] rounded-lg p-4 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-3">
+              <FaStripe className="text-3xl text-purple-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">Stripe</h3>
+            <p className="text-sm text-gray-300 text-center mt-1">Payment processing</p>
           </div>
         </div>
       </div>
