@@ -195,7 +195,7 @@ export default function FeatureGameGrid() {
           
           <div className="flex items-center space-x-1.5">
             {featuredGame.isLive && (
-              <div className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">
+              <div className="bg-green-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">
                 LIVE
               </div>
             )}
