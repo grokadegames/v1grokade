@@ -149,7 +149,7 @@ export default function FeatureGameGrid() {
   // Featured Game Card component
   const FeaturedGameCard = ({ game }) => {
     return (
-      <div className="w-full max-w-[320px] sm:max-w-md bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg relative mx-auto">
+      <div className="game-card-container w-full max-w-[320px] sm:max-w-md bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg relative mx-auto group">
         {/* Featured Badge */}
         <div className="absolute top-4 right-4 bg-grok-purple text-white text-xs font-semibold px-3 py-1 rounded-md z-10">
           FEATURED
@@ -177,7 +177,7 @@ export default function FeatureGameGrid() {
           )}
           
           {/* View count overlay - left side */}
-          <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+          <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
             {/* Eye icon for views */}
             <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -187,7 +187,7 @@ export default function FeatureGameGrid() {
           </div>
           
           {/* Play count overlay - right side */}
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center">
+          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
             {/* Play button icon */}
             <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -196,19 +196,22 @@ export default function FeatureGameGrid() {
           </div>
         </div>
         
-        {/* Game Info */}
-        <div className="p-4 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-1 break-words whitespace-normal line-clamp-2">
-            {game.title}
-          </h3>
-          <p className="text-grok-text-secondary mb-3 sm:mb-4">
-            By: {game.creator}
-          </p>
+        {/* Game Info with hover effect */}
+        <div className="relative">
+          <div className="p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-1 break-words whitespace-normal line-clamp-2">
+              {game.title}
+            </h3>
+            <p className="text-grok-text-secondary mb-3 sm:mb-4">
+              By: {game.creator}
+            </p>
+          </div>
           
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+          {/* Slide-up action buttons overlay - positioned over text content */}
+          <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
             <Link 
               href={`/game/${game.id}`}
-              className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
             >
               View Game
             </Link>
@@ -217,7 +220,7 @@ export default function FeatureGameGrid() {
               href={game.playUrl} 
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+              className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
             >
               Play Now
             </a>
