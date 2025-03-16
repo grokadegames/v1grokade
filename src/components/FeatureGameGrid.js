@@ -143,7 +143,7 @@ export default function FeatureGameGrid() {
   const featuredGame = featuredGames[currentIndex];
   
   return (
-    <div className="w-full lg:w-1/2 flex justify-center">
+    <div className="w-full lg:w-1/2 flex justify-center relative">
       <div className="relative w-full max-w-lg aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-lg group">
         {/* Featured game image */}
         <div className="w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
@@ -166,29 +166,12 @@ export default function FeatureGameGrid() {
           FEATURED
         </div>
         
-        {/* View count - now next to Featured label on right */}
-        <div className="absolute top-2 left-20 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
-          <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-white text-xs">{featuredGame.views || 0}</span>
-        </div>
-        
         {/* Live badge - Conditionally shown */}
         {featuredGame.isLive && (
           <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
             LIVE
           </div>
         )}
-        
-        {/* Play count - now next to Live badge on right */}
-        <div className="absolute top-2 right-16 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
-          <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-          </svg>
-          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
-        </div>
         
         {/* Pagination indicators - Moved INSIDE the game container at the bottom */}
         {featuredGames.length > 1 && (
@@ -215,6 +198,26 @@ export default function FeatureGameGrid() {
             <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
               {featuredGame.description || 'No description available'}
             </p>
+            
+            {/* Metrics data - Moved to slide-up overlay */}
+            <div className="flex items-center justify-between mb-4">
+              {/* View count */}
+              <div className="flex items-center">
+                <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span className="text-gray-300 text-xs">{featuredGame.views || 0} views</span>
+              </div>
+              
+              {/* Play count */}
+              <div className="flex items-center">
+                <svg className="w-4 h-4 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                </svg>
+                <span className="text-gray-300 text-xs">{featuredGame.plays || 0} plays</span>
+              </div>
+            </div>
             
             {/* Time indicator */}
             <div className="flex items-center mt-1 mb-4">
@@ -255,7 +258,7 @@ export default function FeatureGameGrid() {
           {/* Left Arrow */}
           <button 
             onClick={goToPrevious}
-            className="absolute left-0 lg:left-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            className="absolute left-[-40px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
             aria-label="Previous game"
           >
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -266,7 +269,7 @@ export default function FeatureGameGrid() {
           {/* Right Arrow */}
           <button 
             onClick={goToNext}
-            className="absolute right-0 lg:right-2 top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
+            className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 z-30 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-2 transition-colors duration-200 focus:outline-none"
             aria-label="Next game"
           >
             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
