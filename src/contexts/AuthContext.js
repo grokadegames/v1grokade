@@ -9,6 +9,7 @@ const AuthContext = createContext({});
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -123,7 +124,10 @@ export function AuthProvider({ children }) {
     try {
       console.log('[Auth] Attempting logout');
       
-      // First clear the user state locally to prevent any login page redirect
+      // Set logging out flag to prevent login redirect
+      setIsLoggingOut(true);
+      
+      // First clear the user state locally
       setUser(null);
       
       // Immediately redirect to home page
@@ -144,8 +148,14 @@ export function AuthProvider({ children }) {
       } else {
         console.log('[Auth] Logout successful on server');
       }
+      
+      // Reset logging out flag after a delay to ensure redirect completes
+      setTimeout(() => {
+        setIsLoggingOut(false);
+      }, 1000);
     } catch (error) {
       console.error('[Auth] Logout error:', error);
+      setIsLoggingOut(false);
     }
   };
 
@@ -157,7 +167,8 @@ export function AuthProvider({ children }) {
         login, 
         register, 
         logout, 
-        isAuthenticated: !!user 
+        isAuthenticated: !!user,
+        isLoggingOut
       }}
       data-auth-provider="true"
     >

@@ -9,14 +9,14 @@ import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
+    if (!loading && !isAuthenticated && !isLoggingOut) {
       router.push('/login');
     }
-  }, [loading, isAuthenticated, router]);
+  }, [loading, isAuthenticated, router, isLoggingOut]);
 
   if (loading) {
     return (
@@ -29,7 +29,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isLoggingOut) {
     return null; // Will redirect in useEffect
   }
 
