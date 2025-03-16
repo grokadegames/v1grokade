@@ -550,7 +550,6 @@ export default function GamePage() {
       
       {/* Move Sponsors Section to right above Featured Games */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-white mb-4">Sponsors</h2>
         <div 
           ref={sponsorsContainerRef}
           className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
