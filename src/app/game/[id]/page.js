@@ -623,7 +623,7 @@ export default function GamePage() {
               <div className="flex gap-4 pb-4 min-w-max">
                 {featuredGames.length > 0 ? (
                   featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
                       <div className="relative">
                         <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center">
                           {featuredGame.image ? (
@@ -651,14 +651,14 @@ export default function GamePage() {
                         )}
                         
                         {/* Play and View Count Badges */}
-                        <div className="absolute bottom-2 left-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70">
+                        <div className="absolute bottom-2 left-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
                           <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
                           </svg>
                           <span className="text-white text-xs">{featuredGame.plays || 0}</span>
                         </div>
                         
-                        <div className="absolute bottom-2 right-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70">
+                        <div className="absolute bottom-2 right-2 flex items-center px-2 py-1 rounded-full bg-black bg-opacity-70 z-20">
                           <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -667,18 +667,32 @@ export default function GamePage() {
                         </div>
                       </div>
                       
-                      <div className="p-4">
-                        <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2">{featuredGame.title}</h3>
-                        <p className="text-gray-400 text-sm truncate">By: {featuredGame.creator || 'Unknown'}</p>
+                      <div className="relative">
+                        <div className="p-4">
+                          <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2">{featuredGame.title}</h3>
+                          <p className="text-gray-400 text-sm truncate">By: {featuredGame.creator || 'Unknown'}</p>
+                          
+                          <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
+                            {featuredGame.description || 'No description available'}
+                          </p>
+                          
+                          {/* Time indicator with production grid style date format */}
+                          <div className="flex items-center mt-3">
+                            <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                              <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span className="text-gray-400 text-xs">
+                              {formatDate(featuredGame.updatedAt)}
+                            </span>
+                          </div>
+                        </div>
                         
-                        <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
-                          {featuredGame.description || 'No description available'}
-                        </p>
-                        
-                        <div className="flex flex-col gap-2 mt-4">
+                        {/* Slide-up action buttons overlay - positioned over text content */}
+                        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
                           <Link 
                             href={`/game/${featuredGame.id}`}
-                            className="bg-purple-600 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-purple-700 transition-colors text-sm"
+                            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                           >
                             View Game
                           </Link>
@@ -687,24 +701,13 @@ export default function GamePage() {
                             href={featuredGame.playUrl || '#'} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="bg-purple-600 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-purple-700 transition-colors text-sm"
+                            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                           >
-                            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
                             </svg>
                             Play Now
                           </a>
-                        </div>
-                        
-                        {/* Time indicator with production grid style date format */}
-                        <div className="flex items-center mt-3">
-                          <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                            <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                          <span className="text-gray-400 text-xs">
-                            {formatDate(featuredGame.updatedAt)}
-                          </span>
                         </div>
                       </div>
                     </div>
