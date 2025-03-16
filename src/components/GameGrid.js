@@ -63,7 +63,7 @@ export default function GameGrid() {
       const queryParams = new URLSearchParams();
       if (searchTerm) queryParams.append('search', searchTerm);
       queryParams.append('sort', sortOrder);
-      queryParams.append('limit', '100'); // Ensure we get all games, up to 100
+      queryParams.append('limit', '1000'); // Ensure we get all games, up to 1000
       
       console.log('[GameGrid] Fetching games from API...');
       
