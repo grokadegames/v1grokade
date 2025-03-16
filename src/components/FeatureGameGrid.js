@@ -149,26 +149,26 @@ export default function FeatureGameGrid() {
         <>
           <button 
             onClick={goToPrevious} 
-            className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
+            className="absolute left-[-25px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
             aria-label="Previous game"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button 
             onClick={goToNext} 
-            className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
+            className="absolute right-[-25px] top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-1.5 focus:outline-none transition-colors duration-200"
             aria-label="Next game"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </>
       )}
 
-      <div className="relative w-full aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-xl group">
+      <div className="relative w-full md:w-11/12 mx-auto aspect-video bg-grok-darker rounded-lg overflow-hidden shadow-xl group">
         {/* Featured game image */}
         <div className="w-full h-full bg-black bg-opacity-60 flex items-center justify-center">
           {featuredGame.image ? (
@@ -179,20 +179,20 @@ export default function FeatureGameGrid() {
             />
           ) : (
             <div className="flex flex-col items-center justify-center">
-              <div className="text-4xl font-bold text-purple-500">FEATURED</div>
-              <h3 className="text-white font-semibold text-xl mt-2">{featuredGame.title}</h3>
+              <div className="text-3xl font-bold text-purple-500">FEATURED</div>
+              <h3 className="text-white font-semibold text-lg mt-2">{featuredGame.title}</h3>
             </div>
           )}
         </div>
         
         {/* Status badges and view/play counts - TOP LEVEL INFO */}
-        <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-2">
-          <div className="flex items-center space-x-2">
-            <div className="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded flex items-center">
+        <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-1.5">
+          <div className="flex items-center space-x-1.5">
+            <div className="bg-purple-600 text-white text-xs font-bold px-1.5 py-0.5 rounded flex items-center">
               FEATURED
             </div>
-            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-              <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded">
+              <svg className="w-2.5 h-2.5 mr-0.5 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -200,15 +200,15 @@ export default function FeatureGameGrid() {
             </div>
           </div>
           
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-              <svg className="w-3 h-3 mr-1 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="flex items-center space-x-1.5">
+            <div className="flex items-center bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded">
+              <svg className="w-2.5 h-2.5 mr-0.5 text-purple-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
               </svg>
               <span>{featuredGame.plays || 0}</span>
             </div>
             {featuredGame.isLive && (
-              <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+              <div className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">
                 LIVE
               </div>
             )}
@@ -232,17 +232,17 @@ export default function FeatureGameGrid() {
         )}
         
         {/* Slide-up action buttons overlay - IMPROVED */}
-        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-6 gap-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+        <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
           <div className="w-full">
-            <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2 text-xl mb-1">{featuredGame.title}</h3>
-            <p className="text-gray-400 text-sm truncate">By: {featuredGame.creator || 'Unknown'}</p>
+            <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2 text-lg mb-1">{featuredGame.title}</h3>
+            <p className="text-gray-400 text-xs truncate">By: {featuredGame.creator || 'Unknown'}</p>
             
-            <p className="text-gray-300 text-sm mt-3 mb-4 line-clamp-3">
+            <p className="text-gray-300 text-xs mt-2 mb-3 line-clamp-3">
               {featuredGame.description || 'No description available'}
             </p>
             
             {/* Time indicator */}
-            <div className="flex items-center mt-2 mb-6">
+            <div className="flex items-center mt-2 mb-4">
               <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
                 <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -253,10 +253,10 @@ export default function FeatureGameGrid() {
             </div>
           </div>
           
-          <div className="w-full flex flex-col md:flex-row gap-3 mt-auto">
+          <div className="w-full flex flex-col md:flex-row gap-2 mt-auto">
             <Link 
               href={`/game/${featuredGame.id}`} 
-              className="flex-1 text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-md transition-colors duration-200 font-medium"
+              className="flex-1 text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 font-medium text-sm"
             >
               View Game
             </Link>
@@ -265,9 +265,9 @@ export default function FeatureGameGrid() {
               onClick={(e) => handlePlayClick(e, featuredGame)}
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 text-center bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-md transition-colors duration-200 font-medium"
+              className="flex-1 text-center bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md transition-colors duration-200 font-medium text-sm"
             >
-              <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-3 h-3 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
               </svg>
               Play Now
