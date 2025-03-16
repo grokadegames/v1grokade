@@ -586,7 +586,7 @@ export default function GamePage() {
                 href={sponsor.website || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all"
+                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all relative group overflow-hidden"
               >
                 <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
                   {/* Use image from API if available */}
@@ -603,6 +603,13 @@ export default function GamePage() {
                 </div>
                 <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
                 <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
+                
+                {/* Slide-up action button overlay - similar to game cards */}
+                <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+                  <div className="text-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors duration-200 text-sm w-full">
+                    Visit Sponsor
+                  </div>
+                </div>
               </a>
             ))
           ) : (
