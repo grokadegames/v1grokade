@@ -151,7 +151,7 @@ export async function GET(request) {
               username: true,
             },
           },
-          metrics: true, // Include metrics to get play counts, views, etc.
+          metrics: true, // Include metrics relation for proper data display
         },
       });
       
@@ -166,13 +166,6 @@ export async function GET(request) {
         }, { status: 200 });
       }
       
-      // Log some sample imageUrl values for debugging
-      console.log('[API] Sample imageUrl values:', games.slice(0, 3).map(g => ({ 
-        id: g.id, 
-        title: g.title, 
-        imageUrl: g.imageUrl 
-      })));
-      
       // Transform the data to match the current game card format
       const formattedGames = games.map(game => ({
         id: game.id,
@@ -180,7 +173,6 @@ export async function GET(request) {
         creator: game.author?.displayName || game.author?.username || 'Unknown Creator',
         description: game.description || 'No description available',
         playUrl: game.playUrl || '#',
-        // Direct mapping of imageUrl to image, no need for complex validation since these are from database
         image: game.imageUrl,
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,
