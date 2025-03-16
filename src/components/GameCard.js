@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { trackGamePlay } from '@/lib/metricsUtil';
 
-export default function GameCard({ game }) {
+export default function GameCard({ game, onMetricsUpdate }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [localPlays, setLocalPlays] = useState(game?.plays || 0);
   
   // Default game object if none provided
   const defaultGame = {
@@ -55,6 +56,14 @@ export default function GameCard({ game }) {
       trackGamePlay(game.id)
         .then(result => {
           console.log('Game play tracked from card:', result);
+          // Update the local plays count if available from API
+          if (result && result.metrics && result.metrics.plays !== undefined) {
+            setLocalPlays(result.metrics.plays);
+            // If there's a callback for metrics updates, call it
+            if (onMetricsUpdate) {
+              onMetricsUpdate(game.id, { plays: result.metrics.plays });
+            }
+          }
           window.open(game.playUrl, '_blank');
         })
         .catch(error => {
@@ -139,7 +148,7 @@ export default function GameCard({ game }) {
           <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span className="text-white text-xs">{game.plays ?? 0}</span>
+          <span className="text-white text-xs">{localPlays}</span>
         </div>
       </div>
     

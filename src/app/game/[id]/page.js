@@ -14,8 +14,8 @@ export default function GamePage() {
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [likeCount, setLikeCount] = useState(47);
-  const [dislikeCount, setDislikeCount] = useState(3);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
   const [featuredGames, setFeaturedGames] = useState([]);
   const [sponsors, setSponsors] = useState([]);
   const sponsorsContainerRef = useRef(null);
@@ -49,11 +49,22 @@ export default function GamePage() {
         if (foundGame) {
           setGame(foundGame);
           
+          // Set initial like/dislike counts from game metrics
+          if (foundGame.likes !== undefined) setLikeCount(foundGame.likes);
+          if (foundGame.dislikes !== undefined) setDislikeCount(foundGame.dislikes);
+          
           // Track page view once game is loaded
           if (params.id) {
             trackGameView(params.id)
               .then(result => {
                 console.log('View tracked:', result);
+                // Update view count locally if the API returned updated metrics
+                if (result && result.metrics && result.metrics.views) {
+                  setGame(prevGame => ({
+                    ...prevGame,
+                    views: result.metrics.views
+                  }));
+                }
               })
               .catch(error => {
                 console.error('Error tracking view:', error);
@@ -324,12 +335,26 @@ export default function GamePage() {
     }
   };
 
+  // Calculate rating percentage based on likes and dislikes
+  const calculateRating = () => {
+    const total = likeCount + dislikeCount;
+    if (total === 0) return 'No ratings';
+    
+    const percentage = Math.round((likeCount / total) * 100);
+    return `${percentage}%`;
+  };
+
   const handleLike = () => {
     if (game && game.id) {
       trackGameLike(game.id)
         .then(result => {
           console.log('Like tracked:', result);
-          setLikeCount(prev => prev + 1);
+          // Update like count with the value from the server response if available
+          if (result && result.metrics && result.metrics.likes !== undefined) {
+            setLikeCount(result.metrics.likes);
+          } else {
+            setLikeCount(prev => prev + 1);
+          }
         })
         .catch(error => {
           console.error('Error tracking like:', error);
@@ -346,7 +371,12 @@ export default function GamePage() {
       trackGameDislike(game.id)
         .then(result => {
           console.log('Dislike tracked:', result);
-          setDislikeCount(prev => prev + 1);
+          // Update dislike count with the value from the server response if available
+          if (result && result.metrics && result.metrics.dislikes !== undefined) {
+            setDislikeCount(result.metrics.dislikes);
+          } else {
+            setDislikeCount(prev => prev + 1);
+          }
         })
         .catch(error => {
           console.error('Error tracking dislike:', error);
@@ -534,7 +564,7 @@ export default function GamePage() {
                 {/* Rating */}
                 <div className="flex items-center">
                   <div className="text-purple-500 mr-2">Rating</div>
-                  <div className="text-gray-300">94%</div>
+                  <div className="text-gray-300">{calculateRating()}</div>
                 </div>
                 
                 {/* Release Date */}
@@ -774,6 +804,16 @@ export default function GamePage() {
                                 trackGamePlay(featuredGame.id)
                                   .then(result => {
                                     console.log('Featured game play tracked:', result);
+                                    // Update the local play count if available from the API
+                                    if (result && result.metrics && result.metrics.plays !== undefined) {
+                                      setFeaturedGames(prev => 
+                                        prev.map(game => 
+                                          game.id === featuredGame.id 
+                                            ? {...game, plays: result.metrics.plays}
+                                            : game
+                                        )
+                                      );
+                                    }
                                     window.open(featuredGame.playUrl, '_blank');
                                   })
                                   .catch(error => {

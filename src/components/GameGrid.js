@@ -150,8 +150,39 @@ export default function GameGrid() {
     };
   }, []);
 
+  // Handle metrics updates from child components
+  const handleMetricsUpdate = (gameId, metrics) => {
+    setGames(prevGames => 
+      prevGames.map(game => 
+        game.id === gameId 
+          ? {...game, ...metrics}
+          : game
+      )
+    );
+    
+    // If we're sorting by popularity, re-sort the games
+    if (sortOrder === 'popular') {
+      setGames(prevGames => [...prevGames].sort((a, b) => {
+        // Sort by views first, then by plays if views are equal
+        if (b.views !== a.views) return b.views - a.views;
+        return b.plays - a.plays;
+      }));
+    }
+  };
+  
+  // Apply additional sorting based on metrics if needed
+  useEffect(() => {
+    if (games.length > 0 && sortOrder === 'popular') {
+      setGames(prevGames => [...prevGames].sort((a, b) => {
+        // Sort by views first, then by plays if views are equal
+        if (b.views !== a.views) return b.views - a.views;
+        return b.plays - a.plays;
+      }));
+    }
+  }, [sortOrder, games.length]);
+
   return (
-    <div className="pt-2 pb-12 bg-grok-dark" id="games-section">
+    <div className="py-12 bg-grok-dark" id="games-section">
       <div className="container-custom mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
           {/* Left side filters */}
@@ -201,6 +232,7 @@ export default function GameGrid() {
               <option value="newest">Newest</option>
               <option value="popular">Most Popular</option>
               <option value="oldest">Oldest</option>
+              <option value="most_played">Most Played</option>
             </select>
           </div>
         </div>
@@ -223,7 +255,10 @@ export default function GameGrid() {
                 <div className="flex gap-6 pb-4 min-w-max">
                   {games.map((game) => (
                     <div key={game.id} className="w-80">
-                      <GameCard game={game} />
+                      <GameCard 
+                        game={game} 
+                        onMetricsUpdate={handleMetricsUpdate}
+                      />
                     </div>
                   ))}
                 </div>
@@ -239,7 +274,10 @@ export default function GameGrid() {
                 <div className="flex gap-6 pb-4 min-w-max">
                   {games.map((game) => (
                     <div key={game.id} className="w-80">
-                      <GameCard game={game} />
+                      <GameCard 
+                        game={game} 
+                        onMetricsUpdate={handleMetricsUpdate}
+                      />
                     </div>
                   ))}
                 </div>
@@ -257,7 +295,10 @@ export default function GameGrid() {
               <div className="flex gap-6 pb-4 min-w-max">
                 {games.map((game) => (
                   <div key={game.id} className="w-80">
-                    <GameCard game={game} />
+                    <GameCard 
+                      game={game} 
+                      onMetricsUpdate={handleMetricsUpdate}
+                    />
                   </div>
                 ))}
               </div>
