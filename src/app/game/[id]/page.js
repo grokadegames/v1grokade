@@ -581,9 +581,12 @@ export default function GamePage() {
         >
           {sponsors.length > 0 ? (
             sponsors.map((sponsor) => (
-              <div 
+              <a 
                 key={sponsor.id}
-                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center"
+                href={sponsor.website || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all"
               >
                 <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
                   {/* Use image from API if available */}
@@ -600,7 +603,7 @@ export default function GamePage() {
                 </div>
                 <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
                 <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
-              </div>
+              </a>
             ))
           ) : (
             // Loading state or fallback when no sponsors are available
