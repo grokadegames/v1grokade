@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
 
 export default function GamePage() {
   const params = useParams();
@@ -28,31 +29,6 @@ export default function GamePage() {
     '/images/gallery3.jpg',
     '/images/gallery4.jpg',
   ];
-  
-  // Fetch sponsors from the API
-  useEffect(() => {
-    const fetchSponsors = async () => {
-      try {
-        console.log('[GamePage] Fetching sponsors from API...');
-        const response = await fetch('/api/sponsors');
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch sponsors data');
-        }
-        
-        const data = await response.json();
-        console.log('[GamePage] Received sponsors:', data.sponsors?.length || 0);
-        
-        if (data.sponsors && data.sponsors.length > 0) {
-          setSponsors(data.sponsors);
-        }
-      } catch (err) {
-        console.error('[GamePage] Error fetching sponsors:', err);
-      }
-    };
-    
-    fetchSponsors();
-  }, []);
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -113,6 +89,29 @@ export default function GamePage() {
       fetchGame();
     }
   }, [params.id]);
+  
+  // Add effect to fetch sponsors from API
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        const response = await fetch('/api/sponsors/');
+        
+        if (!response.ok) {
+          console.error('Failed to fetch sponsors data');
+          return;
+        }
+        
+        const data = await response.json();
+        if (data.sponsors && Array.isArray(data.sponsors)) {
+          setSponsors(data.sponsors);
+        }
+      } catch (error) {
+        console.error('Error fetching sponsors:', error);
+      }
+    };
+    
+    fetchSponsors();
+  }, []);
   
   // Enhanced autoscroll functionality for sponsors
   useEffect(() => {
@@ -573,38 +572,52 @@ export default function GamePage() {
         </div>
       </div>
       
-      {/* Sponsors section */}
-      <div className="pt-14 pb-20 bg-grok-dark shadow-inner border-t border-gray-800">
-        <div className="container-custom mx-auto px-4">
-          <div 
-            ref={sponsorsContainerRef}
-            className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
-            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {sponsors.length > 0 ? (
-              // Map through sponsors from the API
-              sponsors.map((sponsor) => (
-                <div 
-                  key={sponsor.id}
-                  className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center"
-                >
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+      {/* Move Sponsors Section to right above Featured Games */}
+      <div className="mb-8">
+        <div 
+          ref={sponsorsContainerRef}
+          className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
+          style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {sponsors.length > 0 ? (
+            sponsors.map((sponsor) => (
+              <div 
+                key={sponsor.id}
+                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center"
+              >
+                <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
+                  {/* Use image from API if available */}
+                  {sponsor.logoUrl ? (
                     <img 
                       src={sponsor.logoUrl} 
-                      alt={`${sponsor.name} logo`} 
-                      className="w-10 h-10 object-contain"
+                      alt={`${sponsor.name} logo`}
+                      className="w-10 h-10 object-contain" 
                     />
-                  </div>
-                  <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
-                  <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
+                  ) : (
+                    // Fallback icons if no logo URL
+                    getSponsorIcon(sponsor.name)
+                  )}
                 </div>
-              ))
-            ) : (
-              // Loading state or fallback
-              <div className="w-full text-center py-4 text-gray-400">Loading sponsors...</div>
-            )}
-          </div>
+                <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
+                <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
+              </div>
+            ))
+          ) : (
+            // Loading state or fallback when no sponsors are available
+            <div className="flex-1 flex justify-center items-center py-8">
+              <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-grok-card h-12 w-12"></div>
+                <div className="flex-1 space-y-4 py-1">
+                  <div className="h-4 bg-grok-card rounded w-3/4"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-grok-card rounded"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
+        <p className="text-white text-center mt-4 mb-2 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
       </div>
       
       {/* Featured Games Section */}
@@ -749,4 +762,26 @@ export default function GamePage() {
       <Footer />
     </div>
   );
+}
+
+// Helper function to provide fallback icons for sponsors without logos
+function getSponsorIcon(name) {
+  const iconMap = {
+    'Laravel': <FaLaravel className="text-3xl text-red-500" />,
+    'React': <FaReact className="text-3xl text-blue-400" />,
+    'Node.js': <FaNodeJs className="text-3xl text-green-500" />,
+    'AWS': <FaAws className="text-3xl text-yellow-500" />,
+    'DigitalOcean': <FaDigitalOcean className="text-3xl text-blue-500" />,
+    'MongoDB': <FaDatabase className="text-3xl text-purple-500" />,
+    'Stripe': <FaStripe className="text-3xl text-purple-600" />,
+    'Google Cloud': <FaGoogle className="text-3xl text-blue-500" />,
+    'GitHub': <FaGithub className="text-3xl text-white" />,
+    'Docker': <FaDocker className="text-3xl text-blue-400" />,
+    'Apple': <FaApple className="text-3xl text-gray-200" />,
+    'npm': <FaNpm className="text-3xl text-red-600" />,
+    'Python': <FaPython className="text-3xl text-yellow-300" />,
+    'Ubuntu': <FaUbuntu className="text-3xl text-orange-500" />,
+  };
+  
+  return iconMap[name] || <FaDatabase className="text-3xl text-purple-500" />;
 } 
