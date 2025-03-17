@@ -213,31 +213,6 @@ export default function GameCard({ game, onMetricsUpdate }) {
           >
             View Game
           </Link>
-          <a 
-            href={game.playUrl || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation(); // Prevent the overlay toggle
-              
-              // Direct navigation for mobile compatibility
-              if (game && game.id) {
-                trackGamePlay(game.id)
-                  .then(() => {
-                    window.open(game.playUrl, '_blank');
-                  })
-                  .catch(() => {
-                    window.open(game.playUrl, '_blank');
-                  });
-              } else if (game && game.playUrl) {
-                window.open(game.playUrl, '_blank');
-              }
-            }}
-          >
-            Play Now
-          </a>
           {game.xaccount && (
             <a 
               href={game.xaccount ? (game.xaccount.startsWith('http') ? game.xaccount : `https://x.com/${game.xaccount.replace('@', '')}`) : '#'} 
