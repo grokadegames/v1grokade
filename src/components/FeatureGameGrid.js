@@ -228,15 +228,9 @@ export default function FeatureGameGrid() {
             <h3 className="text-white font-bold break-words whitespace-normal line-clamp-2 text-xl mb-2 tracking-tight">{featuredGame.title}</h3>
             <p className="text-purple-300 text-sm font-medium">
               {featuredGame.xaccount ? (
-                <a 
-                  href={`https://x.com/${featuredGame.xaccount.replace('@', '')}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {featuredGame.xaccount}
-                </a>
+                <span className="text-purple-300">
+                  {featuredGame.xaccount.startsWith('@') ? featuredGame.xaccount : '@' + featuredGame.xaccount.replace(/^https?:\/\/(www\.)?x\.com\//, '')}
+                </span>
               ) : (
                 `By: ${featuredGame.creator || 'Unknown'}`
               )}
@@ -275,7 +269,7 @@ export default function FeatureGameGrid() {
             </Link>
             {featuredGame.xaccount && (
               <a 
-                href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
+                href={`https://x.com/${featuredGame.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full text-center bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
