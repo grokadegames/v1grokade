@@ -487,6 +487,71 @@ export default function GamePage() {
                 <div className="text-sm text-red-500">Not available</div>
               </div>
               
+              {/* Mobile-only Game Preview - Shown right below the title on mobile */}
+              <div className="block lg:hidden mb-4 mt-2">
+                <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+                  {selectedGalleryImage === 0 && game.imageUrl ? (
+                    <img 
+                      src={game.imageUrl} 
+                      alt={game.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : selectedGalleryImage > 0 && getGalleryImages(game)[selectedGalleryImage - 1] ? (
+                    <img 
+                      src={getGalleryImages(game)[selectedGalleryImage - 1]} 
+                      alt={`${game.title} gallery ${selectedGalleryImage}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-grok-dark">
+                      <svg className="w-16 h-16 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
+                        <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <p className="text-gray-400 mt-2 text-sm">No image available</p>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Mobile-only Gallery Thumbnails */}
+                <div className="flex overflow-x-auto gap-2 py-2 mt-2 hide-scrollbar">
+                  {/* Thumbnail for main image */}
+                  <div 
+                    key="main-mobile" 
+                    className={`w-20 h-14 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                    onClick={() => setSelectedGalleryImage(0)}
+                  >
+                    {game.imageUrl ? (
+                      <img 
+                        src={game.imageUrl} 
+                        alt={`${game.title} thumbnail`}
+                        className="w-full h-full object-cover" 
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-grok-dark flex items-center justify-center">
+                        <span className="text-xs text-gray-500">Main</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Gallery images */}
+                  {getGalleryImages(game).map((imageUrl, index) => (
+                    <div 
+                      key={`mobile-gallery-${index}`}
+                      className={`w-20 h-14 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
+                      onClick={() => setSelectedGalleryImage(index + 1)}
+                    >
+                      <img 
+                        src={imageUrl} 
+                        alt={`${game.title} gallery ${index + 1}`}
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
               <p className="text-gray-400 text-sm mb-6">
                 {game.description || 'Classic snake game - eat food and grow longer'}
               </p>
@@ -605,8 +670,8 @@ export default function GamePage() {
             </div>
           </div>
           
-          {/* Game Preview Section - ORDER CHANGED: Now second on mobile */}
-          <div className="w-full lg:w-2/3 rounded-lg overflow-hidden order-2 lg:order-1 mt-6 lg:mt-0">
+          {/* Game Preview Section - ORDER CHANGED: Now second on mobile, hidden on mobile but visible on desktop */}
+          <div className="w-full lg:w-2/3 rounded-lg overflow-hidden order-2 lg:order-1 mt-6 lg:mt-0 hidden lg:block">
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
               {selectedGalleryImage === 0 && game.imageUrl ? (
                 <img 
