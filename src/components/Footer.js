@@ -43,7 +43,6 @@ export default function Footer() {
               <h3 className="text-white font-semibold mb-4">Company</h3>
               <ul className="space-y-3">
                 <li><Link href="/about" className="text-grok-text-secondary hover:text-white transition-colors">About</Link></li>
-                <li><button onClick={openRoadmapModal} className="text-grok-text-secondary hover:text-white transition-colors text-left w-full">Roadmap</button></li>
                 <li><Link href="/discord" className="text-grok-text-secondary hover:text-white transition-colors">Discord</Link></li>
                 <li><Link href="/x" className="text-grok-text-secondary hover:text-white transition-colors">X</Link></li>
               </ul>
