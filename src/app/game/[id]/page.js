@@ -321,6 +321,7 @@ export default function GamePage() {
   // Track play click and redirect to game URL
   const handlePlayClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     
     if (game && game.id) {
       trackGamePlay(game.id)
@@ -572,7 +573,22 @@ export default function GamePage() {
                 
                 <a 
                   href={game.playUrl || '#'}
-                  onClick={handlePlayClick}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (game && game.id) {
+                      trackGamePlay(game.id)
+                        .then(() => {
+                          window.open(game.playUrl, '_blank');
+                        })
+                        .catch(() => {
+                          window.open(game.playUrl, '_blank');
+                        });
+                    } else if (game && game.playUrl) {
+                      window.open(game.playUrl, '_blank');
+                    }
+                  }}
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex-1 flex justify-center items-center gap-2 bg-grok-purple hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors"

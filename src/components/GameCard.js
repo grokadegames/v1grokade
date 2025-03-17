@@ -53,6 +53,9 @@ export default function GameCard({ game, onMetricsUpdate }) {
     e.preventDefault();
     e.stopPropagation(); // Ensure we stop propagation to prevent the overlay toggle
     
+    // Get the game URL
+    const gameUrl = game.playUrl || '#';
+    
     if (game && game.id) {
       // Track the play
       trackGamePlay(game.id)
@@ -66,15 +69,21 @@ export default function GameCard({ game, onMetricsUpdate }) {
               onMetricsUpdate(game.id, { plays: result.metrics.plays });
             }
           }
-          // Use window.open for better compatibility
-          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          // For mobile compatibility, use setTimeout to ensure the event has fully processed
+          setTimeout(() => {
+            window.open(gameUrl, '_blank', 'noopener,noreferrer');
+          }, 50);
         })
         .catch(error => {
           console.error('Error tracking game play from card:', error);
-          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          setTimeout(() => {
+            window.open(gameUrl, '_blank', 'noopener,noreferrer');
+          }, 50);
         });
-    } else if (game && game.playUrl) {
-      window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+    } else if (gameUrl !== '#') {
+      setTimeout(() => {
+        window.open(gameUrl, '_blank', 'noopener,noreferrer');
+      }, 50);
     }
   };
 
@@ -195,6 +204,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
           className={`absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transition-transform duration-300 ease-in-out ${
             isOverlayVisible ? 'transform translate-y-0' : 'transform translate-y-full group-hover:translate-y-0'
           }`}
+          onClick={(e) => e.stopPropagation()} // Prevent toggling when clicking inside the overlay
         >
           <Link 
             href={`/game/${game.id}`}
@@ -204,12 +214,27 @@ export default function GameCard({ game, onMetricsUpdate }) {
             View Game
           </Link>
           <a 
-            href={game.playUrl || '#'} 
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent the overlay toggle
-              handlePlayClick(e);
-            }}
+            href={game.playUrl || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full text-center bg-grok-purple hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent the overlay toggle
+              
+              // Direct navigation for mobile compatibility
+              if (game && game.id) {
+                trackGamePlay(game.id)
+                  .then(() => {
+                    window.open(game.playUrl, '_blank');
+                  })
+                  .catch(() => {
+                    window.open(game.playUrl, '_blank');
+                  });
+              } else if (game && game.playUrl) {
+                window.open(game.playUrl, '_blank');
+              }
+            }}
           >
             Play Now
           </a>

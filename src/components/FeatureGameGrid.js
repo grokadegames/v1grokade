@@ -275,8 +275,26 @@ export default function FeatureGameGrid() {
             </Link>
             <a 
               href={featuredGame.playUrl || '#'} 
-              onClick={(e) => handlePlayClick(e, featuredGame)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full text-center bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Direct navigation for mobile compatibility
+                if (featuredGame && featuredGame.id) {
+                  trackGamePlay(featuredGame.id)
+                    .then(() => {
+                      window.open(featuredGame.playUrl, '_blank');
+                    })
+                    .catch(() => {
+                      window.open(featuredGame.playUrl, '_blank');
+                    });
+                } else if (featuredGame && featuredGame.playUrl) {
+                  window.open(featuredGame.playUrl, '_blank');
+                }
+              }}
             >
               <svg className="w-4 h-4 mr-1.5 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
