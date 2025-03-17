@@ -191,6 +191,7 @@ export async function GET(request) {
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,
         isLive: true, // Assuming all games from DB are live
+        featured: game.featured || false, // Include the featured field from database
         plays: game.metrics?.plays || 0,
         views: game.metrics?.views || 0,
         likes: game.metrics?.likes || 0,
