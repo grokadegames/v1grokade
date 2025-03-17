@@ -169,12 +169,12 @@ export default function RankingsPage() {
                               <p className="text-xs text-grok-text-secondary">
                                 {game.xaccount ? (
                                   <a 
-                                    href={`https://x.com/${game.xaccount.replace('@', '')}`} 
+                                    href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="hover:text-purple-400 transition-colors"
                                   >
-                                    {game.xaccount}
+                                    @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
                                   </a>
                                 ) : (
                                   `by ${game.author?.username || 'Unknown'}`
@@ -269,12 +269,12 @@ export default function RankingsPage() {
                               <p className="text-xs text-grok-text-secondary">
                                 {game.xaccount ? (
                                   <a 
-                                    href={`https://x.com/${game.xaccount.replace('@', '')}`} 
+                                    href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="hover:text-purple-400 transition-colors"
                                   >
-                                    {game.xaccount}
+                                    @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
                                   </a>
                                 ) : (
                                   `by ${game.author?.username || 'Unknown'}`
@@ -372,12 +372,12 @@ export default function RankingsPage() {
                             </a>
                             <div>
                               <a 
-                                href={`https://x.com/${creator.xaccount.replace('@', '')}`} 
+                                href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                 target="_blank"
                                 rel="noopener noreferrer" 
                                 className="text-white font-medium hover:text-green-400 transition-colors"
                               >
-                                {creator.xaccount}
+                                @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
                               </a>
                               {creator.topGame && (
                                 <p className="text-xs text-grok-text-secondary">
