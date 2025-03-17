@@ -33,7 +33,25 @@ export default function FeatureGameGrid() {
     const fetchFeaturedGames = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/games?limit=5&sort=popular&featured=true');
+        
+        // List of specific games to fetch
+        const featuredGameTitles = [
+          'Fly Pieter',
+          'Vibe Sail',
+          'Jet Ski Simulation',
+          'Society Fail',
+          'Car vs Monsters',
+          'Duke Nukem 3D 2025',
+          'Stellar Drift',
+          'Ad Simulator',
+          '3D Tetris',
+          'Island Adventure',
+          'Space Defenders',
+          'Santa\'s Letter Quest'
+        ];
+
+        // Fetch games by title
+        const response = await fetch(`/api/games?search=${encodeURIComponent(featuredGameTitles.join('|'))}&limit=12`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch featured games');
@@ -41,7 +59,12 @@ export default function FeatureGameGrid() {
         
         const data = await response.json();
         if (data.games && data.games.length > 0) {
-          setFeaturedGames(data.games);
+          // Sort games according to the specified order
+          const sortedGames = featuredGameTitles
+            .map(title => data.games.find(game => game.title === title))
+            .filter(game => game !== undefined); // Remove any games that don't exist
+          
+          setFeaturedGames(sortedGames);
         } else {
           // Fallback data
           setFeaturedGames([
