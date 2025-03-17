@@ -282,17 +282,27 @@ export default function FeatureGameGrid() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Direct navigation for mobile compatibility
+                // Get the game URL
+                const gameUrl = featuredGame.playUrl || '#';
+                
+                // Direct navigation for mobile compatibility with timeout
                 if (featuredGame && featuredGame.id) {
                   trackGamePlay(featuredGame.id)
                     .then(() => {
-                      window.open(featuredGame.playUrl, '_blank');
+                      // Use setTimeout to ensure the event has fully processed
+                      setTimeout(() => {
+                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                      }, 50);
                     })
                     .catch(() => {
-                      window.open(featuredGame.playUrl, '_blank');
+                      setTimeout(() => {
+                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                      }, 50);
                     });
-                } else if (featuredGame && featuredGame.playUrl) {
-                  window.open(featuredGame.playUrl, '_blank');
+                } else if (gameUrl !== '#') {
+                  setTimeout(() => {
+                    window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                  }, 50);
                 }
               }}
             >

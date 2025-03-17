@@ -577,16 +577,27 @@ export default function GamePage() {
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    // Get the game URL
+                    const gameUrl = game.playUrl || '#';
+                    
+                    // Track play with timeout for mobile compatibility
                     if (game && game.id) {
                       trackGamePlay(game.id)
                         .then(() => {
-                          window.open(game.playUrl, '_blank');
+                          // Use setTimeout to ensure the event has fully processed
+                          setTimeout(() => {
+                            window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                          }, 50);
                         })
                         .catch(() => {
-                          window.open(game.playUrl, '_blank');
+                          setTimeout(() => {
+                            window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                          }, 50);
                         });
-                    } else if (game && game.playUrl) {
-                      window.open(game.playUrl, '_blank');
+                    } else if (gameUrl !== '#') {
+                      setTimeout(() => {
+                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                      }, 50);
                     }
                   }}
                   target="_blank" 
@@ -924,7 +935,11 @@ export default function GamePage() {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation(); // Prevent toggle overlay
-                              // Track play for featured game
+                              
+                              // Get the game URL
+                              const gameUrl = featuredGame.playUrl || '#';
+                              
+                              // Track play for featured game with timeout for mobile compatibility
                               if (featuredGame && featuredGame.id) {
                                 trackGamePlay(featuredGame.id)
                                   .then(result => {
@@ -939,15 +954,22 @@ export default function GamePage() {
                                         )
                                       );
                                     }
-                                    // Use window.location.href instead of window.open for better mobile compatibility
-                                    window.location.href = featuredGame.playUrl;
+                                    
+                                    // Use setTimeout to ensure the event has fully processed
+                                    setTimeout(() => {
+                                      window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                                    }, 50);
                                   })
                                   .catch(error => {
                                     console.error('Error tracking featured game play:', error);
-                                    window.location.href = featuredGame.playUrl;
+                                    setTimeout(() => {
+                                      window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                                    }, 50);
                                   });
-                              } else if (featuredGame && featuredGame.playUrl) {
-                                window.location.href = featuredGame.playUrl;
+                              } else if (gameUrl !== '#') {
+                                setTimeout(() => {
+                                  window.open(gameUrl, '_blank', 'noopener,noreferrer');
+                                }, 50);
                               }
                             }}
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
