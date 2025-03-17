@@ -110,7 +110,7 @@ export default function RankingsPage() {
         {/* Popularity Rankings */}
         {!loading && activeTab === 'popularity' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-800 to-purple-600 px-6 py-4">
+            <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Popularity Rankings</h2>
               <p className="text-purple-100 text-sm">Based on total views and plays</p>
             </div>
@@ -210,9 +210,9 @@ export default function RankingsPage() {
         {/* Quality Rankings */}
         {!loading && activeTab === 'quality' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-800 to-cyan-600 px-6 py-4">
+            <div className="bg-gradient-to-r from-purple-700 to-fuchsia-600 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
-              <p className="text-blue-100 text-sm">Based on likes and dislikes ratio</p>
+              <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
             </div>
             
             <div className="overflow-x-auto">
@@ -318,9 +318,9 @@ export default function RankingsPage() {
         {/* Creator Rankings */}
         {!loading && activeTab === 'creators' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-green-800 to-emerald-600 px-6 py-4">
+            <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Creator Rankings</h2>
-              <p className="text-green-100 text-sm">Based on number of games published</p>
+              <p className="text-purple-100 text-sm">Based on number of games published</p>
             </div>
             
             <div className="overflow-x-auto">
