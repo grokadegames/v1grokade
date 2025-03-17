@@ -174,6 +174,11 @@ export async function GET(request) {
         description: game.description || 'No description available',
         playUrl: game.playUrl || '#',
         image: game.imageUrl,
+        imageUrl: game.imageUrl,
+        galleryImage1: game.galleryImage1 || null,
+        galleryImage2: game.galleryImage2 || null,
+        galleryImage3: game.galleryImage3 || null,
+        galleryImage4: game.galleryImage4 || null,
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,
         isLive: true, // Assuming all games from DB are live

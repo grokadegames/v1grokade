@@ -32,6 +32,10 @@ model Game {
   updatedAt   DateTime       @updatedAt
   tagcategory String?
   xaccount    String?
+  galleryImage1 String?
+  galleryImage2 String?
+  galleryImage3 String?
+  galleryImage4 String?
   favoritedBy GameFavorite[]
   author      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
   metrics     GameMetrics?

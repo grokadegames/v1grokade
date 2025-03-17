@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "games" ADD COLUMN IF NOT EXISTS "galleryImage1" TEXT,
+ADD COLUMN IF NOT EXISTS "galleryImage2" TEXT,
+ADD COLUMN IF NOT EXISTS "galleryImage3" TEXT,
+ADD COLUMN IF NOT EXISTS "galleryImage4" TEXT; 

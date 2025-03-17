@@ -25,13 +25,19 @@ export default function GamePage() {
   const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
   const [visibleOverlays, setVisibleOverlays] = useState({}); // Track which overlays are visible
   
-  // Example gallery images - in a real app these would come from the API
-  const galleryImages = [
-    '/images/gallery1.jpg',
-    '/images/gallery2.jpg',
-    '/images/gallery3.jpg',
-    '/images/gallery4.jpg',
-  ];
+  // Get gallery images from the game data when available
+  const getGalleryImages = (game) => {
+    if (!game) return [];
+    
+    const images = [];
+    
+    if (game.galleryImage1) images.push(game.galleryImage1);
+    if (game.galleryImage2) images.push(game.galleryImage2);
+    if (game.galleryImage3) images.push(game.galleryImage3);
+    if (game.galleryImage4) images.push(game.galleryImage4);
+    
+    return images;
+  };
   
   useEffect(() => {
     const fetchGame = async () => {
@@ -602,10 +608,16 @@ export default function GamePage() {
           {/* Game Preview Section - ORDER CHANGED: Now second on mobile */}
           <div className="w-full lg:w-2/3 rounded-lg overflow-hidden order-2 lg:order-1 mt-6 lg:mt-0">
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-              {selectedGalleryImage === 0 && game.image ? (
+              {selectedGalleryImage === 0 && game.imageUrl ? (
                 <img 
-                  src={game.image} 
+                  src={game.imageUrl} 
                   alt={game.title} 
+                  className="w-full h-full object-cover"
+                />
+              ) : selectedGalleryImage > 0 && getGalleryImages(game)[selectedGalleryImage - 1] ? (
+                <img 
+                  src={getGalleryImages(game)[selectedGalleryImage - 1]} 
+                  alt={`${game.title} gallery ${selectedGalleryImage}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -628,9 +640,9 @@ export default function GamePage() {
                 className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === 0 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
                 onClick={() => setSelectedGalleryImage(0)}
               >
-                {game.image ? (
+                {game.imageUrl ? (
                   <img 
-                    src={game.image} 
+                    src={game.imageUrl} 
                     alt={`${game.title} thumbnail`}
                     className="w-full h-full object-cover" 
                   />
@@ -642,15 +654,17 @@ export default function GamePage() {
               </div>
               
               {/* Gallery images */}
-              {[1, 2, 3, 4].map((_, index) => (
+              {getGalleryImages(game).map((imageUrl, index) => (
                 <div 
                   key={index} 
                   className={`w-32 h-24 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${selectedGalleryImage === index + 1 ? 'border-2 border-purple-500' : 'border-2 border-transparent'}`}
                   onClick={() => setSelectedGalleryImage(index + 1)}
                 >
-                  <div className="w-full h-full bg-grok-dark flex items-center justify-center">
-                    <span className="text-xs text-gray-500">Gallery {index + 1}</span>
-                  </div>
+                  <img 
+                    src={imageUrl} 
+                    alt={`${game.title} gallery ${index + 1}`}
+                    className="w-full h-full object-cover" 
+                  />
                 </div>
               ))}
             </div>
