@@ -273,16 +273,6 @@ export default function FeatureGameGrid() {
             >
               View Game
             </Link>
-            <a 
-              href={featuredGame.playUrl || '#'} 
-              onClick={(e) => handlePlayClick(e, featuredGame)}
-              className="w-full text-center bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
-            >
-              <svg className="w-4 h-4 mr-1.5 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
-              </svg>
-              Play Now
-            </a>
             {featuredGame.xaccount && (
               <a 
                 href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
