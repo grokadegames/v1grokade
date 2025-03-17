@@ -558,7 +558,7 @@ export default function GamePage() {
               
               <div className="flex flex-col gap-4 mb-6">
                 <a 
-                  href={game.xaccount ? `https://x.com/${game.xaccount.replace('@', '')}` : '#'} 
+                  href={game.xaccount ? (game.xaccount.startsWith('http') ? game.xaccount : `https://x.com/${game.xaccount.replace('@', '')}`) : '#'} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-purple-600 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-purple-700 transition-colors"
@@ -567,7 +567,7 @@ export default function GamePage() {
                     <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M22 6L12 13L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  {game.xaccount ? `Contact ${game.xaccount}` : 'Contact Author'}
+                  Contact Author
                 </a>
                 
                 <a 
