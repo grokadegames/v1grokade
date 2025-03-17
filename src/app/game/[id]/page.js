@@ -95,10 +95,11 @@ export default function GamePage() {
               updatedAt: game.updatedAt || null
             }));
           
-          // Sort by most popular (views) and get top 5
+          // Filter for featured games only and sort by popularity
           const featured = gamesWithoutCurrent
+            .filter(game => game.featured === true)
             .sort((a, b) => b.views - a.views)
-            .slice(0, 5);
+            .slice(0, 10);
           
           setFeaturedGames(featured);
         } else {
@@ -797,20 +798,20 @@ export default function GamePage() {
       </div>
       
       {/* Featured Games Section */}
-      <div className="border-t border-gray-800 py-8">
-        <div className="container-custom mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl text-white font-semibold">FEATURED GAMES</h2>
-          </div>
-          
-          <div className="relative">
-            <div 
-              ref={featuredGamesContainerRef}
-              className="games-container overflow-x-auto scrollbar-hide cursor-grab"
-            >
-              <div className="flex gap-4 pb-4 min-w-max">
-                {featuredGames.length > 0 ? (
-                  featuredGames.map((featuredGame) => (
+      {featuredGames.length > 0 && (
+        <div className="border-t border-gray-800 py-8">
+          <div className="container-custom mx-auto px-4">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl text-white font-semibold">FEATURED GAMES</h2>
+            </div>
+            
+            <div className="relative">
+              <div 
+                ref={featuredGamesContainerRef}
+                className="games-container overflow-x-auto scrollbar-hide cursor-grab"
+              >
+                <div className="flex gap-4 pb-4 min-w-max">
+                  {featuredGames.map((featuredGame) => (
                     <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
                       onClick={() => toggleOverlay(featuredGame.id)}
                     >
@@ -917,41 +918,37 @@ export default function GamePage() {
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-10">
-                    <p className="text-gray-400">No featured games available at the moment.</p>
-                  </div>
-                )}
+                  ))}
+                </div>
               </div>
+              
+              {/* Carousel Navigation - moved on top of thumbnails with transparent background */}
+              {featuredGames.length > 0 && (
+                <div className="flex items-center justify-between absolute top-[25%] w-full -translate-y-1/2 pointer-events-none px-2">
+                  <button
+                    onClick={scrollFeaturedLeft}
+                    className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
+                    aria-label="Scroll left"
+                  >
+                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={scrollFeaturedRight}
+                    className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
+                    aria-label="Scroll right"
+                  >
+                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
-            
-            {/* Carousel Navigation - moved on top of thumbnails with transparent background */}
-            {featuredGames.length > 0 && (
-              <div className="flex items-center justify-between absolute top-[25%] w-full -translate-y-1/2 pointer-events-none px-2">
-                <button
-                  onClick={scrollFeaturedLeft}
-                  className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
-                  aria-label="Scroll left"
-                >
-                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <button
-                  onClick={scrollFeaturedRight}
-                  className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
-                  aria-label="Scroll right"
-                >
-                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-            )}
           </div>
         </div>
-      </div>
+      )}
       
       <Footer />
     </div>
