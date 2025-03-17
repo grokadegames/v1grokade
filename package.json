@@ -14,11 +14,13 @@
     "prisma:migrate": "prisma migrate dev",
     "netlify-build": "npx prisma generate && next build --no-lint",
     "backup": "node scripts/backup-db.js",
+    "backup-and-push": "node scripts/backup-and-push.js",
     "export-table": "node scripts/export-table.js",
     "export-games": "node scripts/export-table.js Game",
     "export-users": "node scripts/export-table.js User",
     "export-sponsors": "node scripts/export-table.js Sponsor",
-    "prisma:snapshot": "prisma migrate dev --create-only --name backup_$(date +%Y%m%d_%H%M%S)"
+    "prisma:snapshot": "prisma migrate dev --create-only --name backup_$(date +%Y%m%d_%H%M%S)",
+    "import-vibes": "node scripts/import-vibe-game-index.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -28,7 +30,7 @@
     "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "2.6.0",
-    "csv-parser": "^3.2.0",
+    "csv-parser": "3.2.0",
     "date-fns": "4.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
