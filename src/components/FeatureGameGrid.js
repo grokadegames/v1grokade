@@ -33,7 +33,7 @@ export default function FeatureGameGrid() {
     const fetchFeaturedGames = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/games?limit=5&sort=popular&featured=true');
+        const response = await fetch('/api/games?limit=10&sort=popular&featured=true');
         
         if (!response.ok) {
           throw new Error('Failed to fetch featured games');
