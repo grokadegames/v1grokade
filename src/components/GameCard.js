@@ -160,7 +160,19 @@ export default function GameCard({ game, onMetricsUpdate }) {
           <h3 className="text-white font-semibold">{game.title}</h3>
         </div>
         <div className="text-xs text-grok-text-secondary mb-2">
-          By: {game.creator}
+          {game.xaccount ? (
+            <a 
+              href={`https://x.com/${game.xaccount.replace('@', '')}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-purple-400 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {game.xaccount}
+            </a>
+          ) : (
+            `By: ${game.creator || 'Unknown'}`
+          )}
         </div>
         <p className="text-grok-text-secondary text-sm mb-4 flex-grow line-clamp-3 sm:line-clamp-4">
           {game.description}

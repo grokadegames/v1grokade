@@ -225,7 +225,21 @@ export default function FeatureGameGrid() {
           <div className="w-full">
             {/* Title with enhanced styling */}
             <h3 className="text-white font-bold break-words whitespace-normal line-clamp-2 text-xl mb-2 tracking-tight">{featuredGame.title}</h3>
-            <p className="text-purple-300 text-sm font-medium">By: {featuredGame.creator || 'Unknown'}</p>
+            <p className="text-purple-300 text-sm font-medium">
+              {featuredGame.xaccount ? (
+                <a 
+                  href={`https://x.com/${featuredGame.xaccount.replace('@', '')}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {featuredGame.xaccount}
+                </a>
+              ) : (
+                `By: ${featuredGame.creator || 'Unknown'}`
+              )}
+            </p>
             
             {/* Description with improved readability */}
             <div className="bg-black/30 backdrop-blur-sm rounded-md px-3 py-2 mt-3 mb-3 border-l-2 border-purple-500">
