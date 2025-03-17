@@ -51,6 +51,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
   // Handle play button click
   const handlePlayClick = (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Ensure we stop propagation to prevent the overlay toggle
     
     if (game && game.id) {
       // Track the play
@@ -65,15 +66,15 @@ export default function GameCard({ game, onMetricsUpdate }) {
               onMetricsUpdate(game.id, { plays: result.metrics.plays });
             }
           }
-          // Open in the same call stack as the click event to avoid popup blockers
-          window.location.href = game.playUrl;
+          // Use window.open for better compatibility
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
         })
         .catch(error => {
           console.error('Error tracking game play from card:', error);
-          window.location.href = game.playUrl;
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
         });
     } else if (game && game.playUrl) {
-      window.location.href = game.playUrl;
+      window.open(game.playUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -212,6 +213,17 @@ export default function GameCard({ game, onMetricsUpdate }) {
           >
             Play Now
           </a>
+          {game.xaccount && (
+            <a 
+              href={game.xaccount ? (game.xaccount.startsWith('http') ? game.xaccount : `https://x.com/${game.xaccount.replace('@', '')}`) : '#'} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full text-center bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+              onClick={(e) => e.stopPropagation()} // Prevent the overlay toggle
+            >
+              Contact Author
+            </a>
+          )}
         </div>
       </div>
     </div>

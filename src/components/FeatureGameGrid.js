@@ -89,6 +89,7 @@ export default function FeatureGameGrid() {
   // Handle play button click
   const handlePlayClick = (e, game) => {
     e.preventDefault();
+    e.stopPropagation(); // Ensure we stop propagation
     
     if (game && game.id) {
       trackGamePlay(game.id)
@@ -104,15 +105,15 @@ export default function FeatureGameGrid() {
               )
             );
           }
-          // Use window.location.href instead of window.open for better mobile compatibility
-          window.location.href = game.playUrl;
+          // Use window.open instead of location.href for better compatibility
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
         })
         .catch(error => {
           console.error('Error tracking featured game play:', error);
-          window.location.href = game.playUrl;
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
         });
     } else if (game && game.playUrl) {
-      window.location.href = game.playUrl;
+      window.open(game.playUrl, '_blank', 'noopener,noreferrer');
     }
   };
   
@@ -268,6 +269,7 @@ export default function FeatureGameGrid() {
             <Link 
               href={`/game/${featuredGame.id}`} 
               className="w-full text-center bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+              onClick={(e) => e.stopPropagation()}
             >
               View Game
             </Link>
@@ -281,6 +283,21 @@ export default function FeatureGameGrid() {
               </svg>
               Play Now
             </a>
+            {featuredGame.xaccount && (
+              <a 
+                href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <svg className="w-4 h-4 mr-1.5 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 6L12 13L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Contact Author
+              </a>
+            )}
           </div>
         </div>
       </div>
