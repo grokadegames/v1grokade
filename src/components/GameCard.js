@@ -84,12 +84,12 @@ export default function GameCard({ game, onMetricsUpdate }) {
 
   return (
     <div 
-      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group"
+      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group min-h-[400px] sm:min-h-[420px] md:min-h-[440px]"
       onClick={toggleOverlay}
     >
       <div className="relative">
         {/* Game thumbnail/image */}
-        <div className="h-40 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
+        <div className="h-48 sm:h-52 md:h-56 lg:h-60 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
           {(() => {
             // Default image path - using SVG now
             const defaultImageUrl = '/images/default-game-cover.svg';
@@ -127,10 +127,10 @@ export default function GameCard({ game, onMetricsUpdate }) {
             );
           })()}
           
-          {/* Live indicator */}
+          {/* Live indicator - moved to right of image and made green */}
           {game.isLive && (
             <div className="absolute top-2 right-2 z-10">
-              <span className="bg-grok-live text-grok-dark text-xs font-semibold px-2 py-1 rounded">LIVE</span>
+              <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded">LIVE</span>
             </div>
           )}
           
@@ -162,7 +162,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
         <div className="text-xs text-grok-text-secondary mb-2">
           By: {game.creator}
         </div>
-        <p className="text-grok-text-secondary text-sm mb-4 flex-grow">
+        <p className="text-grok-text-secondary text-sm mb-4 flex-grow line-clamp-3 sm:line-clamp-4">
           {game.description}
         </p>
         
