@@ -52,8 +52,9 @@ export async function GET(request) {
     const searchTerm = searchParams.get('search') || '';
     const sortBy = searchParams.get('sort') || 'newest';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
+    const featured = searchParams.get('featured') === 'true';
     
-    console.log('[API] Query params:', { searchTerm, sortBy, limit });
+    console.log('[API] Query params:', { searchTerm, sortBy, limit, featured });
     
     // If we don't have a DATABASE_URL, return sample data
     if (!hasDatabaseUrl) {
@@ -95,9 +96,17 @@ export async function GET(request) {
     
     // Build the where clause for filtering
     let where = {};
+    
+    // Add featured filter if specified
+    if (featured) {
+      console.log('[API] Filtering for featured games');
+      where.featured = true;
+    }
+    
     if (searchTerm) {
       console.log('[API] Applying search filter:', searchTerm);
       where = {
+        ...where,
         OR: [
           { title: { contains: searchTerm, mode: 'insensitive' } },
           { description: { contains: searchTerm, mode: 'insensitive' } },

@@ -22,23 +22,24 @@ model User {
 }
 
 model Game {
-  id          String         @id @default(uuid())
-  title       String
-  description String
-  imageUrl    String?
-  playUrl     String
-  authorId    String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  tagcategory String?
-  xaccount    String?
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  imageUrl      String?
+  playUrl       String
+  authorId      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  tagcategory   String?
+  xaccount      String?
   galleryImage1 String?
   galleryImage2 String?
   galleryImage3 String?
   galleryImage4 String?
-  favoritedBy GameFavorite[]
-  author      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  metrics     GameMetrics?
+  featured      Boolean        @default(false)
+  favoritedBy   GameFavorite[]
+  metrics       GameMetrics?
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("games")
 }
@@ -67,14 +68,14 @@ model Sponsor {
 }
 
 model GameMetrics {
-  id            String   @id @default(uuid())
-  gameId        String   @unique
-  views         Int      @default(0)
-  plays         Int      @default(0)
-  likes         Int      @default(0)
-  dislikes      Int      @default(0)
-  lastUpdated   DateTime @default(now()) @updatedAt
-  game          Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  gameId      String   @unique
+  views       Int      @default(0)
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  dislikes    Int      @default(0)
+  lastUpdated DateTime @default(now()) @updatedAt
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@map("game_metrics")
 }
