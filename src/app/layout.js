@@ -5,7 +5,7 @@ import Providers from '@/components/Providers'
 const inter = Inter({ subsets: ['latin'] })
 
 // Add a version query parameter to force cache refresh
-const faviconVersion = '?v=2';
+const faviconVersion = '?v=3';
 
 export const metadata = {
   title: 'Grokade - AI Gaming Vibe Hub',
