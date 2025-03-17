@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useRoadmapModal } from '@/contexts/RoadmapModalContext';
 
 export default function AuthNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
   const router = useRouter();
+  const { openRoadmapModal } = useRoadmapModal();
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -51,12 +53,15 @@ export default function AuthNavbar() {
 
           {/* Action Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-3">
-            <Link href="/roadmap" className="bg-black border-2 border-orange-500 text-orange-500 px-3 py-1 rounded-md flex items-center hover:bg-orange-500 hover:text-black transition-colors duration-300 text-sm">
+            <button 
+              onClick={openRoadmapModal}
+              className="bg-black border-2 border-orange-500 text-orange-500 px-3 py-1 rounded-md flex items-center hover:bg-orange-500 hover:text-black transition-colors duration-300 text-sm"
+            >
               <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3 17H7V13H3V17ZM10 17H14V8H10V17ZM17 17H21V3H17V17Z" fill="currentColor" />
               </svg>
               Roadmap
-            </Link>
+            </button>
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <Link href="/dashboard" className="bg-gray-800 text-white px-3 py-1 rounded-md hover:bg-gray-700 text-sm">
@@ -145,16 +150,18 @@ export default function AuthNavbar() {
               </Link>
               
               <div className="pt-2 flex flex-col space-y-3">
-                <Link 
-                  href="/roadmap" 
+                <button 
+                  onClick={() => {
+                    openRoadmapModal();
+                    setIsMenuOpen(false);
+                  }}
                   className="bg-black border-2 border-orange-500 text-orange-500 px-4 py-2 rounded-md flex items-center justify-center hover:bg-orange-500 hover:text-black transition-colors duration-300"
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 17H7V13H3V17ZM10 17H14V8H10V17ZM17 17H21V3H17V17Z" fill="currentColor" />
                   </svg>
                   Roadmap
-                </Link>
+                </button>
                 {isAuthenticated ? (
                   <>
                     <Link 
