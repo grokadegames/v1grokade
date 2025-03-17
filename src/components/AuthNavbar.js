@@ -41,8 +41,8 @@ export default function AuthNavbar() {
             <Link href="/rankings" className="text-white hover:text-purple-500 transition-colors mx-3">
               Rankings
             </Link>
-            <Link href="/coming-soon?feature=Competitions" className="text-white hover:text-purple-500 transition-colors mx-3">
-              Competitions
+            <Link href="/competitions" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Competitions ⭐
             </Link>
             <Link href="/about" className="text-white hover:text-purple-500 transition-colors mx-3">
               About
@@ -130,11 +130,11 @@ export default function AuthNavbar() {
                 Rankings
               </Link>
               <Link 
-                href="/coming-soon?feature=Competitions" 
+                href="/competitions" 
                 className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Competitions
+                Competitions ⭐
               </Link>
               <Link 
                 href="/about" 
