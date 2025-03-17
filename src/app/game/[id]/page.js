@@ -573,33 +573,7 @@ export default function GamePage() {
                 
                 <a 
                   href={game.playUrl || '#'}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Get the game URL
-                    const gameUrl = game.playUrl || '#';
-                    
-                    // Track play with timeout for mobile compatibility
-                    if (game && game.id) {
-                      trackGamePlay(game.id)
-                        .then(() => {
-                          // Use setTimeout to ensure the event has fully processed
-                          setTimeout(() => {
-                            window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                          }, 50);
-                        })
-                        .catch(() => {
-                          setTimeout(() => {
-                            window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                          }, 50);
-                        });
-                    } else if (gameUrl !== '#') {
-                      setTimeout(() => {
-                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                      }, 50);
-                    }
-                  }}
+                  onClick={handlePlayClick}
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex-1 flex justify-center items-center gap-2 bg-grok-purple hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors"
@@ -932,46 +906,7 @@ export default function GamePage() {
                           
                           <a 
                             href={featuredGame.playUrl || '#'} 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation(); // Prevent toggle overlay
-                              
-                              // Get the game URL
-                              const gameUrl = featuredGame.playUrl || '#';
-                              
-                              // Track play for featured game with timeout for mobile compatibility
-                              if (featuredGame && featuredGame.id) {
-                                trackGamePlay(featuredGame.id)
-                                  .then(result => {
-                                    console.log('Featured game play tracked:', result);
-                                    // Update the local play count if available from the API
-                                    if (result && result.metrics && result.metrics.plays !== undefined) {
-                                      setFeaturedGames(prev => 
-                                        prev.map(game => 
-                                          game.id === featuredGame.id 
-                                            ? {...game, plays: result.metrics.plays}
-                                            : game
-                                        )
-                                      );
-                                    }
-                                    
-                                    // Use setTimeout to ensure the event has fully processed
-                                    setTimeout(() => {
-                                      window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                                    }, 50);
-                                  })
-                                  .catch(error => {
-                                    console.error('Error tracking featured game play:', error);
-                                    setTimeout(() => {
-                                      window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                                    }, 50);
-                                  });
-                              } else if (gameUrl !== '#') {
-                                setTimeout(() => {
-                                  window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                                }, 50);
-                              }
-                            }}
+                            onClick={handlePlayClick}
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                           >
                             <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

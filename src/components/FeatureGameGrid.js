@@ -275,36 +275,8 @@ export default function FeatureGameGrid() {
             </Link>
             <a 
               href={featuredGame.playUrl || '#'} 
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={(e) => handlePlayClick(e, featuredGame)}
               className="w-full text-center bg-purple-600 hover:bg-purple-500 text-white px-3 py-2 rounded-md transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Get the game URL
-                const gameUrl = featuredGame.playUrl || '#';
-                
-                // Direct navigation for mobile compatibility with timeout
-                if (featuredGame && featuredGame.id) {
-                  trackGamePlay(featuredGame.id)
-                    .then(() => {
-                      // Use setTimeout to ensure the event has fully processed
-                      setTimeout(() => {
-                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                      }, 50);
-                    })
-                    .catch(() => {
-                      setTimeout(() => {
-                        window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                      }, 50);
-                    });
-                } else if (gameUrl !== '#') {
-                  setTimeout(() => {
-                    window.open(gameUrl, '_blank', 'noopener,noreferrer');
-                  }, 50);
-                }
-              }}
             >
               <svg className="w-4 h-4 mr-1.5 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
