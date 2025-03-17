@@ -128,4 +128,4 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-Build trigger: [Timestamp: 2025-03-17 16:30:00]
+Build trigger: [Timestamp: 2025-03-17 16:45:00] (GitHub Actions build with Netlify)
