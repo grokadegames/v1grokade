@@ -48,16 +48,24 @@ const featuredTalent = [
 
 // Talent card component
 const TalentCard = ({ talent }) => {
-  // Determine the initials to show in the circle
-  const initials = talent.initials;
+  // Determine the initials to show in the circle if no profile image
+  const initials = talent.initials || talent.name?.charAt(0) || '?';
   
   return (
     <div className="bg-gray-900 rounded-xl overflow-hidden">
       <div className="p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white text-xl font-bold">
-              {initials}
+            <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden flex items-center justify-center text-white text-xl font-bold">
+              {talent.profileImageUrl ? (
+                <img 
+                  src={talent.profileImageUrl} 
+                  alt={talent.name} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                initials
+              )}
             </div>
           </div>
           <div className="ml-3">

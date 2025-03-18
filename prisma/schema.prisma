@@ -22,6 +22,7 @@ model User {
   email       String         @unique
   displayName String
   password    String
+  profileImageUrl String?    // New field for profile image
   role        UserRole       @default(BASIC)
   roles       UserRoles[]    // New field for multiple roles
   createdAt   DateTime       @default(now())

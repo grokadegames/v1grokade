@@ -22,7 +22,8 @@ export async function GET(request) {
           select: {
             id: true,
             username: true,
-            displayName: true
+            displayName: true,
+            profileImageUrl: true
           }
         }
       },
@@ -49,7 +50,8 @@ export async function GET(request) {
       rate: profile.hourlyRate,
       location: profile.location,
       xaccount: profile.xaccount,
-      featured: profile.featured
+      featured: profile.featured,
+      profileImageUrl: profile.user.profileImageUrl
     }));
     
     return NextResponse.json({

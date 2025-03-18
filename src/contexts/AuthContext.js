@@ -185,6 +185,29 @@ export function AuthProvider({ children }) {
     return requiredRoles.every(role => user.allRoles.includes(role));
   };
 
+  // Function to refresh user data
+  const refreshUser = async () => {
+    try {
+      console.log('[Auth] Refreshing user data');
+      const response = await fetch('/api/auth/me', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('[Auth] User data refreshed:', data.user?.username);
+        setUser(data.user);
+      } else {
+        console.error('[Auth] Failed to refresh user data');
+      }
+    } catch (error) {
+      console.error('[Auth] Error refreshing user data:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider 
       value={{ 
@@ -192,7 +215,8 @@ export function AuthProvider({ children }) {
         loading, 
         login, 
         register, 
-        logout, 
+        logout,
+        refreshUser,
         isAuthenticated: !!user,
         isLoggingOut,
         // Role helpers
