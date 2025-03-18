@@ -20,107 +20,103 @@ export default function CompetitionsPage() {
         
         {/* Featured Competition Card */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-2 bg-blue-900 rounded-lg overflow-hidden">
+          <div className="lg:col-span-2 bg-purple-900 rounded-lg overflow-hidden">
             {/* Featured competition content */}
-            <div className="bg-blue-900 p-12 flex flex-col items-center justify-center">
-              <h2 className="text-3xl font-bold text-white mb-16">Flight Simulator Championship</h2>
+            <div className="bg-purple-900 p-12 flex flex-col items-center justify-center">
+              <h2 className="text-3xl font-bold text-white mb-8">🌟 2025 Vibe Coding Game Jam</h2>
+              <p className="text-white text-center mb-4">
+                Run by <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">@levelsio</a>
+              </p>
             </div>
             
-            <div className="bg-blue-950 p-6">
+            <div className="bg-purple-950 p-6">
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="bg-purple-600 text-white px-3 py-1 text-sm rounded-full">Featured</span>
-                <span className="bg-yellow-600 text-white px-3 py-1 text-sm rounded-full">$1,000 Prize Pool</span>
                 <span className="bg-green-600 text-white px-3 py-1 text-sm rounded-full">Enrolling Now</span>
               </div>
               
               <p className="text-white mb-6">
-                Compete in the ultimate flight challenge at <a href="https://fly.pieter.com" className="text-blue-300 hover:underline">fly.pieter.com</a>. Complete 3 missions with the highest score in the least amount of time to win the top prize. Test your piloting skills in this high-octane competition!
+                Deadline to enter: <span className="font-semibold">25 March 2025</span>, so you have 7 days
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center text-white mb-2">
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                      <path d="M16 2V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M8 2V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M3 10H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span>Deadline</span>
-                  </div>
-                  <span className="text-white font-medium">June 15, 2023</span>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white">Anyone can enter with their game</p>
                 </div>
-                
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center text-white mb-2">
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M23 21V19C22.9986 17.1771 21.7079 15.5857 20 15.13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M16 3.13C17.7095 3.58317 19.0017 5.17565 19.0017 7.00065C19.0017 8.82565 17.7095 10.4181 16 10.87" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span>Participants</span>
-                  </div>
-                  <span className="text-white font-medium">127 / 200</span>
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white">At least 80% code has to be written by AI</p>
                 </div>
-                
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center text-white mb-2">
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M20 6L17 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M14 4L12 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M10 4L12 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M4 6L7 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M4 18L7 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M14 20L12 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M10 20L12 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path d="M20 18L17 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span>Prizes</span>
-                  </div>
-                  <span className="text-white font-medium">3 Winners</span>
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white">Game has to be accessible on web without any login or signup and free-to-play (preferrably its own domain or subdomain)</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white">Game has to be multiplayer by default</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white">Can use any engine but usually ThreeJS is recommended</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-purple-300 mr-2">•</span>
+                  <p className="text-white font-semibold">NO loading screens and heavy downloads (!!!) has to be almost instantly in the game (except maybe ask username if you want)</p>
                 </div>
               </div>
+
+              <p className="text-white mb-4">
+                The jury: me, and I will ask some real game dev people to jury too
+              </p>
               
-              <div className="mb-4">
-                <div className="text-sm text-white mb-1">Registration Progress</div>
-                <div className="w-full bg-blue-800 rounded-full h-2.5">
-                  <div className="bg-purple-600 h-2.5 rounded-full" style={{ width: '64%' }}></div>
-                </div>
-                <div className="text-right text-xs text-purple-300 mt-1">64% Full</div>
-              </div>
+              <p className="text-white mb-6">
+                Gold, silver and bronze winners will be tweeted out and if companies want to sponsor prizes that works too. General sponsors welcome too, just DM me!
+              </p>
               
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-colors">
+              <p className="text-white mb-6">
+                I hope this will help give the best vibe coded games more distribution!
+              </p>
+              
+              <a 
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdB8LEZIoYuh4_tO89s2DbMT7nqyDvJGrgrrUoBquLA4XCBRA/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-colors text-center"
+              >
                 Enter Competition
-              </button>
+              </a>
             </div>
           </div>
           
           {/* Right Side Info Cards */}
           <div className="lg:col-span-1 space-y-8">
             <div className="bg-gray-900 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-6">Competition Schedule</h3>
+              <h3 className="text-xl font-bold text-white mb-6">Competition Details</h3>
               
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-white">Registration Open</h4>
-                  <p className="text-grok-text-secondary text-sm">May 1 - June 15, 2023</p>
+                  <p className="text-grok-text-secondary text-sm">March 18 - March 25, 2025</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-white">Development Period</h4>
-                  <p className="text-grok-text-secondary text-sm">June 16 - July 31, 2023</p>
+                  <h4 className="font-semibold text-white">Submission Deadline</h4>
+                  <p className="text-grok-text-secondary text-sm">March 25, 2025</p>
                 </div>
                 
                 <div>
                   <h4 className="font-semibold text-white">Judging</h4>
-                  <p className="text-grok-text-secondary text-sm">August 1 - August 15, 2023</p>
+                  <p className="text-grok-text-secondary text-sm">After March 25, 2025</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-white">Winners Announced</h4>
-                  <p className="text-grok-text-secondary text-sm">August 20, 2023</p>
+                  <h4 className="font-semibold text-white">Track Games</h4>
+                  <p className="text-grok-text-secondary text-sm">
+                    <a href="https://twitter.com/hashtag/vibejam" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                      #vibejam
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -133,7 +129,7 @@ export default function CompetitionsPage() {
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center font-bold text-black mr-4">1</div>
                   <div>
                     <h4 className="font-semibold text-white">1st Place</h4>
-                    <p className="text-green-400">$2,500 + Featured Spotlight</p>
+                    <p className="text-green-400">Gold Medal + Featured Spotlight</p>
                   </div>
                 </div>
                 
@@ -141,7 +137,7 @@ export default function CompetitionsPage() {
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center font-bold text-black mr-4">2</div>
                   <div>
                     <h4 className="font-semibold text-white">2nd Place</h4>
-                    <p className="text-green-400">$1,500 + Featured Listing</p>
+                    <p className="text-green-400">Silver Medal + Featured Listing</p>
                   </div>
                 </div>
                 
@@ -149,8 +145,14 @@ export default function CompetitionsPage() {
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center font-bold text-black mr-4">3</div>
                   <div>
                     <h4 className="font-semibold text-white">3rd Place</h4>
-                    <p className="text-green-400">$1,000 + Featured Listing</p>
+                    <p className="text-green-400">Bronze Medal + Featured Listing</p>
                   </div>
+                </div>
+                
+                <div className="pt-4 border-t border-gray-800">
+                  <p className="text-white text-sm">
+                    Sponsorship opportunities available. Contact <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">@levelsio</a> for details.
+                  </p>
                 </div>
               </div>
             </div>
