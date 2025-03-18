@@ -94,11 +94,10 @@ export default function CombinedTrendIndicator({
     // For positions, a decrease is positive (better ranking)
     const positionChange = oldestPosition - latestPosition;
     
-    // Calculate percentage change
-    // For ranks, we invert the percentage calculation since lower is better
-    const percentChange = oldestPosition === 0 
-      ? 0 
-      : (positionChange / oldestPosition) * 100;
+    // Calculate percentage change based on total number of items
+    // We assume there are 100 items in total for the ranking
+    const totalItems = 100;
+    const percentChange = (positionChange / totalItems) * 100;
     
     // Extract points for sparkline - ensure we have at least 10 points for a smoother line
     const dataPoints = sortedData.map(item => 100 - item.position);
