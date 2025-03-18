@@ -58,11 +58,13 @@ const TalentCard = ({ talent }) => {
           <div className="flex-shrink-0">
             <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden flex items-center justify-center text-white text-xl font-bold">
               {talent.profileImageUrl ? (
-                <img 
-                  src={talent.profileImageUrl} 
-                  alt={talent.name} 
-                  className="w-full h-full object-cover"
-                />
+                <div className="w-full h-full relative">
+                  <img 
+                    src={talent.profileImageUrl} 
+                    alt={talent.name} 
+                    className="absolute w-full h-full object-cover object-center"
+                  />
+                </div>
               ) : (
                 initials
               )}

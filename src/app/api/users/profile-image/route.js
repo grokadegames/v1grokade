@@ -42,7 +42,9 @@ export async function POST(request) {
           folder: 'user_profiles',
           overwrite: true,
           transformation: [
-            { width: 400, height: 400, crop: 'fill', gravity: 'face' },
+            { width: 400, height: 400, crop: 'fill', gravity: 'auto' },
+            { radius: 'max' }, // Make image perfectly circular
+            { quality: 'auto:good' } // Automatically optimize quality
           ],
         },
         (error, result) => {

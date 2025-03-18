@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function ProfileImageUpload({ minimal = false }) {
+export default function ProfileImageUpload({ minimal = false, onUploadSuccess }) {
   const { user, refreshUser } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -86,7 +86,12 @@ export default function ProfileImageUpload({ minimal = false }) {
       fileInputRef.current.value = '';
       
       // Refresh user data to get the updated profile image URL
-      refreshUser();
+      await refreshUser();
+      
+      // Call onUploadSuccess callback if provided
+      if (typeof onUploadSuccess === 'function') {
+        onUploadSuccess(data.imageUrl);
+      }
       
     } catch (error) {
       console.error('Error uploading image:', error);

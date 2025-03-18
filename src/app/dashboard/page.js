@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -15,6 +15,18 @@ export default function Dashboard() {
   const { user, loading, logout, isAuthenticated, isLoggingOut } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
+  const [imageUpdated, setImageUpdated] = useState(false);
+  const [imageTimestamp, setImageTimestamp] = useState(Date.now());
+
+  // Force profile image to reload when updated
+  const handleImageUpdate = useCallback(() => {
+    setImageUpdated(true);
+    setImageTimestamp(Date.now());
+    // Force a refresh after a short delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     if (!loading && !isAuthenticated && !isLoggingOut) {
@@ -85,7 +97,11 @@ export default function Dashboard() {
                   </div>
                   
                   {/* Hidden profile image uploader */}
-                  <ProfileImageUploader minimal={true} id="profile-image-upload" />
+                  <ProfileImageUploader 
+                    minimal={true} 
+                    id="profile-image-upload" 
+                    onUploadSuccess={handleImageUpdate}
+                  />
                   
                   {/* Account details here */}
                   <div className="border-t border-gray-800 pt-4 mt-4">
