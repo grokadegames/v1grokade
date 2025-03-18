@@ -10,9 +10,10 @@ import Footer from '@/components/Footer';
 import WorkProfileActivation from '@/components/dashboard/WorkProfileActivation';
 import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
+import UserPasswordTool from '@/components/admin/UserPasswordTool';
 
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
@@ -170,6 +171,14 @@ export default function Dashboard() {
               
               {/* Main content area - right side */}
               <div className="lg:col-span-2">
+                {/* Admin Section - Only visible to admins */}
+                {isAdmin && (
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-bold text-white mb-4">Admin Tools</h2>
+                    <UserPasswordTool />
+                  </section>
+                )}
+                
                 {/* Work Profile Section */}
                 <section className="mb-8">
                   <h2 className="text-2xl font-bold text-white mb-4">Work Profile</h2>
