@@ -141,6 +141,13 @@ export default function RankingsPage() {
           </p>
         </div>
         
+        {/* Mobile helper text for horizontal scrolling */}
+        <div className="text-center mb-4 sm:hidden">
+          <p className="text-xs text-gray-400 italic">
+            ← Swipe horizontally to see more →
+          </p>
+        </div>
+        
         {loading && (
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
@@ -154,17 +161,17 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on total views and plays</p>
             </div>
             
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <div className="inline-block min-w-full align-middle">
-                <table className="min-w-full table-fixed">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0">
+              <div className="min-w-[600px] w-full align-middle">
+                <table className="w-full table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="w-[40px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
-                      <th className="w-[30%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
-                      <th className="w-[80px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
-                      <th className="w-[60px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
+                      <th className="w-[50px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-center text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="w-[45%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="w-[85px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
+                      <th className="w-[70px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
                       <th className="hidden sm:table-cell px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Plays</th>
-                      <th className="w-[60px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
+                      <th className="w-[70px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,7 +184,7 @@ export default function RankingsPage() {
                     ) : (
                       popularityGames.slice(0, popularityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-center">
                             <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
@@ -193,7 +200,7 @@ export default function RankingsPage() {
                                   </div>
                                 )}
                               </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
+                              <div className="min-w-0 max-w-[140px] sm:max-w-none">
                                 <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
                                 </Link>
@@ -214,13 +221,13 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[80px] sm:w-[120px]">
+                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[85px] sm:w-[120px]">
                             <div className="h-8 sm:h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
                                 entityType="game"
                                 rankingType="popularity"
-                                width={80}
+                                width={85}
                                 height={40}
                                 showPeriods={[activePeriod]}
                                 activePeriod={activePeriod}
@@ -260,17 +267,17 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
             </div>
             
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <div className="inline-block min-w-full align-middle">
-                <table className="min-w-full table-fixed">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0">
+              <div className="min-w-[600px] w-full align-middle">
+                <table className="w-full table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="w-[40px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
-                      <th className="w-[30%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
-                      <th className="w-[80px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
+                      <th className="w-[50px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-center text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="w-[45%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="w-[85px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                       <th className="hidden sm:table-cell px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Likes</th>
                       <th className="hidden sm:table-cell px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Dislikes</th>
-                      <th className="w-[80px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Rating</th>
+                      <th className="w-[70px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Rating</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -283,7 +290,7 @@ export default function RankingsPage() {
                     ) : (
                       qualityGames.slice(0, qualityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-center">
                             <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
@@ -299,7 +306,7 @@ export default function RankingsPage() {
                                   </div>
                                 )}
                               </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
+                              <div className="min-w-0 max-w-[140px] sm:max-w-none">
                                 <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
                                 </Link>
@@ -320,13 +327,13 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[80px] sm:w-[120px]">
+                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[85px] sm:w-[120px]">
                             <div className="h-8 sm:h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
                                 entityType="game"
                                 rankingType="quality"
-                                width={80}
+                                width={85}
                                 height={40}
                                 showPeriods={[activePeriod]}
                                 activePeriod={activePeriod}
@@ -370,16 +377,16 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on number of games published</p>
             </div>
             
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <div className="inline-block min-w-full align-middle">
-                <table className="min-w-full table-fixed">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0">
+              <div className="min-w-[600px] w-full align-middle">
+                <table className="w-full table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="w-[40px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
-                      <th className="w-[30%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Creator</th>
-                      <th className="w-[80px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
+                      <th className="w-[50px] sm:w-[60px] px-1 py-2 sm:px-6 sm:py-4 text-center text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="w-[45%] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Creator</th>
+                      <th className="w-[85px] sm:w-[120px] px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                       <th className="hidden sm:table-cell px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Games</th>
-                      <th className="w-[60px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
+                      <th className="w-[70px] sm:w-auto px-1 py-2 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -392,7 +399,7 @@ export default function RankingsPage() {
                     ) : (
                       creatorRanking.slice(0, creatorLimit).map((creator, index) => (
                         <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-center">
                             <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
@@ -408,7 +415,7 @@ export default function RankingsPage() {
                                   </div>
                                 )}
                               </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
+                              <div className="min-w-0 max-w-[140px] sm:max-w-none">
                                 <Link 
                                   href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                   target="_blank"
@@ -425,13 +432,13 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[80px] sm:w-[120px]">
+                          <td className="px-1 sm:px-6 py-2 sm:py-4 w-[85px] sm:w-[120px]">
                             <div className="h-8 sm:h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={creator.xaccount}
                                 entityType="creator"
                                 rankingType="creator"
-                                width={80}
+                                width={85}
                                 height={40}
                                 showPeriods={[activePeriod]}
                                 activePeriod={activePeriod}
