@@ -10,7 +10,7 @@ export default function RankingsPage() {
   const [qualityGames, setQualityGames] = useState([]);
   const [creatorRanking, setCreatorRanking] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('popularity');
+  const [activeTab, setActiveTab] = useState('quality');
   const [popularityLimit, setPopularityLimit] = useState(10);
   const [qualityLimit, setQualityLimit] = useState(10);
   const [creatorLimit, setCreatorLimit] = useState(10);
@@ -75,16 +75,6 @@ export default function RankingsPage() {
         <div className="mb-4 flex justify-center">
           <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
             <button 
-              onClick={() => setActiveTab('popularity')}
-              className={`px-4 py-2 rounded-md text-sm ${
-                activeTab === 'popularity' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'text-grok-text-secondary hover:text-white'
-              }`}
-            >
-              Popularity Ranking
-            </button>
-            <button 
               onClick={() => setActiveTab('quality')}
               className={`px-4 py-2 rounded-md text-sm ${
                 activeTab === 'quality' 
@@ -93,6 +83,16 @@ export default function RankingsPage() {
               }`}
             >
               Quality Ranking
+            </button>
+            <button 
+              onClick={() => setActiveTab('popularity')}
+              className={`px-4 py-2 rounded-md text-sm ${
+                activeTab === 'popularity' 
+                  ? 'bg-purple-600 text-white' 
+                  : 'text-grok-text-secondary hover:text-white'
+              }`}
+            >
+              Popularity Ranking
             </button>
             <button 
               onClick={() => setActiveTab('creators')}
