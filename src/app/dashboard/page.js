@@ -182,7 +182,7 @@ export default function Dashboard() {
                 </section>
                 
                 {/* Content Sections grouped by type */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                   {/* Games Section */}
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Your Games</h2>
@@ -209,6 +209,9 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
+                
+                {/* Visual separator */}
+                <div className="border-t border-gray-800 my-8"></div>
                 
                 {/* Achievements Section */}
                 <div className="mb-8">
