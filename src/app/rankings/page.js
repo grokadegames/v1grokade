@@ -177,10 +177,8 @@ export default function RankingsPage() {
                     ) : (
                       popularityGames.slice(0, popularityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-1 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                            <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
                           </td>
@@ -229,11 +227,11 @@ export default function RankingsPage() {
                               />
                             </div>
                           </td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">
+                          <td className="pl-0 pr-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">
                             {game.metrics?.views.toLocaleString()}
                           </td>
                           <td className="hidden sm:table-cell px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.plays.toLocaleString()}</td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(game.popularityScore || 0).toLocaleString()}</td>
+                          <td className="pl-0 pr-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
@@ -285,10 +283,8 @@ export default function RankingsPage() {
                     ) : (
                       qualityGames.slice(0, qualityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-1 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                            <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
                           </td>
@@ -339,7 +335,7 @@ export default function RankingsPage() {
                           </td>
                           <td className="hidden sm:table-cell px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.likes.toLocaleString()}</td>
                           <td className="hidden sm:table-cell px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.dislikes.toLocaleString()}</td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
+                          <td className="pl-0 pr-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
                             <div className="flex items-center justify-end gap-2">
                               <span className="font-semibold text-white">
                                 {(game.qualityScore * 100).toFixed(1)}%
@@ -396,10 +392,8 @@ export default function RankingsPage() {
                     ) : (
                       creatorRanking.slice(0, creatorLimit).map((creator, index) => (
                         <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-1 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                          <td className="px-0 pr-1 sm:px-6 py-2 sm:py-4 text-right">
+                            <span className="text-xs sm:text-sm text-white font-bold">
                               {index + 1}
                             </span>
                           </td>
@@ -445,7 +439,7 @@ export default function RankingsPage() {
                             </div>
                           </td>
                           <td className="hidden sm:table-cell px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{creator.gameCount.toLocaleString()}</td>
-                          <td className="px-1 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(creator.creatorScore || 0).toLocaleString()}</td>
+                          <td className="pl-0 pr-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(creator.creatorScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
