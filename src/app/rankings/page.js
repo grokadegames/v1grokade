@@ -63,7 +63,7 @@ export default function RankingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-grok-darker">
+    <div className="min-h-screen bg-black">
       <AuthNavbar />
       
       <main className="container mx-auto max-w-6xl px-4 py-20">
@@ -73,7 +73,7 @@ export default function RankingsPage() {
         </p>
         
         <div className="mb-4 flex justify-center">
-          <div className="bg-grok-dark p-1 rounded-lg inline-flex flex-wrap justify-center">
+          <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
             <button 
               onClick={() => setActiveTab('popularity')}
               className={`px-4 py-2 rounded-md text-sm ${
@@ -108,7 +108,7 @@ export default function RankingsPage() {
         </div>
         
         <div className="flex justify-center mb-6">
-          <div className="bg-grok-dark rounded-lg inline-flex">
+          <div className="bg-gray-900 rounded-lg inline-flex">
             {timePeriods.map(period => (
               <button
                 key={period.id}
@@ -132,7 +132,7 @@ export default function RankingsPage() {
         )}
         
         {!loading && activeTab === 'popularity' && (
-          <div className="bg-grok-card rounded-xl overflow-hidden">
+          <div className="bg-black rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Popularity Rankings</h2>
               <p className="text-purple-100 text-sm">Based on total views and plays</p>
@@ -142,7 +142,7 @@ export default function RankingsPage() {
               <div className="inline-block min-w-full align-middle">
                 <table className="min-w-full">
                   <thead>
-                    <tr className="border-b border-grok-border">
+                    <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
@@ -160,13 +160,13 @@ export default function RankingsPage() {
                       </tr>
                     ) : (
                       popularityGames.slice(0, popularityLimit).map((game, index) => (
-                        <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                        <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
                               index === 0 ? 'bg-yellow-500' :
                               index === 1 ? 'bg-gray-300' :
                               index === 2 ? 'bg-amber-700' :
-                              'bg-grok-darker'
+                              'bg-gray-950'
                             } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
                               {index + 1}
                             </span>
@@ -177,7 +177,7 @@ export default function RankingsPage() {
                                 {game.imageUrl ? (
                                   <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
-                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
                                     <span className="text-xs text-grok-text-secondary">No img</span>
                                   </div>
                                 )}
@@ -243,7 +243,7 @@ export default function RankingsPage() {
         )}
         
         {!loading && activeTab === 'quality' && (
-          <div className="bg-grok-card rounded-xl overflow-hidden">
+          <div className="bg-black rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-purple-700 to-fuchsia-600 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
               <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
@@ -253,7 +253,7 @@ export default function RankingsPage() {
               <div className="inline-block min-w-full align-middle">
                 <table className="min-w-full">
                   <thead>
-                    <tr className="border-b border-grok-border">
+                    <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Likes</th>
@@ -271,13 +271,13 @@ export default function RankingsPage() {
                       </tr>
                     ) : (
                       qualityGames.slice(0, qualityLimit).map((game, index) => (
-                        <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                        <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
                               index === 0 ? 'bg-yellow-500' :
                               index === 1 ? 'bg-gray-300' :
                               index === 2 ? 'bg-amber-700' :
-                              'bg-grok-darker'
+                              'bg-gray-950'
                             } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
                               {index + 1}
                             </span>
@@ -288,7 +288,7 @@ export default function RankingsPage() {
                                 {game.imageUrl ? (
                                   <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
-                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
                                     <span className="text-xs text-grok-text-secondary">No img</span>
                                   </div>
                                 )}
@@ -362,7 +362,7 @@ export default function RankingsPage() {
         )}
 
         {!loading && activeTab === 'creators' && (
-          <div className="bg-grok-card rounded-xl overflow-hidden">
+          <div className="bg-black rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Creator Rankings</h2>
               <p className="text-purple-100 text-sm">Based on number of games published</p>
@@ -372,7 +372,7 @@ export default function RankingsPage() {
               <div className="inline-block min-w-full align-middle">
                 <table className="min-w-full">
                   <thead>
-                    <tr className="border-b border-grok-border">
+                    <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Creator</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Games</th>
@@ -390,13 +390,13 @@ export default function RankingsPage() {
                       </tr>
                     ) : (
                       creatorRanking.slice(0, creatorLimit).map((creator, index) => (
-                        <tr key={creator.xaccount} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                        <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
                               index === 0 ? 'bg-yellow-500' :
                               index === 1 ? 'bg-gray-300' :
                               index === 2 ? 'bg-amber-700' :
-                              'bg-grok-darker'
+                              'bg-gray-950'
                             } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
                               {index + 1}
                             </span>
@@ -407,7 +407,7 @@ export default function RankingsPage() {
                                 {creator.topGame?.imageUrl ? (
                                   <img src={creator.topGame.imageUrl} alt={creator.topGame.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
-                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
                                     <span className="text-xs text-grok-text-secondary">No img</span>
                                   </div>
                                 )}
