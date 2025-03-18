@@ -99,10 +99,10 @@ export default function CombinedTrendIndicator({
     let percentChange = 0;
     
     if (positionChange !== 0) {
-      // Amplify small changes - multiply by 10 for very visible changes (increased from 5)
-      // Cap at a higher percentage (40%) for more dramatic visualization
-      const amplificationFactor = 10;
-      percentChange = Math.min(Math.max((positionChange * amplificationFactor), -40), 40);
+      // Amplify small changes - multiply by 15 for extremely visible changes (increased from 10)
+      // Cap at a higher percentage (60%) for much more dramatic visualization
+      const amplificationFactor = 15;
+      percentChange = Math.min(Math.max((positionChange * amplificationFactor), -60), 60);
     }
     
     // Extract points for sparkline - ensure we have at least 10 points for a more angular line
@@ -190,20 +190,20 @@ export default function CombinedTrendIndicator({
         <div className="flex-grow mr-2">
           <Sparklines 
             data={change.sparklineData} 
-            width={(width * 2) - 40} /* Doubled width and adjusted for percentage */
+            width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
             height={height - 10}
             margin={2}
-            min={Math.min(...change.sparklineData) * 0.9} // Exaggerate the min/max range
-            max={Math.max(...change.sparklineData) * 1.1}
+            min={Math.min(...change.sparklineData) * 0.7} /* More extreme min/max range stretching */
+            max={Math.max(...change.sparklineData) * 1.3}
             style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
               color={lineColor} 
               style={{ 
-                strokeWidth: 9, /* Increased thickness for more visibility */
+                strokeWidth: 9,
                 stroke: lineColor,
                 fill: fillColor,
-                strokeLinejoin: "miter", /* Sharp corners instead of rounded */
+                strokeLinejoin: "miter",
                 strokeLinecap: "square"
               }}
             />
@@ -247,13 +247,13 @@ export default function CombinedTrendIndicator({
     // Generate demo data with a zigzag trend for visual appeal
     const demoData = [];
     for (let i = 0; i < 10; i++) {
-      // Generate a zigzag pattern for more dramatic display
-      const zigzag = (i % 2 === 0) ? 10 : -5;
-      demoData.push(40 + Math.random() * 10 + zigzag + (i * 2));
+      // Generate a more extreme zigzag pattern for more dramatic display
+      const zigzag = (i % 2 === 0) ? 15 : -8; // More extreme up and down
+      demoData.push(40 + Math.random() * 15 + zigzag + (i * 3)); // More variation
     }
     
-    // Random small positive percentage (5-15%)
-    const randomPercentage = (5 + Math.floor(Math.random() * 10)) + '%';
+    // Random positive percentage (10-25%)
+    const randomPercentage = (10 + Math.floor(Math.random() * 15)) + '%';
     
     return (
       <div className="w-full h-full flex items-center">
@@ -261,7 +261,7 @@ export default function CombinedTrendIndicator({
           <div className="flex-grow mr-2">
             <Sparklines 
               data={demoData} 
-              width={(width * 2) - 40}
+              width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
               height={height - 10}
               margin={2}
               style={{ overflow: 'hidden' }}
