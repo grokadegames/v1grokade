@@ -1,0 +1,30 @@
+name: Record Daily Rankings
+
+on:
+  schedule:
+    # Run at 12:00 UTC (midnight PST) every day
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  record-rankings:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Record daily rankings
+        run: node src/scripts/recordDailyRankings.js
+        env:
+          # Add any environment variables needed for database access
+          DATABASE_URL: ${{ secrets.DATABASE_URL }} 

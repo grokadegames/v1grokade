@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import RankingTrendline from '@/components/RankingTrendline';
 
 export default function RankingsPage() {
   const [popularityGames, setPopularityGames] = useState([]);
@@ -179,7 +180,18 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.views.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
+                            <div className="flex items-center justify-end gap-2">
+                              {game.metrics?.views.toLocaleString()}
+                              <RankingTrendline 
+                                entityId={game.id} 
+                                entityType="game" 
+                                rankingType="popularity" 
+                                width={60} 
+                                height={24}
+                              />
+                            </div>
+                          </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                         </tr>
@@ -279,13 +291,22 @@ export default function RankingsPage() {
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.likes.toLocaleString()}</td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.dislikes.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
-                            <span className={`font-semibold ${
-                              game.qualityScore > 0.8 ? 'text-green-400' : 
-                              game.qualityScore > 0.5 ? 'text-yellow-400' : 
-                              'text-red-400'
-                            }`}>
-                              {(game.qualityScore * 100).toFixed(1)}%
-                            </span>
+                            <div className="flex items-center justify-end gap-2">
+                              <span className={`font-semibold ${
+                                game.qualityScore > 0.8 ? 'text-green-400' : 
+                                game.qualityScore > 0.5 ? 'text-yellow-400' : 
+                                'text-red-400'
+                              }`}>
+                                {(game.qualityScore * 100).toFixed(1)}%
+                              </span>
+                              <RankingTrendline 
+                                entityId={game.id} 
+                                entityType="game" 
+                                rankingType="quality" 
+                                width={60} 
+                                height={24}
+                              />
+                            </div>
                           </td>
                         </tr>
                       ))
@@ -377,7 +398,18 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{creator.gameCount.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
+                            <div className="flex items-center justify-end gap-2">
+                              {creator.gameCount.toLocaleString()}
+                              <RankingTrendline 
+                                entityId={creator.xaccount} 
+                                entityType="creator" 
+                                rankingType="creator" 
+                                width={60} 
+                                height={24}
+                              />
+                            </div>
+                          </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
                         </tr>
