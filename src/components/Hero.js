@@ -163,6 +163,16 @@ export default function Hero() {
         
         {/* Sponsors Bar - Static version without autoscroll */}
         <div className="mt-16 border-t border-gray-800 pt-6">
+          <div className="flex flex-col items-center mb-4">
+            <p className="text-white text-center mb-4 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
+            <a 
+              href="mailto:sponsors@grokade.com" 
+              className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-6 py-2 rounded-md transition-colors mb-4"
+            >
+              Become a Sponsor
+            </a>
+          </div>
+          
           <div 
             ref={sponsorsContainerRef}
             className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
@@ -223,7 +233,6 @@ export default function Hero() {
               </div>
             )}
           </div>
-          <p className="text-white text-center mt-4 mb-2 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
         </div>
       </div>
       
