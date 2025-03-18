@@ -61,6 +61,8 @@ export async function GET() {
         gameCount: creator.gameCount,
         totalViews: creator.totalViews,
         totalPlays: creator.totalPlays,
+        // Add creatorScore based on gameCount and engagement
+        creatorScore: creator.gameCount * 100 + Math.floor((creator.totalViews + creator.totalPlays) / 100),
         // Get the most popular game by this creator
         topGame: creator.games.sort((a, b) => {
           const aMetrics = (a.metrics?.views || 0) + (a.metrics?.plays || 0);
