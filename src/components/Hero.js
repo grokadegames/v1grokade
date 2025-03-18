@@ -169,7 +169,7 @@ export default function Hero() {
               href="mailto:sponsors@grokade.com" 
               className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-6 py-2 rounded-md transition-colors mb-4"
             >
-              Become a Sponsor
+              Sponsor and Advertise
             </a>
           </div>
           
