@@ -26,7 +26,7 @@ export default function SponsorModal({ isOpen, onClose }) {
               </svg>
             </div>
             <p className="text-white text-center mb-4">
-              Contact <span className="text-purple-400 font-medium">@grokadegames</span> on X to discuss basic and premium sponsorship opportunities!
+              Contact <a href="https://x.com/GrokadeGames" target="_blank" rel="noopener noreferrer" className="text-purple-400 font-medium hover:underline">@grokadegames</a> on X to discuss basic and premium sponsorship opportunities!
             </p>
           </div>
           
@@ -50,13 +50,13 @@ export default function SponsorModal({ isOpen, onClose }) {
           
           <div className="flex justify-center">
             <a 
-              href="https://x.com/messages/compose?recipient_id=grokadegames&text=Hi%2C%20I%27m%20interested%20in%20potentially%20sponsoring%20Grokade." 
+              href="https://x.com/GrokadeGames" 
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition font-medium inline-flex items-center"
               onClick={onClose}
             >
-              Message us on X
+              Please Message us on
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="ml-2 h-5 w-5">
                 <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
