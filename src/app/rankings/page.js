@@ -145,16 +145,16 @@ export default function RankingsPage() {
                     <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Plays</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {popularityGames.length === 0 ? (
                       <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
                           No ranking data available
                         </td>
                       </tr>
@@ -163,11 +163,11 @@ export default function RankingsPage() {
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-yellow-500' :
-                              index === 1 ? 'bg-gray-300' :
-                              index === 2 ? 'bg-amber-700' :
+                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
+                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
+                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
                               'bg-gray-950'
-                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
+                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
                               {index + 1}
                             </span>
                           </td>
@@ -203,24 +203,24 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
-                            {game.metrics?.views.toLocaleString()}
-                          </td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.plays.toLocaleString()}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
                             <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
                                 entityType="game"
                                 rankingType="popularity"
-                                width={120}
+                                width={480}
                                 height={40}
                                 showPeriods={[activePeriod]}
                                 activePeriod={activePeriod}
                               />
                             </div>
                           </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
+                            {game.metrics?.views.toLocaleString()}
+                          </td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.plays.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
@@ -256,16 +256,16 @@ export default function RankingsPage() {
                     <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Likes</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Dislikes</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Rating</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {qualityGames.length === 0 ? (
                       <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
                           No ranking data available
                         </td>
                       </tr>
@@ -274,11 +274,11 @@ export default function RankingsPage() {
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-yellow-500' :
-                              index === 1 ? 'bg-gray-300' :
-                              index === 2 ? 'bg-amber-700' :
+                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
+                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
+                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
                               'bg-gray-950'
-                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
+                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
                               {index + 1}
                             </span>
                           </td>
@@ -314,8 +314,21 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.likes.toLocaleString()}</td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.dislikes.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
+                            <div className="h-10 w-full flex items-center">
+                              <CombinedTrendIndicator
+                                entityId={game.id}
+                                entityType="game"
+                                rankingType="quality"
+                                width={480}
+                                height={40}
+                                showPeriods={[activePeriod]}
+                                activePeriod={activePeriod}
+                              />
+                            </div>
+                          </td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.likes.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.dislikes.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
                             <div className="flex items-center justify-end gap-2">
                               <span className={`font-semibold ${
@@ -325,19 +338,6 @@ export default function RankingsPage() {
                               }`}>
                                 {(game.qualityScore * 100).toFixed(1)}%
                               </span>
-                            </div>
-                          </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
-                            <div className="h-10 w-full flex items-center">
-                              <CombinedTrendIndicator
-                                entityId={game.id}
-                                entityType="game"
-                                rankingType="quality"
-                                width={120}
-                                height={40}
-                                showPeriods={[activePeriod]}
-                                activePeriod={activePeriod}
-                              />
                             </div>
                           </td>
                         </tr>
@@ -375,16 +375,15 @@ export default function RankingsPage() {
                     <tr className="border-b border-gray-800">
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Creator</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Games</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Plays</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Games</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
                     </tr>
                   </thead>
                   <tbody>
                     {creatorRanking.length === 0 ? (
                       <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="5" className="px-6 py-8 text-center text-gray-400">
                           No ranking data available
                         </td>
                       </tr>
@@ -393,11 +392,11 @@ export default function RankingsPage() {
                         <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-yellow-500' :
-                              index === 1 ? 'bg-gray-300' :
-                              index === 2 ? 'bg-amber-700' :
+                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
+                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
+                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
                               'bg-gray-950'
-                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
+                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
                               {index + 1}
                             </span>
                           </td>
@@ -429,24 +428,21 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
-                            {creator.gameCount.toLocaleString()}
-                          </td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
                             <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={creator.xaccount}
                                 entityType="creator"
                                 rankingType="creator"
-                                width={120}
+                                width={480}
                                 height={40}
                                 showPeriods={[activePeriod]}
                                 activePeriod={activePeriod}
                               />
                             </div>
                           </td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{creator.gameCount.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(creator.creatorScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
