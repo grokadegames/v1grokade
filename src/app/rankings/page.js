@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
-import RankingTrendline from '@/components/RankingTrendline';
+import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
 
 export default function RankingsPage() {
   const [popularityGames, setPopularityGames] = useState([]);
@@ -14,6 +14,16 @@ export default function RankingsPage() {
   const [popularityLimit, setPopularityLimit] = useState(10);
   const [qualityLimit, setQualityLimit] = useState(10);
   const [creatorLimit, setCreatorLimit] = useState(10);
+  const [activePeriod, setActivePeriod] = useState('1d');
+
+  const timePeriods = [
+    { id: '10m', label: '10m' },
+    { id: '1h', label: '1h' },
+    { id: '6h', label: '6h' },
+    { id: '1d', label: '1d' },
+    { id: '7d', label: '7d' },
+    { id: '30d', label: '30d' },
+  ];
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -61,12 +71,11 @@ export default function RankingsPage() {
       
       <main className="container mx-auto max-w-6xl px-4 py-20">
         <h1 className="text-4xl font-bold text-white text-center mb-2">Game Rankings</h1>
-        <p className="text-center text-grok-text-secondary mb-10">
+        <p className="text-center text-grok-text-secondary mb-6">
           Discover the most popular and highest quality AI games on the platform
         </p>
         
-        {/* Tabs for switching between ranking types */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-4 flex justify-center">
           <div className="bg-grok-dark p-1 rounded-lg inline-flex flex-wrap justify-center">
             <button 
               onClick={() => setActiveTab('popularity')}
@@ -101,14 +110,34 @@ export default function RankingsPage() {
           </div>
         </div>
         
-        {/* Loading state */}
+        <div className="flex justify-center mb-6">
+          <div className="bg-grok-dark rounded-lg inline-flex">
+            {timePeriods.map(period => (
+              <button
+                key={period.id}
+                onClick={() => setActivePeriod(period.id)}
+                className={`px-3 py-1.5 text-xs ${
+                  activePeriod === period.id
+                    ? 'bg-gray-700 text-white rounded-md'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {period.label}
+              </button>
+            ))}
+            <div className="border-l border-gray-700 mx-2"></div>
+            <button className="px-3 py-1.5 text-xs text-purple-400">
+              {activeTab === 'popularity' || activeTab === 'quality' ? 'Crypto' : 'USD'}
+            </button>
+          </div>
+        </div>
+        
         {loading && (
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
           </div>
         )}
         
-        {/* Popularity Rankings */}
         {!loading && activeTab === 'popularity' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
@@ -126,12 +155,13 @@ export default function RankingsPage() {
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Score</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {popularityGames.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
                           No ranking data available
                         </td>
                       </tr>
@@ -181,19 +211,23 @@ export default function RankingsPage() {
                             </div>
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
-                            <div className="flex items-center justify-end gap-2">
-                              {game.metrics?.views.toLocaleString()}
-                              <RankingTrendline 
-                                entityId={game.id} 
-                                entityType="game" 
-                                rankingType="popularity" 
-                                width={60} 
-                                height={24}
-                              />
-                            </div>
+                            {game.metrics?.views.toLocaleString()}
                           </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
+                            <div className="h-10">
+                              <CombinedTrendIndicator
+                                entityId={game.id}
+                                entityType="game"
+                                rankingType="popularity"
+                                width={120}
+                                height={40}
+                                showPeriods={[activePeriod]}
+                                activePeriod={activePeriod}
+                              />
+                            </div>
+                          </td>
                         </tr>
                       ))
                     )}
@@ -202,7 +236,6 @@ export default function RankingsPage() {
               </div>
             </div>
             
-            {/* Show More Button for Popularity */}
             {popularityGames.length > popularityLimit && (
               <div className="py-4 text-center">
                 <button 
@@ -216,7 +249,6 @@ export default function RankingsPage() {
           </div>
         )}
         
-        {/* Quality Rankings */}
         {!loading && activeTab === 'quality' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-purple-700 to-fuchsia-600 px-6 py-4">
@@ -234,12 +266,13 @@ export default function RankingsPage() {
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Likes</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Dislikes</th>
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Rating</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {qualityGames.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
                           No ranking data available
                         </td>
                       </tr>
@@ -299,12 +332,18 @@ export default function RankingsPage() {
                               }`}>
                                 {(game.qualityScore * 100).toFixed(1)}%
                               </span>
-                              <RankingTrendline 
-                                entityId={game.id} 
-                                entityType="game" 
-                                rankingType="quality" 
-                                width={60} 
-                                height={24}
+                            </div>
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
+                            <div className="h-10">
+                              <CombinedTrendIndicator
+                                entityId={game.id}
+                                entityType="game"
+                                rankingType="quality"
+                                width={120}
+                                height={40}
+                                showPeriods={[activePeriod]}
+                                activePeriod={activePeriod}
                               />
                             </div>
                           </td>
@@ -316,7 +355,6 @@ export default function RankingsPage() {
               </div>
             </div>
             
-            {/* Show More Button for Quality */}
             {qualityGames.length > qualityLimit && (
               <div className="py-4 text-center">
                 <button 
@@ -330,7 +368,6 @@ export default function RankingsPage() {
           </div>
         )}
 
-        {/* Creator Rankings */}
         {!loading && activeTab === 'creators' && (
           <div className="bg-grok-card rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
@@ -348,12 +385,13 @@ export default function RankingsPage() {
                       <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Games</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
                       <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {creatorRanking.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                        <td colSpan="6" className="px-6 py-8 text-center text-grok-text-secondary">
                           No ranking data available
                         </td>
                       </tr>
@@ -399,19 +437,23 @@ export default function RankingsPage() {
                             </div>
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
-                            <div className="flex items-center justify-end gap-2">
-                              {creator.gameCount.toLocaleString()}
-                              <RankingTrendline 
-                                entityId={creator.xaccount} 
-                                entityType="creator" 
-                                rankingType="creator" 
-                                width={60} 
-                                height={24}
-                              />
-                            </div>
+                            {creator.gameCount.toLocaleString()}
                           </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
+                            <div className="h-10">
+                              <CombinedTrendIndicator
+                                entityId={creator.xaccount}
+                                entityType="creator"
+                                rankingType="creator"
+                                width={120}
+                                height={40}
+                                showPeriods={[activePeriod]}
+                                activePeriod={activePeriod}
+                              />
+                            </div>
+                          </td>
                         </tr>
                       ))
                     )}
@@ -420,7 +462,6 @@ export default function RankingsPage() {
               </div>
             </div>
             
-            {/* Show More Button for Creators */}
             {creatorRanking.length > creatorLimit && (
               <div className="py-4 text-center">
                 <button 
