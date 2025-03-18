@@ -20,18 +20,18 @@ export default function CompetitionsPage() {
         
         {/* Featured Competition Card */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-2 bg-purple-900 rounded-lg overflow-hidden">
+          <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden">
             {/* Featured competition content */}
-            <div className="bg-purple-900 p-12 flex flex-col items-center justify-center">
+            <div className="bg-gray-900 p-12 flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold text-white mb-8">🌟 2025 Vibe Coding Game Jam</h2>
               <p className="text-white text-center mb-4">
                 Run by <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">@levelsio</a>
               </p>
             </div>
             
-            <div className="bg-purple-950 p-6">
+            <div className="bg-gray-950 p-6">
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-purple-600 text-white px-3 py-1 text-sm rounded-full">Featured</span>
+                <span className="bg-blue-600 text-white px-3 py-1 text-sm rounded-full">Featured</span>
                 <span className="bg-green-600 text-white px-3 py-1 text-sm rounded-full">Enrolling Now</span>
               </div>
               
@@ -41,27 +41,27 @@ export default function CompetitionsPage() {
               
               <div className="space-y-4 mb-6">
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white">Anyone can enter with their game</p>
                 </div>
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white">At least 80% code has to be written by AI</p>
                 </div>
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white">Game has to be accessible on web without any login or signup and free-to-play (preferrably its own domain or subdomain)</p>
                 </div>
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white">Game has to be multiplayer by default</p>
                 </div>
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white">Can use any engine but usually ThreeJS is recommended</p>
                 </div>
                 <div className="flex items-start">
-                  <span className="text-purple-300 mr-2">•</span>
+                  <span className="text-blue-300 mr-2">•</span>
                   <p className="text-white font-semibold">NO loading screens and heavy downloads (!!!) has to be almost instantly in the game (except maybe ask username if you want)</p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default function CompetitionsPage() {
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdB8LEZIoYuh4_tO89s2DbMT7nqyDvJGrgrrUoBquLA4XCBRA/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-colors text-center"
+                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition-colors text-center"
               >
                 Enter Competition
               </a>
@@ -162,25 +162,25 @@ export default function CompetitionsPage() {
         {/* Tab Navigation */}
         <div className="mb-8 flex space-x-2 border-b border-gray-800">
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('upcoming')}
           >
             Upcoming
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'active' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'active' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('active')}
           >
             Active
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'past' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'past' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('past')}
           >
             Past
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'myCompetitions' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'myCompetitions' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('myCompetitions')}
           >
             My Competitions
@@ -212,7 +212,7 @@ export default function CompetitionsPage() {
                 
                 <div>
                   <div className="text-sm text-grok-text-secondary mb-1">Prize Pool</div>
-                  <div className="font-medium text-purple-400">$800</div>
+                  <div className="font-medium text-blue-400">$800</div>
                 </div>
               </div>
               
@@ -222,11 +222,11 @@ export default function CompetitionsPage() {
                   <span>45 / 100</span>
                 </div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
-                  <div className="bg-purple-600 h-2 rounded-full" style={{ width: '45%' }}></div>
+                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
               
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 rounded transition-colors">
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition-colors">
                 Get Notified
               </button>
             </div>
@@ -255,7 +255,7 @@ export default function CompetitionsPage() {
                 
                 <div>
                   <div className="text-sm text-grok-text-secondary mb-1">Prize Pool</div>
-                  <div className="font-medium text-purple-400">$750</div>
+                  <div className="font-medium text-blue-400">$750</div>
                 </div>
               </div>
               
@@ -265,11 +265,11 @@ export default function CompetitionsPage() {
                   <span>78 / 150</span>
                 </div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
-                  <div className="bg-purple-600 h-2 rounded-full" style={{ width: '52%' }}></div>
+                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '52%' }}></div>
                 </div>
               </div>
               
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 rounded transition-colors">
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition-colors">
                 Get Notified
               </button>
             </div>
@@ -282,7 +282,7 @@ export default function CompetitionsPage() {
           <p className="text-grok-text-secondary max-w-2xl mx-auto mb-8">
             Looking to promote your brand to game developers and players? Sponsor a competition and gain visibility.
           </p>
-          <button className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-6 py-2 rounded transition-colors">
+          <button className="bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-medium px-6 py-2 rounded transition-colors">
             Become a Sponsor
           </button>
         </div>
