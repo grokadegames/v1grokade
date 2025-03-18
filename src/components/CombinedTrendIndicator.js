@@ -170,7 +170,7 @@ export default function CombinedTrendIndicator({
             <SparklinesLine 
               color="rgba(75, 85, 99, 0.5)" 
               style={{ 
-                strokeWidth: 1.5, 
+                strokeWidth: 3, 
                 stroke: "rgba(75, 85, 99, 0.5)", 
                 fill: "none" 
               }}
@@ -205,7 +205,7 @@ export default function CombinedTrendIndicator({
         <div className="flex-grow mr-2">
           <Sparklines 
             data={change.sparklineData} 
-            width={width - 40} /* Adjusted to make room for percentage */
+            width={(width * 2) - 40} /* Doubled width and adjusted for percentage */
             height={height - 10}
             margin={2}
             min={Math.min(...change.sparklineData) * 0.95}
@@ -214,7 +214,7 @@ export default function CombinedTrendIndicator({
             <SparklinesLine 
               color={lineColor} 
               style={{ 
-                strokeWidth: 3.5, 
+                strokeWidth: 7, /* Doubled thickness */
                 stroke: lineColor,
                 fill: fillColor
               }}
