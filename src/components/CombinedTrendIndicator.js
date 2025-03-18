@@ -205,7 +205,7 @@ export default function CombinedTrendIndicator({
         <div className="flex-grow mr-2">
           <Sparklines 
             data={change.sparklineData} 
-            width={(width * 2) - 40} /* Doubled width and adjusted for percentage */
+            width={width * 2 - 40} /* Increased width by 200% */
             height={height - 10}
             margin={2}
             min={Math.min(...change.sparklineData) * 0.95}
@@ -214,7 +214,7 @@ export default function CombinedTrendIndicator({
             <SparklinesLine 
               color={lineColor} 
               style={{ 
-                strokeWidth: 7, /* Doubled thickness */
+                strokeWidth: 7, /* Increased thickness by 200% */
                 stroke: lineColor,
                 fill: fillColor
               }}

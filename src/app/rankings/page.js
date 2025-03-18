@@ -162,9 +162,7 @@ export default function RankingsPage() {
                       popularityGames.slice(0, popularityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                            <span className="text-white font-medium text-sm">
                               {index + 1}
                             </span>
                           </td>
@@ -200,7 +198,7 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[256px] sm:w-[320px]">
                             <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
@@ -270,9 +268,7 @@ export default function RankingsPage() {
                       qualityGames.slice(0, qualityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                            <span className="text-white font-medium text-sm">
                               {index + 1}
                             </span>
                           </td>
@@ -308,7 +304,7 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[256px] sm:w-[320px]">
                             <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
@@ -385,9 +381,7 @@ export default function RankingsPage() {
                       creatorRanking.slice(0, creatorLimit).map((creator, index) => (
                         <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index < 4 ? 'bg-gray-800' : 'bg-gray-950'
-                            } text-white font-bold`}>
+                            <span className="text-white font-medium text-sm">
                               {index + 1}
                             </span>
                           </td>
@@ -419,7 +413,7 @@ export default function RankingsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[128px] sm:w-[160px]">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 w-[256px] sm:w-[320px]">
                             <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={creator.xaccount}
