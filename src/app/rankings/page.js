@@ -213,11 +213,11 @@ export default function RankingsPage() {
                               />
                             </div>
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">
                             {game.metrics?.views.toLocaleString()}
                           </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.plays.toLocaleString()}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
@@ -325,11 +325,7 @@ export default function RankingsPage() {
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.dislikes.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
                             <div className="flex items-center justify-end gap-2">
-                              <span className={`font-semibold ${
-                                game.qualityScore > 0.8 ? 'text-green-400' : 
-                                game.qualityScore > 0.5 ? 'text-yellow-400' : 
-                                'text-red-400'
-                              }`}>
+                              <span className="font-semibold text-white">
                                 {(game.qualityScore * 100).toFixed(1)}%
                               </span>
                             </div>
@@ -433,7 +429,7 @@ export default function RankingsPage() {
                             </div>
                           </td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{creator.gameCount.toLocaleString()}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(creator.creatorScore || 0).toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-white">{(creator.creatorScore || 0).toLocaleString()}</td>
                         </tr>
                       ))
                     )}
