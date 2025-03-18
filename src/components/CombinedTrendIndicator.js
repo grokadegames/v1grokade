@@ -88,35 +88,81 @@ export default function CombinedTrendIndicator({
       new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime()
     );
     
-    const oldestPosition = sortedData[0].position;
-    const latestPosition = sortedData[sortedData.length - 1].position;
+    // Get oldest and newest record
+    const oldestRecord = sortedData[0];
+    const newestRecord = sortedData[sortedData.length - 1];
     
-    // For positions, a decrease is positive (better ranking)
-    const positionChange = oldestPosition - latestPosition;
+    // Determine which metric to use based on ranking type
+    let metricValue, metricChange, percentChange;
     
-    // Calculate percentage change with HIGHER amplification for more dramatic changes
-    // This makes even small changes much more visible in the UI
-    let percentChange = 0;
-    
-    if (positionChange !== 0) {
-      // Amplify small changes - multiply by 15 for extremely visible changes (increased from 10)
-      // Cap at a higher percentage (60%) for much more dramatic visualization
-      const amplificationFactor = 15;
-      percentChange = Math.min(Math.max((positionChange * amplificationFactor), -60), 60);
+    if (periodData.rankingType === 'popularity') {
+      // For popularity, use combined views+plays
+      const oldViews = oldestRecord.views || 0;
+      const oldPlays = oldestRecord.plays || 0;
+      const newViews = newestRecord.views || 0;
+      const newPlays = newestRecord.plays || 0;
+      
+      const oldMetric = oldViews + (oldPlays * 2); // Same formula as popularity score
+      const newMetric = newViews + (newPlays * 2);
+      
+      metricValue = newMetric;
+      metricChange = newMetric - oldMetric;
+      
+      // Calculate percentage change, avoid division by zero
+      percentChange = oldMetric > 0 ? (metricChange / oldMetric) * 100 : 0;
+    } 
+    else if (periodData.rankingType === 'quality') {
+      // For quality, use score directly (it's already the likes ratio)
+      const oldScore = oldestRecord.score || 0.5;
+      const newScore = newestRecord.score || 0.5;
+      
+      metricValue = newScore;
+      metricChange = newScore - oldScore;
+      
+      // Calculate percentage change for the score
+      percentChange = oldScore > 0 ? (metricChange / oldScore) * 100 : 0;
+    }
+    else if (periodData.rankingType === 'creator') {
+      // For creators, use total views & plays growth
+      const oldViews = oldestRecord.views || 0;
+      const oldPlays = oldestRecord.plays || 0; 
+      const newViews = newestRecord.views || 0;
+      const newPlays = newestRecord.plays || 0;
+      
+      const oldMetric = oldViews + oldPlays;
+      const newMetric = newViews + newPlays;
+      
+      metricValue = newMetric;
+      metricChange = newMetric - oldMetric;
+      
+      // Calculate percentage change
+      percentChange = oldMetric > 0 ? (metricChange / oldMetric) * 100 : 0;
     }
     
-    // Extract points for sparkline - ensure we have at least 10 points for a more angular line
-    const dataPoints = sortedData.map(item => 100 - item.position);
+    // Amplify small changes for better visibility, but cap at reasonable levels
+    percentChange = Math.min(Math.max(percentChange * 1.5, -60), 60);
     
-    // Keep the original data points without smoothing interpolation to emphasize changes
+    // Extract points for sparkline
+    // Instead of position, use the actual metric values to show growth trend
+    const dataPoints = sortedData.map(item => {
+      if (periodData.rankingType === 'popularity') {
+        return item.views + (item.plays * 2);
+      } else if (periodData.rankingType === 'quality') {
+        return item.score * 100; // Scale up to be more visible
+      } else {
+        return item.views + item.plays;
+      }
+    });
+    
+    // Keep the original data points without smoothing interpolation
     const sparklineData = dataPoints.length > 0 ? dataPoints : [50, 50];
     
     return { 
-      positionChange, 
+      metricChange,
       percentChange, 
       hasData: true,
-      oldPosition: oldestPosition,
-      newPosition: latestPosition,
+      oldValue: oldestRecord,
+      newValue: newestRecord,
       sparklineData,
       data: sortedData
     };
@@ -139,8 +185,8 @@ export default function CombinedTrendIndicator({
       const demoData = [];
       for (let i = 0; i < 10; i++) {
         // Random values with a zigzag pattern for visual appeal
-        const zigzag = (i % 2 === 0) ? 10 : -5;
-        demoData.push(40 + Math.random() * 20 + zigzag + (i * 2));
+        const zigzag = (i % 2 === 0) ? 15 : -8;
+        demoData.push(40 + Math.random() * 20 + zigzag + (i * 3));
       }
       
       return (
@@ -168,16 +214,16 @@ export default function CombinedTrendIndicator({
       );
     }
     
-    const isUp = change.positionChange > 0;
-    const isStable = change.positionChange === 0;
+    const isPositive = change.percentChange > 0;
+    const isStable = change.percentChange === 0;
     
     // Color palette - increased saturation
     const upColor = "#10b981"; // Brighter green
     const downColor = "#ef4444"; // Bright red
     const stableColor = "#9ca3af"; // Gray
     
-    const lineColor = isUp ? upColor : isStable ? stableColor : downColor;
-    const fillColor = isUp 
+    const lineColor = isPositive ? upColor : isStable ? stableColor : downColor;
+    const fillColor = isPositive 
       ? "rgba(16, 185, 129, 0.35)" // More opacity in fill
       : isStable 
         ? "rgba(156, 163, 175, 0.1)" 
@@ -193,7 +239,7 @@ export default function CombinedTrendIndicator({
             width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
             height={height - 10}
             margin={2}
-            min={Math.min(...change.sparklineData) * 0.7} /* More extreme min/max range stretching */
+            min={Math.min(...change.sparklineData) * 0.7} // More extreme min/max range stretching
             max={Math.max(...change.sparklineData) * 1.3}
             style={{ overflow: 'hidden' }}
           >
@@ -217,7 +263,7 @@ export default function CombinedTrendIndicator({
             fontWeight: 800 /* Bolder font */
           }}
         >
-          {isUp ? '+' : isStable ? '' : '-'}{formattedPercentage}
+          {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
         </div>
       </div>
     );
@@ -294,24 +340,30 @@ export default function CombinedTrendIndicator({
   }
   
   // Calculate the tooltip content
-  const tooltipContent = (() => {
-    const change = calculateChange(historyData[activePeriod]);
+  const tooltipText = (() => {
     if (!change.hasData) return `No trend data for ${activePeriod}`;
     
-    const direction = change.positionChange > 0 
-      ? 'Improved' 
-      : change.positionChange < 0 
-        ? 'Dropped' 
+    const direction = change.percentChange > 0 
+      ? 'Increased' 
+      : change.percentChange < 0 
+        ? 'Decreased' 
         : 'Stable';
     
-    return `${direction} by ${Math.abs(change.positionChange)} position${Math.abs(change.positionChange) !== 1 ? 's' : ''} over ${activePeriod}`;
+    // Format the tooltip based on ranking type
+    if (historyData[activePeriod].rankingType === 'popularity') {
+      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in popularity over ${activePeriod}`;
+    } else if (historyData[activePeriod].rankingType === 'quality') {
+      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in quality rating over ${activePeriod}`;
+    } else {
+      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in engagement over ${activePeriod}`;
+    }
   })();
   
   return (
     <div 
       className="w-full h-full flex items-center"
       data-tooltip-id={`trend-tooltip-${entityId}`}
-      data-tooltip-content={tooltipContent}
+      data-tooltip-content={tooltipText}
     >
       {renderTrendChart(activePeriod)}
       <Tooltip id={`trend-tooltip-${entityId}`} />
