@@ -115,82 +115,79 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on total views and plays</p>
             </div>
             
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-grok-border">
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Rank</th>
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Game</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Views</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Plays</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {popularityGames.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
-                        No ranking data available
-                      </td>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <div className="inline-block min-w-full align-middle">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="border-b border-grok-border">
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Score</th>
                     </tr>
-                  ) : (
-                    popularityGames.slice(0, popularityLimit).map((game, index) => (
-                      <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
-                        <td className="px-6 py-4">
-                          {index < 3 ? (
-                            <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                  </thead>
+                  <tbody>
+                    {popularityGames.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                          No ranking data available
+                        </td>
+                      </tr>
+                    ) : (
+                      popularityGames.slice(0, popularityLimit).map((game, index) => (
+                        <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
                               index === 0 ? 'bg-yellow-500' :
                               index === 1 ? 'bg-gray-300' :
-                              'bg-amber-700'
-                            } text-black font-bold`}>
+                              index === 2 ? 'bg-amber-700' :
+                              'bg-grok-darker'
+                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
                               {index + 1}
                             </span>
-                          ) : (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-grok-darker text-white font-bold">
-                              {index + 1}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center space-x-3">
-                            <a href={`/game/${game.id}`} className="flex-shrink-0">
-                              {game.imageUrl ? (
-                                <img src={game.imageUrl} alt={game.title} className="w-10 h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                              ) : (
-                                <div className="w-10 h-10 rounded-md bg-grok-dark flex items-center justify-center">
-                                  <span className="text-xs text-grok-text-secondary">No img</span>
-                                </div>
-                              )}
-                            </a>
-                            <div>
-                              <a href={`/game/${game.id}`} className="text-white font-medium hover:text-purple-400 transition-colors">
-                                {game.title}
-                              </a>
-                              <p className="text-xs text-grok-text-secondary">
-                                {game.xaccount ? (
-                                  <a 
-                                    href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="hover:text-purple-400 transition-colors"
-                                  >
-                                    @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                  </a>
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <div className="flex items-center space-x-2 sm:space-x-3">
+                              <a href={`/game/${game.id}`} className="flex-shrink-0">
+                                {game.imageUrl ? (
+                                  <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
-                                  `by ${game.author?.username || 'Unknown'}`
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                  </div>
                                 )}
-                              </p>
+                              </a>
+                              <div className="min-w-0">
+                                <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
+                                  {game.title}
+                                </a>
+                                <p className="text-xs text-grok-text-secondary truncate">
+                                  {game.xaccount ? (
+                                    <a 
+                                      href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="hover:text-purple-400 transition-colors"
+                                    >
+                                      @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                                    </a>
+                                  ) : (
+                                    `by ${game.author?.username || 'Unknown'}`
+                                  )}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{game.metrics?.views.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.views.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
             
             {/* Show More Button for Popularity */}
@@ -215,90 +212,87 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
             </div>
             
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-grok-border">
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Rank</th>
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Game</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Likes</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Dislikes</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Ratio</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {qualityGames.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
-                        No ranking data available
-                      </td>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <div className="inline-block min-w-full align-middle">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="border-b border-grok-border">
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Likes</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Dislikes</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Rating</th>
                     </tr>
-                  ) : (
-                    qualityGames.slice(0, qualityLimit).map((game, index) => (
-                      <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
-                        <td className="px-6 py-4">
-                          {index < 3 ? (
-                            <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
-                              index === 0 ? 'bg-yellow-500' :
-                              index === 1 ? 'bg-gray-300' :
-                              'bg-amber-700'
-                            } text-black font-bold`}>
-                              {index + 1}
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-grok-darker text-white font-bold">
-                              {index + 1}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center space-x-3">
-                            <a href={`/game/${game.id}`} className="flex-shrink-0">
-                              {game.imageUrl ? (
-                                <img src={game.imageUrl} alt={game.title} className="w-10 h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                              ) : (
-                                <div className="w-10 h-10 rounded-md bg-grok-dark flex items-center justify-center">
-                                  <span className="text-xs text-grok-text-secondary">No img</span>
-                                </div>
-                              )}
-                            </a>
-                            <div>
-                              <a href={`/game/${game.id}`} className="text-white font-medium hover:text-purple-400 transition-colors">
-                                {game.title}
-                              </a>
-                              <p className="text-xs text-grok-text-secondary">
-                                {game.xaccount ? (
-                                  <a 
-                                    href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="hover:text-purple-400 transition-colors"
-                                  >
-                                    @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                  </a>
-                                ) : (
-                                  `by ${game.author?.username || 'Unknown'}`
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{game.metrics?.likes.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{game.metrics?.dislikes.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right">
-                          <span className={`font-semibold ${
-                            game.qualityScore > 0.8 ? 'text-green-400' : 
-                            game.qualityScore > 0.5 ? 'text-yellow-400' : 
-                            'text-red-400'
-                          }`}>
-                            {(game.qualityScore * 100).toFixed(1)}%
-                          </span>
+                  </thead>
+                  <tbody>
+                    {qualityGames.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                          No ranking data available
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      qualityGames.slice(0, qualityLimit).map((game, index) => (
+                        <tr key={game.id} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
+                              index === 0 ? 'bg-yellow-500' :
+                              index === 1 ? 'bg-gray-300' :
+                              index === 2 ? 'bg-amber-700' :
+                              'bg-grok-darker'
+                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
+                              {index + 1}
+                            </span>
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <div className="flex items-center space-x-2 sm:space-x-3">
+                              <a href={`/game/${game.id}`} className="flex-shrink-0">
+                                {game.imageUrl ? (
+                                  <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
+                                ) : (
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                  </div>
+                                )}
+                              </a>
+                              <div className="min-w-0">
+                                <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
+                                  {game.title}
+                                </a>
+                                <p className="text-xs text-grok-text-secondary truncate">
+                                  {game.xaccount ? (
+                                    <a 
+                                      href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="hover:text-purple-400 transition-colors"
+                                    >
+                                      @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                                    </a>
+                                  ) : (
+                                    `by ${game.author?.username || 'Unknown'}`
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.likes.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.dislikes.toLocaleString()}</td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm">
+                            <span className={`font-semibold ${
+                              game.qualityScore > 0.8 ? 'text-green-400' : 
+                              game.qualityScore > 0.5 ? 'text-yellow-400' : 
+                              'text-red-400'
+                            }`}>
+                              {(game.qualityScore * 100).toFixed(1)}%
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
             
             {/* Show More Button for Quality */}
@@ -323,78 +317,75 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on number of games published</p>
             </div>
             
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-grok-border">
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Rank</th>
-                    <th className="px-6 py-4 text-left text-grok-text-secondary">Creator</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Games</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Total Views</th>
-                    <th className="px-6 py-4 text-right text-grok-text-secondary">Total Plays</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {creatorRanking.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
-                        No ranking data available
-                      </td>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <div className="inline-block min-w-full align-middle">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="border-b border-grok-border">
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Creator</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Games</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
                     </tr>
-                  ) : (
-                    creatorRanking.slice(0, creatorLimit).map((creator, index) => (
-                      <tr key={creator.xaccount} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
-                        <td className="px-6 py-4">
-                          {index < 3 ? (
-                            <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                  </thead>
+                  <tbody>
+                    {creatorRanking.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-8 text-center text-grok-text-secondary">
+                          No ranking data available
+                        </td>
+                      </tr>
+                    ) : (
+                      creatorRanking.slice(0, creatorLimit).map((creator, index) => (
+                        <tr key={creator.xaccount} className="border-b border-grok-border hover:bg-grok-dark/50 transition-colors">
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
                               index === 0 ? 'bg-yellow-500' :
                               index === 1 ? 'bg-gray-300' :
-                              'bg-amber-700'
-                            } text-black font-bold`}>
+                              index === 2 ? 'bg-amber-700' :
+                              'bg-grok-darker'
+                            } ${index < 3 ? 'text-black' : 'text-white'} font-bold`}>
                               {index + 1}
                             </span>
-                          ) : (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-grok-darker text-white font-bold">
-                              {index + 1}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center space-x-3">
-                            <a href={creator.topGame ? `/game/${creator.topGame.id}` : '#'} className="flex-shrink-0">
-                              {creator.topGame?.imageUrl ? (
-                                <img src={creator.topGame.imageUrl} alt={creator.topGame.title} className="w-10 h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                              ) : (
-                                <div className="w-10 h-10 rounded-md bg-grok-dark flex items-center justify-center">
-                                  <span className="text-xs text-grok-text-secondary">No img</span>
-                                </div>
-                              )}
-                            </a>
-                            <div>
-                              <a 
-                                href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                target="_blank"
-                                rel="noopener noreferrer" 
-                                className="text-white font-medium hover:text-green-400 transition-colors"
-                              >
-                                @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4">
+                            <div className="flex items-center space-x-2 sm:space-x-3">
+                              <a href={creator.topGame ? `/game/${creator.topGame.id}` : '#'} className="flex-shrink-0">
+                                {creator.topGame?.imageUrl ? (
+                                  <img src={creator.topGame.imageUrl} alt={creator.topGame.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
+                                ) : (
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-grok-dark flex items-center justify-center">
+                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                  </div>
+                                )}
                               </a>
-                              {creator.topGame && (
-                                <p className="text-xs text-grok-text-secondary">
-                                  Top game: <a href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</a>
-                                </p>
-                              )}
+                              <div className="min-w-0">
+                                <a 
+                                  href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
+                                  target="_blank"
+                                  rel="noopener noreferrer" 
+                                  className="text-white text-sm sm:text-base font-medium hover:text-green-400 transition-colors truncate block"
+                                >
+                                  @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                                </a>
+                                {creator.topGame && (
+                                  <p className="text-xs text-grok-text-secondary truncate">
+                                    Top: <a href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</a>
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-right font-semibold text-white">{creator.gameCount.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-right text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                          </td>
+                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{creator.gameCount.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
             
             {/* Show More Button for Creators */}
