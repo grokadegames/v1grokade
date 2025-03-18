@@ -179,50 +179,7 @@ export default function Dashboard() {
                   </section>
                 )}
                 
-                {/* Work Profile Section */}
-                <section className="mb-8">
-                  <h2 className="text-2xl font-bold text-white mb-4">Work Profile</h2>
-                  
-                  {/* Work Profile Activation */}
-                  <WorkProfileActivation />
-                  
-                  {/* Talent Profile Form */}
-                  <TalentProfileForm />
-                </section>
-                
-                {/* Content Sections grouped by type */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                  {/* Games Section */}
-                  <div>
-                    <h2 className="text-2xl font-bold mb-4">Your Games</h2>
-                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
-                      <p className="text-center py-8 text-grok-text-secondary">
-                        You haven't added any games yet. 
-                        <button className="text-purple-500 hover:text-purple-400 ml-2">
-                          Submit your first game
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Favorites Section */}
-                  <div>
-                    <h2 className="text-2xl font-bold mb-4">Favorites</h2>
-                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
-                      <p className="text-center py-8 text-grok-text-secondary">
-                        You haven't favorited any games yet. 
-                        <button className="text-purple-500 hover:text-purple-400 ml-2">
-                          Explore games
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Visual separator */}
-                <div className="border-t border-gray-800 my-8"></div>
-                
-                {/* Achievements Section */}
+                {/* Achievements Section - Moved to top */}
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold mb-4">Achievements</h2>
                   <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl">
@@ -342,6 +299,46 @@ export default function Dashboard() {
                           Find Favorites
                         </Link>
                       </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Work Profile Section */}
+                <section className="mb-8">
+                  <h2 className="text-2xl font-bold text-white mb-4">Work Profile</h2>
+                  
+                  {/* Work Profile Activation */}
+                  <WorkProfileActivation />
+                  
+                  {/* Talent Profile Form */}
+                  <TalentProfileForm />
+                </section>
+                
+                {/* Content Sections grouped by type */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                  {/* Games Section */}
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4">Your Games</h2>
+                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
+                      <p className="text-center py-8 text-grok-text-secondary">
+                        You haven't added any games yet. 
+                        <button className="text-purple-500 hover:text-purple-400 ml-2">
+                          Submit your first game
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Favorites Section */}
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4">Favorites</h2>
+                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
+                      <p className="text-center py-8 text-grok-text-secondary">
+                        You haven't favorited any games yet. 
+                        <button className="text-purple-500 hover:text-purple-400 ml-2">
+                          Explore games
+                        </button>
+                      </p>
                     </div>
                   </div>
                 </div>
