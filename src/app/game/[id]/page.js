@@ -7,6 +7,8 @@ import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
 import { trackGameView, trackGamePlay, trackGameLike, trackGameDislike } from '@/lib/metricsUtil';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSponsorModal } from '@/contexts/SponsorModalContext';
 
 export default function GamePage() {
   const params = useParams();
@@ -24,6 +26,8 @@ export default function GamePage() {
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(0);
   const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
   const [visibleOverlays, setVisibleOverlays] = useState({}); // Track which overlays are visible
+  const { user, isAuthenticated } = useAuth();
+  const { openSponsorModal } = useSponsorModal();
   
   // Get gallery images from the game data when available
   const getGalleryImages = (game) => {
@@ -501,6 +505,12 @@ export default function GamePage() {
     container.startX = e.pageX - container.offsetLeft;
   };
   
+  // Add a sponsor click handler
+  const handleSponsorClick = (e) => {
+    e.preventDefault();
+    openSponsorModal();
+  };
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
@@ -820,14 +830,12 @@ export default function GamePage() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl text-white font-semibold">OUR SPONSORS</h2>
             <div className="flex space-x-2">
-              <a 
-                href="https://x.com/messages/compose?recipient_id=grokadegames&text=Hi%2C%20I%27m%20interested%20in%20potentially%20sponsoring%20Grokade%20and%20advertising%20on%20the%20platform." 
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                onClick={handleSponsorClick}
                 className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-4 py-1 rounded-md transition-colors text-sm"
               >
                 Sponsor and Advertise
-              </a>
+              </button>
             </div>
           </div>
           
