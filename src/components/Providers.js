@@ -2,12 +2,15 @@
 
 import { AuthProvider } from '@/contexts/AuthContext';
 import { RoadmapModalProvider } from '@/contexts/RoadmapModalContext';
+import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
 
 export default function Providers({ children }) {
   return (
     <AuthProvider>
       <RoadmapModalProvider>
-        {children}
+        <AnalyticsProvider>
+          {children}
+        </AnalyticsProvider>
       </RoadmapModalProvider>
     </AuthProvider>
   );

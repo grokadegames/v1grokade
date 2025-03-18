@@ -27,6 +27,7 @@ model User {
   favorites   GameFavorite[]
   games       Game[]
   achievements UserAchievement[]
+  pageViews   PageView[]
 
   @@map("users")
 }
@@ -110,4 +111,16 @@ model UserAchievement {
 
   @@unique([userId, achievementId])
   @@map("user_achievements")
+}
+
+model PageView {
+  id          String   @id @default(uuid())
+  path        String
+  userId      String?
+  userAgent   String?
+  referer     String?
+  timestamp   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("page_views")
 }
