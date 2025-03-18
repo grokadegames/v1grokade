@@ -7,12 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  REGULAR
+  BASIC
+  AUTHOR
+  SPONSOR
+  ADMIN
+}
+
 model User {
   id          String         @id @default(uuid())
   username    String         @unique
   email       String         @unique
   displayName String
   password    String
+  role        UserRole        @default(REGULAR)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   favorites   GameFavorite[]

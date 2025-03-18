@@ -159,6 +159,31 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Helper functions for checking user roles
+  const isAdmin = !!user && user.role === 'ADMIN';
+  const isSponsor = !!user && user.role === 'SPONSOR';
+  const isAuthor = !!user && user.role === 'AUTHOR';
+  const isBasic = !!user && user.role === 'BASIC';
+  const isRegular = !!user && user.role === 'REGULAR';
+
+  // Check if user has at least the specified role level
+  const hasRole = (requiredRole) => {
+    if (!user) return false;
+    
+    const roleHierarchy = {
+      'REGULAR': 1,
+      'BASIC': 2,
+      'AUTHOR': 3,
+      'SPONSOR': 4,
+      'ADMIN': 5
+    };
+    
+    const userRoleLevel = roleHierarchy[user.role] || 0;
+    const requiredRoleLevel = roleHierarchy[requiredRole] || 0;
+    
+    return userRoleLevel >= requiredRoleLevel;
+  };
+
   return (
     <AuthContext.Provider 
       value={{ 
@@ -168,7 +193,14 @@ export function AuthProvider({ children }) {
         register, 
         logout, 
         isAuthenticated: !!user,
-        isLoggingOut
+        isLoggingOut,
+        // Role helpers
+        isAdmin,
+        isSponsor,
+        isAuthor,
+        isBasic,
+        isRegular,
+        hasRole
       }}
       data-auth-provider="true"
     >

@@ -64,6 +64,7 @@ export async function GET(request) {
         username: true,
         email: true,
         displayName: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
       },

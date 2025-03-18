@@ -50,14 +50,25 @@ export default function Dashboard() {
             <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl mb-8">
               <div className="flex flex-col md:flex-row md:items-center gap-6">
                 <div className="w-24 h-24 bg-grok-purple rounded-full flex items-center justify-center text-4xl font-bold">
-                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">{user?.name || 'User'}</h2>
+                  <h2 className="text-2xl font-bold">{user?.displayName || 'User'}</h2>
                   <p className="text-grok-text-secondary">{user?.email || 'user@example.com'}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     <span className="px-3 py-1 bg-grok-purple text-xs rounded-full">Level 1</span>
                     <span className="px-3 py-1 bg-gray-700 text-xs rounded-full">New Member</span>
+                    {user?.role && (
+                      <span className={`px-3 py-1 text-xs rounded-full ${
+                        user.role === 'ADMIN' ? 'bg-red-600' : 
+                        user.role === 'SPONSOR' ? 'bg-green-600' : 
+                        user.role === 'AUTHOR' ? 'bg-blue-600' : 
+                        user.role === 'BASIC' ? 'bg-yellow-600' : 
+                        'bg-gray-600'
+                      }`}>
+                        {user.role.charAt(0) + user.role.slice(1).toLowerCase()}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
