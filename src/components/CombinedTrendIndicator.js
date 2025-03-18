@@ -94,41 +94,22 @@ export default function CombinedTrendIndicator({
     // For positions, a decrease is positive (better ranking)
     const positionChange = oldestPosition - latestPosition;
     
-    // Calculate percentage change with amplification for smaller changes
-    // This makes even small changes more visible in the UI
+    // Calculate percentage change with HIGHER amplification for more dramatic changes
+    // This makes even small changes much more visible in the UI
     let percentChange = 0;
     
     if (positionChange !== 0) {
-      // Amplify small changes - multiply by 5 for more visible changes
-      // Cap at a reasonable percentage (25%)
-      const amplificationFactor = 5;
-      percentChange = Math.min(Math.max((positionChange * amplificationFactor), -25), 25);
+      // Amplify small changes - multiply by 10 for very visible changes (increased from 5)
+      // Cap at a higher percentage (40%) for more dramatic visualization
+      const amplificationFactor = 10;
+      percentChange = Math.min(Math.max((positionChange * amplificationFactor), -40), 40);
     }
     
-    // Extract points for sparkline - ensure we have at least 10 points for a smoother line
+    // Extract points for sparkline - ensure we have at least 10 points for a more angular line
     const dataPoints = sortedData.map(item => 100 - item.position);
     
-    // If we have very few data points, interpolate to create a smoother line
-    let sparklineData = dataPoints;
-    if (dataPoints.length > 1 && dataPoints.length < 10) {
-      sparklineData = [];
-      const totalPoints = 10;
-      for (let i = 0; i < totalPoints; i++) {
-        const index = (i / (totalPoints - 1)) * (dataPoints.length - 1);
-        const lowerIndex = Math.floor(index);
-        const upperIndex = Math.ceil(index);
-        const weight = index - lowerIndex;
-        
-        if (lowerIndex === upperIndex) {
-          sparklineData.push(dataPoints[lowerIndex]);
-        } else {
-          const interpolatedValue = 
-            dataPoints[lowerIndex] * (1 - weight) + 
-            dataPoints[upperIndex] * weight;
-          sparklineData.push(interpolatedValue);
-        }
-      }
-    }
+    // Keep the original data points without smoothing interpolation to emphasize changes
+    const sparklineData = dataPoints.length > 0 ? dataPoints : [50, 50];
     
     return { 
       positionChange, 
@@ -144,11 +125,8 @@ export default function CombinedTrendIndicator({
   // Format percentage for display
   function formatPercentage(value) {
     if (value === 0) return '0%';
-    const rounded = Math.abs(value).toFixed(1);
-    // Remove trailing zeros after decimal point
-    return rounded.endsWith('.0') 
-      ? `${Math.abs(parseInt(rounded))}%` 
-      : `${rounded}%`;
+    const rounded = Math.abs(value).toFixed(0); // Remove decimal points for cleaner look
+    return `${rounded}%`;
   }
   
   // Render the trend chart
@@ -157,11 +135,12 @@ export default function CombinedTrendIndicator({
     
     // Demo data for empty states to show a line
     if (!change.hasData || change.sparklineData.length < 2) {
-      // Create some random demo data that looks like a trend
+      // Create some random demo data that looks like a trend with sharp changes
       const demoData = [];
       for (let i = 0; i < 10; i++) {
-        // Random values that trend slightly upward for visual appeal
-        demoData.push(40 + Math.random() * 20 + i);
+        // Random values with a zigzag pattern for visual appeal
+        const zigzag = (i % 2 === 0) ? 10 : -5;
+        demoData.push(40 + Math.random() * 20 + zigzag + (i * 2));
       }
       
       return (
@@ -171,11 +150,12 @@ export default function CombinedTrendIndicator({
             width={width} 
             height={height - 10}
             margin={2}
+            style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
               color="rgba(75, 85, 99, 0.5)" 
               style={{ 
-                strokeWidth: 3, 
+                strokeWidth: 4, 
                 stroke: "rgba(75, 85, 99, 0.5)", 
                 fill: "none" 
               }}
@@ -191,17 +171,17 @@ export default function CombinedTrendIndicator({
     const isUp = change.positionChange > 0;
     const isStable = change.positionChange === 0;
     
-    // Color palette
-    const upColor = "#22c55e"; // Brighter green 
-    const downColor = "#ef4444"; // Red
+    // Color palette - increased saturation
+    const upColor = "#10b981"; // Brighter green
+    const downColor = "#ef4444"; // Bright red
     const stableColor = "#9ca3af"; // Gray
     
     const lineColor = isUp ? upColor : isStable ? stableColor : downColor;
     const fillColor = isUp 
-      ? "rgba(34, 197, 94, 0.25)" 
+      ? "rgba(16, 185, 129, 0.35)" // More opacity in fill
       : isStable 
         ? "rgba(156, 163, 175, 0.1)" 
-        : "rgba(239, 68, 68, 0.25)";
+        : "rgba(239, 68, 68, 0.35)";
     
     const formattedPercentage = formatPercentage(change.percentChange);
     
@@ -213,26 +193,28 @@ export default function CombinedTrendIndicator({
             width={(width * 2) - 40} /* Doubled width and adjusted for percentage */
             height={height - 10}
             margin={2}
-            min={Math.min(...change.sparklineData) * 0.95}
-            max={Math.max(...change.sparklineData) * 1.05}
-            style={{ overflow: 'hidden' }} // Add overflow hidden to prevent dots outside
+            min={Math.min(...change.sparklineData) * 0.9} // Exaggerate the min/max range
+            max={Math.max(...change.sparklineData) * 1.1}
+            style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
               color={lineColor} 
               style={{ 
-                strokeWidth: 7, /* Doubled thickness */
+                strokeWidth: 9, /* Increased thickness for more visibility */
                 stroke: lineColor,
-                fill: fillColor
+                fill: fillColor,
+                strokeLinejoin: "miter", /* Sharp corners instead of rounded */
+                strokeLinecap: "square"
               }}
             />
           </Sparklines>
         </div>
         
         <div 
-          className="min-w-[40px] text-right text-xs font-medium pl-1"
+          className="min-w-[40px] text-right text-sm font-medium pl-1" /* Increased font size */
           style={{ 
             color: lineColor,
-            fontWeight: 700
+            fontWeight: 800 /* Bolder font */
           }}
         >
           {isUp ? '+' : isStable ? '' : '-'}{formattedPercentage}
@@ -262,15 +244,16 @@ export default function CombinedTrendIndicator({
   // Use a fallback trend if no data is available
   const activePeriodData = historyData[activePeriod];
   if (!activePeriodData || !activePeriodData.historyData || activePeriodData.historyData.length < 2) {
-    // Generate demo data with a slight upward trend for visual appeal
+    // Generate demo data with a zigzag trend for visual appeal
     const demoData = [];
     for (let i = 0; i < 10; i++) {
-      // Random values with a slight upward trend
-      demoData.push(40 + Math.random() * 10 + (i * 1.5));
+      // Generate a zigzag pattern for more dramatic display
+      const zigzag = (i % 2 === 0) ? 10 : -5;
+      demoData.push(40 + Math.random() * 10 + zigzag + (i * 2));
     }
     
-    // Random small positive percentage (1-5%)
-    const randomPercentage = (1 + Math.floor(Math.random() * 5)) + '%';
+    // Random small positive percentage (5-15%)
+    const randomPercentage = (5 + Math.floor(Math.random() * 10)) + '%';
     
     return (
       <div className="w-full h-full flex items-center">
@@ -286,19 +269,21 @@ export default function CombinedTrendIndicator({
               <SparklinesLine 
                 color="#22c55e" 
                 style={{ 
-                  strokeWidth: 7,
+                  strokeWidth: 9,
                   stroke: "#22c55e",
-                  fill: "rgba(34, 197, 94, 0.25)"
+                  fill: "rgba(34, 197, 94, 0.35)",
+                  strokeLinejoin: "miter", // Sharp corners
+                  strokeLinecap: "square"
                 }}
               />
             </Sparklines>
           </div>
           
           <div 
-            className="min-w-[40px] text-right text-xs font-medium pl-1"
+            className="min-w-[40px] text-right text-sm font-medium pl-1"
             style={{ 
               color: "#22c55e",
-              fontWeight: 700
+              fontWeight: 800
             }}
           >
             +{randomPercentage}
