@@ -37,7 +37,7 @@ export default function AuthNavbar() {
             <Link href="/coming-soon?feature=Gigs" className="text-white hover:text-purple-500 transition-colors mx-3">
               Gigs
             </Link>
-            <Link href="/coming-soon?feature=Talent" className="text-white hover:text-purple-500 transition-colors mx-3">
+            <Link href="/talent" className="text-white hover:text-purple-500 transition-colors mx-3">
               Talent
             </Link>
             <Link href="/rankings" className="text-white hover:text-purple-500 transition-colors mx-3">
@@ -121,7 +121,7 @@ export default function AuthNavbar() {
                 Gigs
               </Link>
               <Link 
-                href="/coming-soon?feature=Talent" 
+                href="/talent" 
                 className="text-white hover:text-purple-500 transition-colors px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >

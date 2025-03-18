@@ -47,13 +47,20 @@ const featuredTalent = [
 
 // Talent card component
 const TalentCard = ({ talent }) => {
+  const initials = talent.initials.split('').map(initial => (
+    <span key={initial}>{initial}</span>
+  ));
+  
   return (
     <div className="bg-gray-900 rounded-lg overflow-hidden">
       <div className="p-6">
-        <div className="flex items-start">
-          <div className="flex-shrink-0 mr-4">
+        <div className="flex flex-row items-start">
+          <div className="relative mr-4">
             <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-white text-xl font-bold">
-              {talent.initials}
+              <span className="flex justify-center items-center w-full h-full">{initials}</span>
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-xs text-white font-bold">
+              {talent.initials[0]}
             </div>
           </div>
           <div>
@@ -65,20 +72,20 @@ const TalentCard = ({ talent }) => {
                 </span>
               )}
             </div>
-            <p className="text-grok-text-secondary">{talent.title}</p>
+            <p className="text-gray-400">{talent.title}</p>
             <div className="flex items-center mt-1">
               <span className="text-yellow-400">★</span>
               <span className="text-white ml-1 font-semibold">{talent.rating}</span>
-              <span className="text-grok-text-secondary ml-1">({talent.reviews} reviews)</span>
+              <span className="text-gray-400 ml-1">({talent.reviews} reviews)</span>
             </div>
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-6 flex flex-wrap gap-2">
           {talent.skills.map((skill, index) => (
             <span 
               key={index} 
-              className="bg-gray-800 text-white text-xs px-3 py-1 rounded-full"
+              className="bg-gray-800 text-gray-300 text-xs px-3 py-1 rounded-full"
             >
               {skill}
             </span>
@@ -87,11 +94,11 @@ const TalentCard = ({ talent }) => {
 
         <div className="flex justify-between items-center mt-6">
           <div>
-            <div className="text-sm text-grok-text-secondary">Rate:</div>
+            <div className="text-sm text-gray-400">Rate:</div>
             <div className="text-white font-medium">{talent.rate}</div>
           </div>
           <div className="text-right">
-            <div className="text-sm text-grok-text-secondary">Location:</div>
+            <div className="text-sm text-gray-400">Location:</div>
             <div className="text-white font-medium">{talent.location}</div>
           </div>
         </div>
@@ -100,7 +107,7 @@ const TalentCard = ({ talent }) => {
           <button className="flex-1 text-white bg-transparent border border-gray-700 hover:border-gray-500 font-medium px-4 py-2 rounded transition-colors">
             View Profile
           </button>
-          <button className="flex-1 text-white bg-purple-600 hover:bg-purple-500 font-medium px-4 py-2 rounded transition-colors">
+          <button className="flex-1 text-white bg-purple-600 hover:bg-purple-700 font-medium px-4 py-2 rounded transition-colors">
             Contact
           </button>
         </div>
@@ -121,7 +128,7 @@ export default function TalentPage() {
         <h1 className="text-4xl font-bold text-white text-center mb-4">
           Game Development Talent Network
         </h1>
-        <p className="text-center text-grok-text-secondary mb-12 max-w-3xl mx-auto">
+        <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
           Connect with specialized talent for your game projects or showcase your skills to get hired.
         </p>
         
@@ -137,10 +144,10 @@ export default function TalentPage() {
             />
           </div>
           <div className="flex gap-3">
-            <button className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors">
+            <button className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
               Search
             </button>
-            <button className="px-6 py-3 bg-transparent border border-purple-600 hover:bg-purple-900 text-white font-medium rounded-lg transition-colors">
+            <button className="px-6 py-3 bg-transparent border border-purple-600 hover:bg-purple-700 hover:border-purple-700 text-white font-medium rounded-lg transition-colors">
               Join as Talent
             </button>
           </div>
@@ -153,7 +160,7 @@ export default function TalentPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium ${
                 activeTab === 'developers'
                   ? 'bg-purple-600 text-white'
-                  : 'text-grok-text-secondary hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
               onClick={() => setActiveTab('developers')}
             >
@@ -163,7 +170,7 @@ export default function TalentPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium ${
                 activeTab === 'creatives'
                   ? 'bg-purple-600 text-white'
-                  : 'text-grok-text-secondary hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
               onClick={() => setActiveTab('creatives')}
             >
@@ -173,7 +180,7 @@ export default function TalentPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium ${
                 activeTab === 'consultants'
                   ? 'bg-purple-600 text-white'
-                  : 'text-grok-text-secondary hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
               onClick={() => setActiveTab('consultants')}
             >
@@ -197,10 +204,10 @@ export default function TalentPage() {
           <h2 className="text-2xl font-bold text-white mb-4">
             Are you a vibe game development expert?
           </h2>
-          <p className="text-grok-text-secondary max-w-2xl mx-auto mb-8">
+          <p className="text-gray-400 max-w-2xl mx-auto mb-8">
             Join our talent network to find opportunities and connect with game developers who need your expertise.
           </p>
-          <button className="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+          <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
             Create Your Profile
           </button>
         </div>
