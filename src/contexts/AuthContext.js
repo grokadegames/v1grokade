@@ -160,28 +160,29 @@ export function AuthProvider({ children }) {
   };
 
   // Helper functions for checking user roles
-  const isAdmin = !!user && user.role === 'ADMIN';
-  const isSponsor = !!user && user.role === 'SPONSOR';
-  const isAuthor = !!user && user.role === 'AUTHOR';
-  const isBasic = !!user && user.role === 'BASIC';
-  const isRegular = !!user && user.role === 'REGULAR';
+  const isAdmin = !!user && (user.allRoles?.includes('ADMIN') || false);
+  const isSponsor = !!user && (user.allRoles?.includes('SPONSOR') || false);
+  const isAuthor = !!user && (user.allRoles?.includes('AUTHOR') || false);
+  const isEmployer = !!user && (user.allRoles?.includes('EMPLOYER') || false);
+  const isApplicant = !!user && (user.allRoles?.includes('APPLICANT') || false);
+  const isBasic = !!user && (user.allRoles?.includes('BASIC') || false);
 
-  // Check if user has at least the specified role level
+  // Check if user has a specific role
   const hasRole = (requiredRole) => {
     if (!user) return false;
-    
-    const roleHierarchy = {
-      'REGULAR': 1,
-      'BASIC': 2,
-      'AUTHOR': 3,
-      'SPONSOR': 4,
-      'ADMIN': 5
-    };
-    
-    const userRoleLevel = roleHierarchy[user.role] || 0;
-    const requiredRoleLevel = roleHierarchy[requiredRole] || 0;
-    
-    return userRoleLevel >= requiredRoleLevel;
+    return user.allRoles?.includes(requiredRole) || false;
+  };
+
+  // Check if user has any of the specified roles
+  const hasAnyRole = (requiredRoles) => {
+    if (!user || !user.allRoles) return false;
+    return requiredRoles.some(role => user.allRoles.includes(role));
+  };
+
+  // Check if user has all of the specified roles
+  const hasAllRoles = (requiredRoles) => {
+    if (!user || !user.allRoles) return false;
+    return requiredRoles.every(role => user.allRoles.includes(role));
   };
 
   return (
@@ -198,9 +199,12 @@ export function AuthProvider({ children }) {
         isAdmin,
         isSponsor,
         isAuthor,
+        isEmployer,
+        isApplicant,
         isBasic,
-        isRegular,
-        hasRole
+        hasRole,
+        hasAnyRole,
+        hasAllRoles
       }}
       data-auth-provider="true"
     >

@@ -8,8 +8,9 @@ datasource db {
 }
 
 enum UserRole {
-  REGULAR
   BASIC
+  APPLICANT
+  EMPLOYER
   AUTHOR
   SPONSOR
   ADMIN
@@ -21,7 +22,8 @@ model User {
   email       String         @unique
   displayName String
   password    String
-  role        UserRole        @default(REGULAR)
+  role        UserRole       @default(BASIC)
+  roles       UserRoles[]    // New field for multiple roles
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   favorites   GameFavorite[]
@@ -139,4 +141,16 @@ model RankingHistory {
   @@index([entityId, rankingType])
   @@index([recordedAt])
   @@map("ranking_history")
+}
+
+// Add the UserRoles model for many-to-many relationship
+model UserRoles {
+  id        String   @id @default(uuid())
+  userId    String
+  role      UserRole
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("user_roles")
 }

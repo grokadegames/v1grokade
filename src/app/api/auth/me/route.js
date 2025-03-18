@@ -65,6 +65,11 @@ export async function GET(request) {
         email: true,
         displayName: true,
         role: true,
+        roles: {
+          select: {
+            role: true
+          }
+        },
         createdAt: true,
         updatedAt: true,
       },
@@ -78,8 +83,18 @@ export async function GET(request) {
       );
     }
 
+    // Transform roles array to a more usable format
+    const allRoles = [user.role, ...user.roles.map(r => r.role)];
+    const uniqueRoles = [...new Set(allRoles)];
+    
+    // Create a modified user object with the transformed roles
+    const userData = {
+      ...user,
+      allRoles: uniqueRoles,
+    };
+
     console.log('[API/me] User authenticated successfully:', user.username);
-    return NextResponse.json({ user }, { status: 200 });
+    return NextResponse.json({ user: userData }, { status: 200 });
   } catch (error) {
     console.error('[API/me] Error fetching user:', error);
     return NextResponse.json(
