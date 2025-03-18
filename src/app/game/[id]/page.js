@@ -454,6 +454,53 @@ export default function GamePage() {
     }));
   };
   
+  // Add missing handler functions for sponsor interaction
+  const handleSponsorMouseDown = (e) => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    // Set flags for dragging
+    container.isDown = true;
+    container.classList.add('cursor-grabbing');
+    container.startX = e.pageX - container.offsetLeft;
+    container.scrollLeft = container.scrollLeft;
+  };
+
+  const handleSponsorMouseLeave = () => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    // Reset flags when mouse leaves
+    container.isDown = false;
+    container.classList.remove('cursor-grabbing');
+    setIsSponsorsHovered(false);
+  };
+
+  const handleSponsorMouseUp = () => {
+    const container = sponsorsContainerRef.current;
+    if (!container) return;
+    
+    // Reset flags when mouse is released
+    container.isDown = false;
+    container.classList.remove('cursor-grabbing');
+  };
+
+  const handleSponsorMouseMove = (e) => {
+    const container = sponsorsContainerRef.current;
+    if (!container || !container.isDown) return;
+    
+    // Prevent default behavior while dragging
+    e.preventDefault();
+    
+    // Calculate how far the mouse has moved
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - container.startX) * 2;
+    
+    // Update scroll position
+    container.scrollLeft = container.scrollLeft - walk;
+    container.startX = e.pageX - container.offsetLeft;
+  };
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-grok-dark to-grok-darker">
