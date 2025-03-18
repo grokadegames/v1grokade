@@ -162,14 +162,88 @@ export default function RankingsPage() {
                       popularityGames.slice(0, popularityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
-                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
-                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
-                              'bg-gray-950'
-                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
-                              {index + 1}
-                            </span>
+                            {index === 0 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#platinumGradient)" stroke="#E5E4E2" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#platinumInnerGradient)" stroke="#A9A8A7" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">1</text>
+                                  <defs>
+                                    <radialGradient id="platinumGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#9A9A9A" />
+                                    </radialGradient>
+                                    <linearGradient id="platinumInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 1 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#silverGradient)" stroke="#C0C0C0" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#silverInnerGradient)" stroke="#A0A0A0" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">2</text>
+                                  <defs>
+                                    <radialGradient id="silverGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E0E0E0" />
+                                      <stop offset="100%" stopColor="#B0B0B0" />
+                                    </radialGradient>
+                                    <linearGradient id="silverInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 2 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#bronzeGradient)" stroke="#CD7F32" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#bronzeInnerGradient)" stroke="#A56025" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">3</text>
+                                  <defs>
+                                    <radialGradient id="bronzeGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="50%" stopColor="#CD7F32" />
+                                      <stop offset="100%" stopColor="#A56025" />
+                                    </radialGradient>
+                                    <linearGradient id="bronzeInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="100%" stopColor="#CD7F32" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 3 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#goldGradient)" stroke="#FFD700" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#goldInnerGradient)" stroke="#E5C100" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">4</text>
+                                  <defs>
+                                    <radialGradient id="goldGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="50%" stopColor="#FFD700" />
+                                      <stop offset="100%" stopColor="#E5A100" />
+                                    </radialGradient>
+                                    <linearGradient id="goldInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="100%" stopColor="#FFD700" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm bg-gray-950 text-white font-bold">
+                                {index + 1}
+                              </span>
+                            )}
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -273,14 +347,88 @@ export default function RankingsPage() {
                       qualityGames.slice(0, qualityLimit).map((game, index) => (
                         <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
-                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
-                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
-                              'bg-gray-950'
-                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
-                              {index + 1}
-                            </span>
+                            {index === 0 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#platinumGradient2)" stroke="#E5E4E2" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#platinumInnerGradient2)" stroke="#A9A8A7" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">1</text>
+                                  <defs>
+                                    <radialGradient id="platinumGradient2" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#9A9A9A" />
+                                    </radialGradient>
+                                    <linearGradient id="platinumInnerGradient2" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 1 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#silverGradient)" stroke="#C0C0C0" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#silverInnerGradient)" stroke="#A0A0A0" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">2</text>
+                                  <defs>
+                                    <radialGradient id="silverGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E0E0E0" />
+                                      <stop offset="100%" stopColor="#B0B0B0" />
+                                    </radialGradient>
+                                    <linearGradient id="silverInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 2 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#bronzeGradient)" stroke="#CD7F32" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#bronzeInnerGradient)" stroke="#A56025" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">3</text>
+                                  <defs>
+                                    <radialGradient id="bronzeGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="50%" stopColor="#CD7F32" />
+                                      <stop offset="100%" stopColor="#A56025" />
+                                    </radialGradient>
+                                    <linearGradient id="bronzeInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="100%" stopColor="#CD7F32" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 3 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#goldGradient)" stroke="#FFD700" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#goldInnerGradient)" stroke="#E5C100" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">4</text>
+                                  <defs>
+                                    <radialGradient id="goldGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="50%" stopColor="#FFD700" />
+                                      <stop offset="100%" stopColor="#E5A100" />
+                                    </radialGradient>
+                                    <linearGradient id="goldInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="100%" stopColor="#FFD700" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm bg-gray-950 text-white font-bold">
+                                {index + 1}
+                              </span>
+                            )}
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -391,14 +539,88 @@ export default function RankingsPage() {
                       creatorRanking.slice(0, creatorLimit).map((creator, index) => (
                         <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm ${
-                              index === 0 ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 ring-2 ring-yellow-300 ring-opacity-50 shadow-lg' :
-                              index === 1 ? 'bg-gradient-to-br from-gray-100 via-gray-300 to-gray-500 ring-2 ring-gray-300 ring-opacity-50 shadow-lg' :
-                              index === 2 ? 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-500 ring-opacity-50 shadow-lg' :
-                              'bg-gray-950'
-                            } ${index < 3 ? 'text-black font-extrabold' : 'text-white font-bold'}`}>
-                              {index + 1}
-                            </span>
+                            {index === 0 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#platinumGradient2)" stroke="#E5E4E2" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#platinumInnerGradient2)" stroke="#A9A8A7" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">1</text>
+                                  <defs>
+                                    <radialGradient id="platinumGradient2" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#9A9A9A" />
+                                    </radialGradient>
+                                    <linearGradient id="platinumInnerGradient2" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E5E4E2" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 1 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#silverGradient)" stroke="#C0C0C0" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#silverInnerGradient)" stroke="#A0A0A0" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">2</text>
+                                  <defs>
+                                    <radialGradient id="silverGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="50%" stopColor="#E0E0E0" />
+                                      <stop offset="100%" stopColor="#B0B0B0" />
+                                    </radialGradient>
+                                    <linearGradient id="silverInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFFFFF" />
+                                      <stop offset="100%" stopColor="#C0C0C0" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 2 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#bronzeGradient)" stroke="#CD7F32" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#bronzeInnerGradient)" stroke="#A56025" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">3</text>
+                                  <defs>
+                                    <radialGradient id="bronzeGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="50%" stopColor="#CD7F32" />
+                                      <stop offset="100%" stopColor="#A56025" />
+                                    </radialGradient>
+                                    <linearGradient id="bronzeInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFC68C" />
+                                      <stop offset="100%" stopColor="#CD7F32" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : index === 3 ? (
+                              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="20" cy="20" r="19" fill="url(#goldGradient)" stroke="#FFD700" strokeWidth="1"/>
+                                  <circle cx="20" cy="20" r="16" fill="url(#goldInnerGradient)" stroke="#E5C100" strokeWidth="0.5"/>
+                                  <text x="20" y="25" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#000" textAnchor="middle">4</text>
+                                  <defs>
+                                    <radialGradient id="goldGradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="50%" stopColor="#FFD700" />
+                                      <stop offset="100%" stopColor="#E5A100" />
+                                    </radialGradient>
+                                    <linearGradient id="goldInnerGradient" x1="0" y1="0" x2="1" y2="1">
+                                      <stop offset="0%" stopColor="#FFF7C2" />
+                                      <stop offset="100%" stopColor="#FFD700" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm bg-gray-950 text-white font-bold">
+                                {index + 1}
+                              </span>
+                            )}
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4">
                             <div className="flex items-center space-x-2 sm:space-x-3">
