@@ -64,11 +64,14 @@ export default function Dashboard() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left sidebar - user info */}
-              <div className="lg:col-span-1">
-                {/* User Profile Card */}
+              {/* Left sidebar - user info and profile */}
+              <div className="lg:col-span-1 flex flex-col">
+                {/* Profile sections grouped together */}
                 <div className="bg-gray-900 rounded-xl p-6 mb-6">
-                  <div className="flex items-center mb-4">
+                  <h2 className="text-xl font-bold text-white mb-4">Your Profile</h2>
+                  
+                  {/* User profile card */}
+                  <div className="flex items-center mb-6">
                     <div 
                       className="w-16 h-16 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-2xl font-bold mr-4 cursor-pointer hover:opacity-80 transition-opacity hover:ring-2 hover:ring-purple-400 relative group"
                       onClick={() => document.getElementById('profile-image-upload').click()}
@@ -103,7 +106,7 @@ export default function Dashboard() {
                     onUploadSuccess={handleImageUpdate}
                   />
                   
-                  {/* Account details here */}
+                  {/* Account details */}
                   <div className="border-t border-gray-800 pt-4 mt-4">
                     <p className="text-gray-400 mb-1">Email:</p>
                     <p className="text-white mb-4">{user?.email}</p>
@@ -127,14 +130,48 @@ export default function Dashboard() {
                   </div>
                 </div>
                 
+                {/* Account Security Section - moved to sidebar */}
+                <div className="bg-gray-900 rounded-xl p-6 mb-6">
+                  <h2 className="text-xl font-bold text-white mb-3">Account Security</h2>
+                  <form className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Current Password</label>
+                      <input 
+                        type="password" 
+                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">New Password</label>
+                      <input 
+                        type="password" 
+                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Confirm New Password</label>
+                      <input 
+                        type="password" 
+                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
+                    <button 
+                      type="submit"
+                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 w-full"
+                    >
+                      Update Password
+                    </button>
+                  </form>
+                </div>
+                
                 {/* Profile Image Upload */}
                 <ProfileImageUpload />
               </div>
               
-              {/* Main content area */}
+              {/* Main content area - right side */}
               <div className="lg:col-span-2">
                 {/* Work Profile Section */}
-                <section>
+                <section className="mb-8">
                   <h2 className="text-2xl font-bold text-white mb-4">Work Profile</h2>
                   
                   {/* Work Profile Activation */}
@@ -144,29 +181,32 @@ export default function Dashboard() {
                   <TalentProfileForm />
                 </section>
                 
-                {/* Games Section */}
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Your Games</h2>
-                  <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl">
-                    <p className="text-center py-8 text-grok-text-secondary">
-                      You haven't added any games yet. 
-                      <button className="text-purple-500 hover:text-purple-400 ml-2">
-                        Submit your first game
-                      </button>
-                    </p>
+                {/* Content Sections grouped by type */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  {/* Games Section */}
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4">Your Games</h2>
+                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
+                      <p className="text-center py-8 text-grok-text-secondary">
+                        You haven't added any games yet. 
+                        <button className="text-purple-500 hover:text-purple-400 ml-2">
+                          Submit your first game
+                        </button>
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Favorites Section */}
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Favorites</h2>
-                  <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl">
-                    <p className="text-center py-8 text-grok-text-secondary">
-                      You haven't favorited any games yet. 
-                      <button className="text-purple-500 hover:text-purple-400 ml-2">
-                        Explore games
-                      </button>
-                    </p>
+                  
+                  {/* Favorites Section */}
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4">Favorites</h2>
+                    <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl h-full">
+                      <p className="text-center py-8 text-grok-text-secondary">
+                        You haven't favorited any games yet. 
+                        <button className="text-purple-500 hover:text-purple-400 ml-2">
+                          Explore games
+                        </button>
+                      </p>
+                    </div>
                   </div>
                 </div>
                 
@@ -291,43 +331,6 @@ export default function Dashboard() {
                         </Link>
                       </div>
                     </div>
-                  </div>
-                </div>
-                
-                {/* Account Security Section */}
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">Account Security</h2>
-                  <div className="bg-black bg-opacity-50 backdrop-blur-sm p-6 rounded-xl">
-                    <h3 className="text-xl font-semibold mb-4">Change Password</h3>
-                    <form className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Current Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">New Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Confirm New Password</label>
-                        <input 
-                          type="password" 
-                          className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
-                      </div>
-                      <button 
-                        type="submit"
-                        className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
-                      >
-                        Update Password
-                      </button>
-                    </form>
                   </div>
                 </div>
               </div>
