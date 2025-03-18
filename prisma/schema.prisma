@@ -30,6 +30,7 @@ model User {
   games       Game[]
   achievements UserAchievement[]
   pageViews   PageView[]
+  talentProfile TalentProfile?
 
   @@map("users")
 }
@@ -153,4 +154,23 @@ model UserRoles {
 
   @@unique([userId, role])
   @@map("user_roles")
+}
+
+model TalentProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  title         String   // e.g., "Senior WebGL Developer"
+  skills        String[] // e.g., ["WebGL", "Three.js", "JavaScript"]
+  hourlyRate    String   // e.g., "$65-85/hr"
+  location      String   // e.g., "San Francisco, CA"
+  xaccount      String?  // Twitter/X account handle
+  featured      Boolean  @default(false)
+  rating        Float    @default(0)
+  reviewCount   Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("talent_profiles")
 }

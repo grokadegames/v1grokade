@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
 
 // Sample data for featured talent
 const featuredTalent = [
@@ -101,11 +102,25 @@ const TalentCard = ({ talent }) => {
         </div>
 
         <div className="flex gap-2">
-          <button className="text-white bg-transparent hover:bg-gray-800 font-medium text-sm px-4 py-2 rounded transition-colors flex-1">
-            View Profile
-          </button>
+          {talent.xaccount ? (
+            <a
+              href={`https://x.com/${talent.xaccount.replace(/^@/, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white bg-transparent hover:bg-gray-800 font-medium text-sm px-4 py-2 rounded transition-colors flex-1 text-center"
+            >
+              Contact
+            </a>
+          ) : (
+            <button
+              disabled
+              className="text-gray-400 bg-gray-800 font-medium text-sm px-4 py-2 rounded flex-1 cursor-not-allowed"
+            >
+              Contact
+            </button>
+          )}
           <button className="text-white bg-purple-600 hover:bg-purple-500 font-medium text-sm px-4 py-2 rounded transition-colors flex-1">
-            Contact
+            View Profile
           </button>
         </div>
       </div>
@@ -114,48 +129,52 @@ const TalentCard = ({ talent }) => {
 };
 
 export default function TalentPage() {
+  const [talentProfiles, setTalentProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('featured');
   const [searchQuery, setSearchQuery] = useState('');
+  const [activePeriod, setActivePeriod] = useState('7d');
 
-  // Sample data to exactly match the image
-  const exactMatchedTalent = [
-    {
-      id: 1,
-      initials: 'AJ',
-      name: 'Alex Johnson',
-      title: 'Senior WebGL Developer',
-      rating: 4.9,
-      reviews: 49,
-      skills: ['WebGL', 'Three.js', 'JavaScript', 'Game Optimization'],
-      rate: '$65-85/hr',
-      location: 'San Francisco, CA',
-      featured: true
-    },
-    {
-      id: 2,
-      initials: 'SC',
-      name: 'Sarah Chen',
-      title: 'Game AI Specialist',
-      rating: 4.8,
-      reviews: 48,
-      skills: ['AI', 'Machine Learning', 'JavaScript', 'Python'],
-      rate: '$70-90/hr',
-      location: 'Remote',
-      featured: true
-    },
-    {
-      id: 3,
-      initials: 'MR',
-      name: 'Miguel Rodriguez',
-      title: 'Unity Game Developer',
-      rating: 4.7,
-      reviews: 47,
-      skills: ['Unity', 'C#', '3D Modeling', 'Game Design'],
-      rate: '$55-75/hr',
-      location: 'Austin, TX',
-      featured: true
-    }
+  const timePeriods = [
+    { id: '1d', label: '1d' },
+    { id: '7d', label: '7d' },
+    { id: '30d', label: '30d' },
   ];
+  
+  // Fetch talent profiles
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        setLoading(true);
+        
+        // Build query parameters
+        const params = new URLSearchParams();
+        if (searchQuery) {
+          params.append('skill', searchQuery);
+        }
+        
+        const response = await fetch(`/api/talent/profiles?${params.toString()}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setTalentProfiles(data.profiles);
+        } else {
+          console.error('Failed to fetch profiles');
+        }
+      } catch (error) {
+        console.error('Error fetching talent profiles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProfiles();
+  }, [searchQuery]);
+  
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Search is triggered by the effect when searchQuery changes
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -171,7 +190,7 @@ export default function TalentPage() {
         
         {/* Search and join section */}
         <div className="mb-12 p-4 bg-gray-900 rounded-xl">
-          <div className="flex flex-col md:flex-row gap-2">
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2">
             <input
               type="text"
               placeholder="Search for talent by skill (e.g., WebGL, Unity, AI)..."
@@ -180,14 +199,20 @@ export default function TalentPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div className="flex gap-2">
-              <button className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-lg transition-colors">
+              <button 
+                type="submit"
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-lg transition-colors"
+              >
                 Search
               </button>
-              <button className="px-4 py-2 bg-transparent border border-purple-600 text-white text-sm font-medium rounded-lg transition-colors">
+              <Link 
+                href="/dashboard" 
+                className="px-4 py-2 bg-transparent border border-purple-600 text-white text-sm font-medium rounded-lg transition-colors inline-flex items-center justify-center"
+              >
                 Join as Talent
-              </button>
+              </Link>
             </div>
-          </div>
+          </form>
         </div>
         
         {/* Talent categories */}
@@ -238,11 +263,26 @@ export default function TalentPage() {
         
         {/* Featured talent section */}
         <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {exactMatchedTalent.map(talent => (
-              <TalentCard key={talent.id} talent={talent} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+            </div>
+          ) : talentProfiles.length === 0 ? (
+            <div className="bg-gray-900 rounded-xl p-8 text-center">
+              <p className="text-gray-400">No talent profiles found. {searchQuery && 'Try a different search term.'}</p>
+              {!searchQuery && (
+                <p className="text-gray-400 mt-2">
+                  Be the first to <Link href="/dashboard" className="text-purple-500 hover:text-purple-400">add your profile</Link>!
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {talentProfiles.map(talent => (
+                <TalentCard key={talent.id} talent={talent} />
+              ))}
+            </div>
+          )}
         </div>
         
         {/* Call to action */}
@@ -253,9 +293,12 @@ export default function TalentPage() {
           <p className="text-gray-300 max-w-2xl mx-auto mb-6">
             Join our talent network to find opportunities and connect with game developers who need your expertise.
           </p>
-          <button className="bg-gray-800 hover:bg-gray-700 text-white font-medium px-5 py-2 rounded-lg transition-colors">
+          <Link 
+            href="/dashboard"
+            className="bg-gray-800 hover:bg-gray-700 text-white font-medium px-5 py-2 rounded-lg transition-colors inline-block"
+          >
             Create Your Profile
-          </button>
+          </Link>
         </div>
       </main>
       
