@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { Tooltip } from 'react-tooltip';
 
 /**
- * Combined component that shows both sparklines and trend indicators
- * Redesigned to match the visual style in the screenshot
+ * Combined component that shows trend indicators
+ * Simplified to only show percentage without graph
  */
 export default function CombinedTrendIndicator({ 
   entityId, 
@@ -174,7 +173,7 @@ export default function CombinedTrendIndicator({
     return `${rounded}%`;
   }
   
-  // Render the trend chart
+  // Render the trend chart with only percentage, no sparkline
   function renderTrendChart(period) {
     // Check if we're rendering the active period that already has change calculated
     if (period === activePeriod && change && change.hasData) {
@@ -187,44 +186,17 @@ export default function CombinedTrendIndicator({
       const stableColor = "#9ca3af"; // Gray
       
       const lineColor = isPositive ? upColor : isStable ? stableColor : downColor;
-      const fillColor = isPositive 
-        ? "rgba(16, 185, 129, 0.35)" // More opacity in fill
-        : isStable 
-          ? "rgba(156, 163, 175, 0.1)" 
-          : "rgba(239, 68, 68, 0.35)";
       
       const formattedPercentage = formatPercentage(change.percentChange);
       
       return (
-        <div className="relative h-full flex items-center w-full">
-          <div className="flex-grow mr-2">
-            <Sparklines 
-              data={change.sparklineData} 
-              width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
-              height={height - 10}
-              margin={2}
-              min={0} // Fixed min value
-              max={100} // Fixed max value
-              style={{ overflow: 'hidden' }}
-            >
-              <SparklinesLine 
-                color={lineColor} 
-                style={{ 
-                  strokeWidth: 9,
-                  stroke: lineColor,
-                  fill: fillColor,
-                  strokeLinejoin: "miter",
-                  strokeLinecap: "square"
-                }}
-              />
-            </Sparklines>
-          </div>
-          
+        <div className="relative h-full flex items-center justify-end w-full">
           <div 
-            className="min-w-[40px] text-right text-sm font-medium pl-1" /* Increased font size */
+            className="px-3 py-1 text-sm font-medium rounded-md"
             style={{ 
               color: lineColor,
-              fontWeight: 800 /* Bolder font */
+              fontWeight: 800,
+              backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : isStable ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)'
             }}
           >
             {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
@@ -236,32 +208,11 @@ export default function CombinedTrendIndicator({
     // For non-active periods or if active period has no data, calculate the change
     const periodChange = period === activePeriod ? change : calculateChange(historyData[period]);
     
-    // Demo data for empty states to show a line
-    if (!periodChange.hasData || periodChange.sparklineData.length < 2) {
-      // Create demo diagonal line data (slightly upward)
-      const demoData = [40, 60];
-      
+    // Demo data for empty states
+    if (!periodChange.hasData) {
       return (
-        <div className="relative h-full flex items-center">
-          <Sparklines 
-            data={demoData} 
-            width={width} 
-            height={height - 10}
-            margin={2}
-            min={0}
-            max={100}
-            style={{ overflow: 'hidden' }}
-          >
-            <SparklinesLine 
-              color="rgba(75, 85, 99, 0.5)" 
-              style={{ 
-                strokeWidth: 4, 
-                stroke: "rgba(75, 85, 99, 0.5)", 
-                fill: "none" 
-              }}
-            />
-          </Sparklines>
-          <div className="absolute right-1 text-xs font-medium text-gray-500">
+        <div className="relative h-full flex items-center justify-end">
+          <div className="px-3 py-1 text-sm font-medium rounded-md text-gray-500 bg-gray-800/20">
             --
           </div>
         </div>
@@ -277,44 +228,17 @@ export default function CombinedTrendIndicator({
     const stableColor = "#9ca3af"; // Gray
     
     const lineColor = isPositive ? upColor : isStable ? stableColor : downColor;
-    const fillColor = isPositive 
-      ? "rgba(16, 185, 129, 0.35)" // More opacity in fill
-      : isStable 
-        ? "rgba(156, 163, 175, 0.1)" 
-        : "rgba(239, 68, 68, 0.35)";
     
     const formattedPercentage = formatPercentage(periodChange.percentChange);
     
     return (
-      <div className="relative h-full flex items-center w-full">
-        <div className="flex-grow mr-2">
-          <Sparklines 
-            data={periodChange.sparklineData} 
-            width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
-            height={height - 10}
-            margin={2}
-            min={0} // Fixed min value
-            max={100} // Fixed max value
-            style={{ overflow: 'hidden' }}
-          >
-            <SparklinesLine 
-              color={lineColor} 
-              style={{ 
-                strokeWidth: 9,
-                stroke: lineColor,
-                fill: fillColor,
-                strokeLinejoin: "miter",
-                strokeLinecap: "square"
-              }}
-            />
-          </Sparklines>
-        </div>
-        
+      <div className="relative h-full flex items-center justify-end w-full">
         <div 
-          className="min-w-[40px] text-right text-sm font-medium pl-1" /* Increased font size */
+          className="px-3 py-1 text-sm font-medium rounded-md"
           style={{ 
             color: lineColor,
-            fontWeight: 800 /* Bolder font */
+            fontWeight: 800,
+            backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : isStable ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)'
           }}
         >
           {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
@@ -344,47 +268,20 @@ export default function CombinedTrendIndicator({
   // Use a fallback trend if no data is available
   const activePeriodData = historyData[activePeriod];
   if (!activePeriodData || !activePeriodData.historyData || activePeriodData.historyData.length < 2) {
-    // Generate a simple upward diagonal line for demo
-    const demoData = [30, 70];
-    
     // Random positive percentage (10-25%)
     const randomPercentage = (10 + Math.floor(Math.random() * 15)) + '%';
     
     return (
-      <div className="w-full h-full flex items-center">
-        <div className="w-full flex items-center">
-          <div className="flex-grow mr-2">
-            <Sparklines 
-              data={demoData} 
-              width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
-              height={height - 10}
-              margin={2}
-              min={0}
-              max={100}
-              style={{ overflow: 'hidden' }}
-            >
-              <SparklinesLine 
-                color="#22c55e" 
-                style={{ 
-                  strokeWidth: 9,
-                  stroke: "#22c55e",
-                  fill: "rgba(34, 197, 94, 0.35)",
-                  strokeLinejoin: "miter", // Sharp corners
-                  strokeLinecap: "square"
-                }}
-              />
-            </Sparklines>
-          </div>
-          
-          <div 
-            className="min-w-[40px] text-right text-sm font-medium pl-1"
-            style={{ 
-              color: "#22c55e",
-              fontWeight: 800
-            }}
-          >
-            +{randomPercentage}
-          </div>
+      <div className="w-full h-full flex items-center justify-end">
+        <div 
+          className="px-3 py-1 text-sm font-medium rounded-md"
+          style={{ 
+            color: "#22c55e",
+            fontWeight: 800,
+            backgroundColor: 'rgba(34, 197, 94, 0.1)'
+          }}
+        >
+          +{randomPercentage}
         </div>
       </div>
     );
