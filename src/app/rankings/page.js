@@ -14,7 +14,7 @@ export default function RankingsPage() {
   const [popularityLimit, setPopularityLimit] = useState(10);
   const [qualityLimit, setQualityLimit] = useState(10);
   const [creatorLimit, setCreatorLimit] = useState(10);
-  const [activePeriod, setActivePeriod] = useState('1d');
+  const [activePeriod, setActivePeriod] = useState('7d');
 
   const timePeriods = [
     { id: '1d', label: '1d' },
