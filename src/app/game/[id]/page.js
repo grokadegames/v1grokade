@@ -397,6 +397,31 @@ export default function GamePage() {
     }
   };
   
+  // Add a new share handler function after the existing handleDislike function
+  const handleShare = () => {
+    // Get the URL of the current page for sharing
+    const gameUrl = typeof window !== 'undefined' ? window.location.href : '';
+    
+    // Format the author's X account for the share text
+    const authorXAccount = game.xaccount ? 
+      (game.xaccount.startsWith('@') ? game.xaccount : `@${game.xaccount.replace(/^https?:\/\/(www\.)?x\.com\//i, '').replace('@', '')}`) : 
+      '';
+    
+    // Create the share text with proper formatting
+    let shareText = `"${game.title}" created by ${authorXAccount} on @grokadegames is amazing! Built with AI and featured on Grokade.com. Try it here:`;
+    
+    // Create the URL to share on X.com with the text and image
+    const imageUrl = encodeURIComponent(game.imageUrl || '');
+    const encodedText = encodeURIComponent(shareText);
+    const encodedUrl = encodeURIComponent(gameUrl);
+    
+    // Open X.com composer in a new window with pre-populated content
+    window.open(
+      `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}${imageUrl ? `&hashtags=AIGaming,Grokade` : ''}`,
+      '_blank'
+    );
+  };
+  
   // Format date to match production grid format
   const formatDate = (dateString) => {
     if (!dateString) return 'Recently added';
@@ -660,7 +685,10 @@ export default function GamePage() {
                   {dislikeCount}
                 </button>
                 
-                <button className="flex-1 bg-grok-darker text-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors">
+                <button 
+                  onClick={handleShare}
+                  className="flex-1 bg-grok-darker text-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
+                >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
