@@ -143,12 +143,12 @@ export default function RankingsPage() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Score</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Plays</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Score</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -178,7 +178,7 @@ export default function RankingsPage() {
                                   <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
                                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                    <span className="text-xs text-gray-400">No img</span>
                                   </div>
                                 )}
                               </a>
@@ -186,7 +186,7 @@ export default function RankingsPage() {
                                 <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
                                 </a>
-                                <p className="text-xs text-grok-text-secondary truncate">
+                                <p className="text-xs text-gray-400 truncate">
                                   {game.xaccount ? (
                                     <a 
                                       href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
@@ -206,7 +206,7 @@ export default function RankingsPage() {
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">
                             {game.metrics?.views.toLocaleString()}
                           </td>
-                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-gray-400">{game.metrics?.plays.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
                             <div className="h-10 w-full flex items-center">
@@ -254,12 +254,12 @@ export default function RankingsPage() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Game</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Likes</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Dislikes</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Rating</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Game</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Likes</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Dislikes</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Rating</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -289,7 +289,7 @@ export default function RankingsPage() {
                                   <img src={game.imageUrl} alt={game.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
                                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                    <span className="text-xs text-gray-400">No img</span>
                                   </div>
                                 )}
                               </a>
@@ -297,7 +297,7 @@ export default function RankingsPage() {
                                 <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
                                 </a>
-                                <p className="text-xs text-grok-text-secondary truncate">
+                                <p className="text-xs text-gray-400 truncate">
                                   {game.xaccount ? (
                                     <a 
                                       href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
@@ -373,12 +373,12 @@ export default function RankingsPage() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="border-b border-gray-800">
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Rank</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-grok-text-secondary">Creator</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Games</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Views</th>
-                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Plays</th>
-                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">Last {activePeriod}</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Rank</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-left text-xs sm:text-sm text-gray-400">Creator</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Games</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Views</th>
+                      <th className="hidden sm:table-cell px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Plays</th>
+                      <th className="px-2 py-3 sm:px-6 sm:py-4 text-right text-xs sm:text-sm text-gray-400">Last {activePeriod}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -408,7 +408,7 @@ export default function RankingsPage() {
                                   <img src={creator.topGame.imageUrl} alt={creator.topGame.title} className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
                                 ) : (
                                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-grok-text-secondary">No img</span>
+                                    <span className="text-xs text-gray-400">No img</span>
                                   </div>
                                 )}
                               </a>
@@ -422,7 +422,7 @@ export default function RankingsPage() {
                                   @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
                                 </a>
                                 {creator.topGame && (
-                                  <p className="text-xs text-grok-text-secondary truncate">
+                                  <p className="text-xs text-gray-400 truncate">
                                     Top: <a href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</a>
                                   </p>
                                 )}

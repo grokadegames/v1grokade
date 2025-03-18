@@ -12,6 +12,7 @@ module.exports = {
         'grok-dark': '#121212',
         'grok-darker': '#0A0A0A',
         'grok-card': '#1E1E1E',
+        'grok-border': '#333333',
         'grok-red': '#FF4D4D',
         'grok-text': '#FFFFFF',
         'grok-text-secondary': '#A0A0A0',
