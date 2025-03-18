@@ -161,8 +161,8 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on total views and plays</p>
             </div>
             
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
-              <div className="min-w-[400px] sm:min-w-[600px] w-full align-middle">
+            <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
+              <div className="min-w-[500px] sm:min-w-[600px] w-full align-middle">
                 <table className="w-full table-auto sm:table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
@@ -262,13 +262,13 @@ export default function RankingsPage() {
         
         {!loading && activeTab === 'quality' && (
           <div className="bg-black rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-700 to-violet-600 px-6 py-4">
+            <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
-              <p className="text-blue-100 text-sm">Based on likes and dislikes ratio</p>
+              <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
             </div>
             
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
-              <div className="min-w-[400px] sm:min-w-[600px] w-full align-middle">
+            <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
+              <div className="min-w-[500px] sm:min-w-[600px] w-full align-middle">
                 <table className="w-full table-auto sm:table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
@@ -361,7 +361,7 @@ export default function RankingsPage() {
               <div className="py-4 text-center">
                 <button 
                   onClick={showMoreQuality}
-                  className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+                  className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-md transition-colors"
                 >
                   Show More
                 </button>
@@ -377,8 +377,8 @@ export default function RankingsPage() {
               <p className="text-purple-100 text-sm">Based on number of games published</p>
             </div>
             
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
-              <div className="min-w-[400px] sm:min-w-[600px] w-full align-middle">
+            <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-4 sm:mx-0 pb-2">
+              <div className="min-w-[500px] sm:min-w-[600px] w-full align-middle">
                 <table className="w-full table-auto sm:table-fixed">
                   <thead>
                     <tr className="border-b border-gray-800">
