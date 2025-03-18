@@ -31,9 +31,6 @@ export default function CombinedTrendIndicator({
       try {
         // Configure period parameters for API
         const periodConfig = {
-          '10m': { hours: 0.167 }, // 10 minutes = 0.167 hours
-          '1h': { hours: 1 },
-          '6h': { hours: 6 },
           '1d': { hours: 24 },
           '7d': { days: 7 },
           '30d': { days: 30 }
@@ -190,42 +187,47 @@ export default function CombinedTrendIndicator({
     const isStable = change.positionChange === 0;
     
     // Color palette
-    const upColor = "#10b981"; // Emerald green 
+    const upColor = "#22c55e"; // Brighter green 
     const downColor = "#ef4444"; // Red
     const stableColor = "#9ca3af"; // Gray
     
     const lineColor = isUp ? upColor : isStable ? stableColor : downColor;
     const fillColor = isUp 
-      ? "rgba(16, 185, 129, 0.1)" 
+      ? "rgba(34, 197, 94, 0.25)" 
       : isStable 
-        ? "rgba(156, 163, 175, 0.05)" 
-        : "rgba(239, 68, 68, 0.1)";
+        ? "rgba(156, 163, 175, 0.1)" 
+        : "rgba(239, 68, 68, 0.25)";
     
     const formattedPercentage = formatPercentage(change.percentChange);
     
     return (
-      <div className="relative h-full flex items-center">
-        <Sparklines 
-          data={change.sparklineData} 
-          width={width} 
-          height={height - 10}
-          margin={2}
-          min={Math.min(...change.sparklineData) * 0.95}
-          max={Math.max(...change.sparklineData) * 1.05}
-        >
-          <SparklinesLine 
-            color={lineColor} 
-            style={{ 
-              strokeWidth: 2, 
-              stroke: lineColor,
-              fill: fillColor
-            }}
-          />
-        </Sparklines>
+      <div className="relative h-full flex items-center w-full">
+        <div className="flex-grow mr-2">
+          <Sparklines 
+            data={change.sparklineData} 
+            width={width - 40} /* Adjusted to make room for percentage */
+            height={height - 10}
+            margin={2}
+            min={Math.min(...change.sparklineData) * 0.95}
+            max={Math.max(...change.sparklineData) * 1.05}
+          >
+            <SparklinesLine 
+              color={lineColor} 
+              style={{ 
+                strokeWidth: 3.5, 
+                stroke: lineColor,
+                fill: fillColor
+              }}
+            />
+          </Sparklines>
+        </div>
         
         <div 
-          className="absolute right-1 text-xs font-medium rounded"
-          style={{ color: lineColor }}
+          className="min-w-[40px] text-right text-xs font-medium pl-1"
+          style={{ 
+            color: lineColor,
+            fontWeight: 700
+          }}
         >
           {isUp ? '+' : isStable ? '' : '-'}{formattedPercentage}
         </div>

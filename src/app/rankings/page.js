@@ -17,9 +17,6 @@ export default function RankingsPage() {
   const [activePeriod, setActivePeriod] = useState('1d');
 
   const timePeriods = [
-    { id: '10m', label: '10m' },
-    { id: '1h', label: '1h' },
-    { id: '6h', label: '6h' },
     { id: '1d', label: '1d' },
     { id: '7d', label: '7d' },
     { id: '30d', label: '30d' },
@@ -125,10 +122,6 @@ export default function RankingsPage() {
                 {period.label}
               </button>
             ))}
-            <div className="border-l border-gray-700 mx-2"></div>
-            <button className="px-3 py-1.5 text-xs text-purple-400">
-              {activeTab === 'popularity' || activeTab === 'quality' ? 'Crypto' : 'USD'}
-            </button>
           </div>
         </div>
         
@@ -216,7 +209,7 @@ export default function RankingsPage() {
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{game.metrics?.plays.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white">{(game.popularityScore || 0).toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
-                            <div className="h-10">
+                            <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
                                 entityType="game"
@@ -335,7 +328,7 @@ export default function RankingsPage() {
                             </div>
                           </td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
-                            <div className="h-10">
+                            <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={game.id}
                                 entityType="game"
@@ -442,7 +435,7 @@ export default function RankingsPage() {
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalViews.toLocaleString()}</td>
                           <td className="hidden sm:table-cell px-2 sm:px-6 py-2 sm:py-4 text-right text-xs sm:text-sm text-grok-text-secondary">{creator.totalPlays.toLocaleString()}</td>
                           <td className="px-2 sm:px-6 py-2 sm:py-4 w-32 sm:w-40">
-                            <div className="h-10">
+                            <div className="h-10 w-full flex items-center">
                               <CombinedTrendIndicator
                                 entityId={creator.xaccount}
                                 entityType="creator"
