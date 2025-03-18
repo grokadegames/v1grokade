@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
@@ -26,19 +27,27 @@ export default function RankingsPage() {
     const fetchRankings = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/rankings');
-        const data = await response.json();
         
-        if (data.popularityRanking) {
-          setPopularityGames(data.popularityRanking);
+        // Fetch from individual endpoints instead of combined endpoint
+        const [popularityResponse, qualityResponse, creatorResponse] = await Promise.all([
+          fetch('/api/rankings/popular'),
+          fetch('/api/rankings/quality'),
+          fetch('/api/rankings/creator')
+        ]);
+        
+        if (popularityResponse.ok) {
+          const popularityData = await popularityResponse.json();
+          setPopularityGames(popularityData);
         }
         
-        if (data.qualityRanking) {
-          setQualityGames(data.qualityRanking);
+        if (qualityResponse.ok) {
+          const qualityData = await qualityResponse.json();
+          setQualityGames(qualityData);
         }
-
-        if (data.creatorRanking) {
-          setCreatorRanking(data.creatorRanking);
+        
+        if (creatorResponse.ok) {
+          const creatorData = await creatorResponse.json();
+          setCreatorRanking(creatorData);
         }
       } catch (error) {
         console.error('Error fetching rankings:', error);
@@ -180,9 +189,9 @@ export default function RankingsPage() {
                                 )}
                               </a>
                               <div className="min-w-0">
-                                <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
+                                <Link href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
-                                </a>
+                                </Link>
                                 <p className="text-xs text-gray-400 truncate">
                                   {game.xaccount ? (
                                     <a 
@@ -288,9 +297,9 @@ export default function RankingsPage() {
                                 )}
                               </a>
                               <div className="min-w-0">
-                                <a href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
+                                <Link href={`/game/${game.id}`} className="text-white text-sm sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                   {game.title}
-                                </a>
+                                </Link>
                                 <p className="text-xs text-gray-400 truncate">
                                   {game.xaccount ? (
                                     <a 
@@ -399,17 +408,17 @@ export default function RankingsPage() {
                                 )}
                               </a>
                               <div className="min-w-0">
-                                <a 
+                                <Link 
                                   href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                   target="_blank"
                                   rel="noopener noreferrer" 
                                   className="text-white text-sm sm:text-base font-medium hover:text-green-400 transition-colors truncate block"
                                 >
                                   @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                </a>
+                                </Link>
                                 {creator.topGame && (
                                   <p className="text-xs text-gray-400 truncate">
-                                    Top: <a href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</a>
+                                    Top: <Link href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</Link>
                                   </p>
                                 )}
                               </div>
