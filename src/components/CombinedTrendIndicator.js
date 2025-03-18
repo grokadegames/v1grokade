@@ -142,20 +142,19 @@ export default function CombinedTrendIndicator({
     // Amplify small changes for better visibility, but cap at reasonable levels
     percentChange = Math.min(Math.max(percentChange * 1.5, -60), 60);
     
-    // Extract points for sparkline
-    // Instead of position, use the actual metric values to show growth trend
-    const dataPoints = sortedData.map(item => {
-      if (periodData.rankingType === 'popularity') {
-        return item.views + (item.plays * 2);
-      } else if (periodData.rankingType === 'quality') {
-        return item.score * 100; // Scale up to be more visible
-      } else {
-        return item.views + item.plays;
-      }
-    });
-    
-    // Keep the original data points without smoothing interpolation
-    const sparklineData = dataPoints.length > 0 ? dataPoints : [50, 50];
+    // Instead of using the actual data points, create a simple diagonal line
+    // based on whether the trend is positive or negative
+    let sparklineData;
+    if (percentChange > 0) {
+      // Positive trend: line from bottom left to top right
+      sparklineData = [30, 70];
+    } else if (percentChange < 0) {
+      // Negative trend: line from top left to bottom right
+      sparklineData = [70, 30];
+    } else {
+      // Neutral trend: horizontal line
+      sparklineData = [50, 50];
+    }
     
     return { 
       metricChange,
@@ -204,8 +203,8 @@ export default function CombinedTrendIndicator({
               width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
               height={height - 10}
               margin={2}
-              min={Math.min(...change.sparklineData) * 0.7} // More extreme min/max range stretching
-              max={Math.max(...change.sparklineData) * 1.3}
+              min={0} // Fixed min value
+              max={100} // Fixed max value
               style={{ overflow: 'hidden' }}
             >
               <SparklinesLine 
@@ -239,13 +238,8 @@ export default function CombinedTrendIndicator({
     
     // Demo data for empty states to show a line
     if (!periodChange.hasData || periodChange.sparklineData.length < 2) {
-      // Create some random demo data that looks like a trend with sharp changes
-      const demoData = [];
-      for (let i = 0; i < 10; i++) {
-        // Random values with a zigzag pattern for visual appeal
-        const zigzag = (i % 2 === 0) ? 15 : -8;
-        demoData.push(40 + Math.random() * 20 + zigzag + (i * 3));
-      }
+      // Create demo diagonal line data (slightly upward)
+      const demoData = [40, 60];
       
       return (
         <div className="relative h-full flex items-center">
@@ -254,6 +248,8 @@ export default function CombinedTrendIndicator({
             width={width} 
             height={height - 10}
             margin={2}
+            min={0}
+            max={100}
             style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
@@ -297,8 +293,8 @@ export default function CombinedTrendIndicator({
             width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
             height={height - 10}
             margin={2}
-            min={Math.min(...periodChange.sparklineData) * 0.7} // More extreme min/max range stretching
-            max={Math.max(...periodChange.sparklineData) * 1.3}
+            min={0} // Fixed min value
+            max={100} // Fixed max value
             style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
@@ -348,13 +344,8 @@ export default function CombinedTrendIndicator({
   // Use a fallback trend if no data is available
   const activePeriodData = historyData[activePeriod];
   if (!activePeriodData || !activePeriodData.historyData || activePeriodData.historyData.length < 2) {
-    // Generate demo data with a zigzag trend for visual appeal
-    const demoData = [];
-    for (let i = 0; i < 10; i++) {
-      // Generate a more extreme zigzag pattern for more dramatic display
-      const zigzag = (i % 2 === 0) ? 15 : -8; // More extreme up and down
-      demoData.push(40 + Math.random() * 15 + zigzag + (i * 3)); // More variation
-    }
+    // Generate a simple upward diagonal line for demo
+    const demoData = [30, 70];
     
     // Random positive percentage (10-25%)
     const randomPercentage = (10 + Math.floor(Math.random() * 15)) + '%';
@@ -368,6 +359,8 @@ export default function CombinedTrendIndicator({
               width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
               height={height - 10}
               margin={2}
+              min={0}
+              max={100}
               style={{ overflow: 'hidden' }}
             >
               <SparklinesLine 
