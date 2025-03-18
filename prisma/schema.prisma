@@ -17,6 +17,7 @@ model User {
   updatedAt   DateTime       @updatedAt
   favorites   GameFavorite[]
   games       Game[]
+  achievements UserAchievement[]
 
   @@map("users")
 }
@@ -89,4 +90,15 @@ model Subscriber {
   updatedAt DateTime @updatedAt
 
   @@map("subscribers")
+}
+
+model UserAchievement {
+  id            String   @id @default(uuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
 }
