@@ -408,7 +408,7 @@ export default function GamePage() {
       '';
     
     // Create the share text with proper formatting
-    let shareText = `"${game.title}" created by ${authorXAccount} on @grokadegames is amazing! Built with AI and featured on Grokade.com. Try it here:`;
+    let shareText = `"${game.title}" created by ${authorXAccount} on @grokadegames is amazing! Built with AI and featured on Grokade.com. Learn more about the game here:`;
     
     // Create the URL to share on X.com with the text and image
     const imageUrl = encodeURIComponent(game.imageUrl || '');
