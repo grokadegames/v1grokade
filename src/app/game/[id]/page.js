@@ -768,61 +768,75 @@ export default function GamePage() {
       </div>
       
       {/* Move Sponsors Section to right above Featured Games */}
-      <div className="mb-8">
-        <div 
-          ref={sponsorsContainerRef}
-          className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
-          style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {sponsors.length > 0 ? (
-            sponsors.map((sponsor) => (
+      <div className="border-t border-gray-800 py-8 mt-8">
+        <div className="container-custom mx-auto px-4">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl text-white font-semibold">OUR SPONSORS</h2>
+            <div className="flex space-x-2">
               <a 
-                key={sponsor.id}
-                href={sponsor.website || '#'}
+                href="https://x.com/messages/compose?recipient_id=grokadegames&text=Hi%2C%20I%27m%20interested%20in%20potentially%20sponsoring%20Grokade%20and%20advertising%20on%20the%20platform." 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all relative group overflow-hidden"
+                className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-4 py-1 rounded-md transition-colors text-sm"
               >
-                <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black bg-opacity-70 mb-1">
-                  {/* Use image from API if available */}
-                  {sponsor.logoUrl ? (
-                    <img 
-                      src={sponsor.logoUrl} 
-                      alt={`${sponsor.name} logo`}
-                      className="w-10 h-10 object-contain" 
-                    />
-                  ) : (
-                    // Fallback icons if no logo URL
-                    getSponsorIcon(sponsor.name)
-                  )}
-                </div>
-                <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
-                <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
-                
-                {/* Slide-up action button overlay - similar to game cards */}
-                <div className="absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
-                  <div className="text-center bg-white hover:bg-gray-100 text-black font-medium px-4 py-2 rounded-md transition-colors duration-200 text-sm w-full">
-                    Visit Sponsor
-                  </div>
-                </div>
+                Sponsor and Advertise
               </a>
-            ))
-          ) : (
-            // Loading state or fallback when no sponsors are available
-            <div className="flex-1 flex justify-center items-center py-8">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-grok-card h-12 w-12"></div>
-                <div className="flex-1 space-y-4 py-1">
-                  <div className="h-4 bg-grok-card rounded w-3/4"></div>
-                  <div className="space-y-2">
-                    <div className="h-4 bg-grok-card rounded"></div>
+            </div>
+          </div>
+          
+          <p className="text-white text-center mb-6 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
+          
+          <div 
+            ref={sponsorsContainerRef}
+            className="sponsors-container flex overflow-x-auto gap-3 pb-4 pt-2 px-1 relative cursor-grab hide-scrollbar" 
+            onMouseDown={handleSponsorMouseDown}
+            onMouseMove={handleSponsorMouseMove}
+            onMouseUp={handleSponsorMouseUp}
+            onMouseLeave={handleSponsorMouseLeave}
+          >
+            {sponsors.length > 0 ? (
+              sponsors.map((sponsor) => (
+                <a
+                  key={sponsor.id}
+                  href={sponsor.website || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sponsor-card flex-shrink-0 min-w-[160px] w-[160px] rounded-lg p-2 py-1.5 backdrop-blur-sm bg-black bg-opacity-50 flex flex-col items-center justify-center hover:bg-black hover:bg-opacity-70 transition-all duration-200 transform hover:-translate-y-1"
+                >
+                  <div className="h-12 flex items-center justify-center mb-1">
+                    {sponsor.logoUrl ? (
+                      <img 
+                        src={sponsor.logoUrl} 
+                        alt={`${sponsor.name} logo`}
+                        className="max-h-10 max-w-[80px] object-contain"
+                      />
+                    ) : (
+                      getSponsorIcon(sponsor.name)
+                    )}
+                  </div>
+                  <h3 className="text-base font-semibold text-white leading-tight">{sponsor.name}</h3>
+                  <p className="text-xs text-gray-300 text-center leading-tight">{sponsor.description}</p>
+                  <span className="text-xs text-purple-400 mt-1 hover:underline">
+                    Visit Sponsor
+                  </span>
+                </a>
+              ))
+            ) : (
+              // Loading state or fallback when no sponsors are available
+              <div className="flex-1 flex justify-center items-center py-8">
+                <div className="animate-pulse flex space-x-4">
+                  <div className="rounded-full bg-grok-card h-12 w-12"></div>
+                  <div className="flex-1 space-y-4 py-1">
+                    <div className="h-4 bg-grok-card rounded w-3/4"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-grok-card rounded"></div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-        <p className="text-white text-center mt-4 mb-2 font-medium">Your sponsorship powers Grokade's growth and spotlights the emerging industry of vibe-coded, AI-crafted games.</p>
       </div>
       
       {/* Featured Games Section */}
