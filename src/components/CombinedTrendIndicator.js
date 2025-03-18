@@ -177,10 +177,68 @@ export default function CombinedTrendIndicator({
   
   // Render the trend chart
   function renderTrendChart(period) {
-    const change = calculateChange(historyData[period]);
+    // Check if we're rendering the active period that already has change calculated
+    if (period === activePeriod && change && change.hasData) {
+      const isPositive = change.percentChange > 0;
+      const isStable = change.percentChange === 0;
+      
+      // Color palette - increased saturation
+      const upColor = "#10b981"; // Brighter green
+      const downColor = "#ef4444"; // Bright red
+      const stableColor = "#9ca3af"; // Gray
+      
+      const lineColor = isPositive ? upColor : isStable ? stableColor : downColor;
+      const fillColor = isPositive 
+        ? "rgba(16, 185, 129, 0.35)" // More opacity in fill
+        : isStable 
+          ? "rgba(156, 163, 175, 0.1)" 
+          : "rgba(239, 68, 68, 0.35)";
+      
+      const formattedPercentage = formatPercentage(change.percentChange);
+      
+      return (
+        <div className="relative h-full flex items-center w-full">
+          <div className="flex-grow mr-2">
+            <Sparklines 
+              data={change.sparklineData} 
+              width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
+              height={height - 10}
+              margin={2}
+              min={Math.min(...change.sparklineData) * 0.7} // More extreme min/max range stretching
+              max={Math.max(...change.sparklineData) * 1.3}
+              style={{ overflow: 'hidden' }}
+            >
+              <SparklinesLine 
+                color={lineColor} 
+                style={{ 
+                  strokeWidth: 9,
+                  stroke: lineColor,
+                  fill: fillColor,
+                  strokeLinejoin: "miter",
+                  strokeLinecap: "square"
+                }}
+              />
+            </Sparklines>
+          </div>
+          
+          <div 
+            className="min-w-[40px] text-right text-sm font-medium pl-1" /* Increased font size */
+            style={{ 
+              color: lineColor,
+              fontWeight: 800 /* Bolder font */
+            }}
+          >
+            {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
+          </div>
+        </div>
+      );
+    }
+    
+    // For non-active periods or if active period has no data, calculate the change
+    const periodChange = period === activePeriod ? change : calculateChange(historyData[period]);
     
     // Demo data for empty states to show a line
-    if (!change.hasData || change.sparklineData.length < 2) {
+    if (!periodChange.hasData || periodChange.sparklineData.length < 2) {
       // Create some random demo data that looks like a trend with sharp changes
       const demoData = [];
       for (let i = 0; i < 10; i++) {
@@ -214,8 +272,8 @@ export default function CombinedTrendIndicator({
       );
     }
     
-    const isPositive = change.percentChange > 0;
-    const isStable = change.percentChange === 0;
+    const isPositive = periodChange.percentChange > 0;
+    const isStable = periodChange.percentChange === 0;
     
     // Color palette - increased saturation
     const upColor = "#10b981"; // Brighter green
@@ -229,18 +287,18 @@ export default function CombinedTrendIndicator({
         ? "rgba(156, 163, 175, 0.1)" 
         : "rgba(239, 68, 68, 0.35)";
     
-    const formattedPercentage = formatPercentage(change.percentChange);
+    const formattedPercentage = formatPercentage(periodChange.percentChange);
     
     return (
       <div className="relative h-full flex items-center w-full">
         <div className="flex-grow mr-2">
           <Sparklines 
-            data={change.sparklineData} 
+            data={periodChange.sparklineData} 
             width={(width * 6) - 40} /* Increased to 6x width for extreme stretching */
             height={height - 10}
             margin={2}
-            min={Math.min(...change.sparklineData) * 0.7} // More extreme min/max range stretching
-            max={Math.max(...change.sparklineData) * 1.3}
+            min={Math.min(...periodChange.sparklineData) * 0.7} // More extreme min/max range stretching
+            max={Math.max(...periodChange.sparklineData) * 1.3}
             style={{ overflow: 'hidden' }}
           >
             <SparklinesLine 
@@ -338,6 +396,9 @@ export default function CombinedTrendIndicator({
       </div>
     );
   }
+  
+  // Calculate the change data for tooltip and rendering
+  const change = calculateChange(historyData[activePeriod]);
   
   // Calculate the tooltip content
   const tooltipText = (() => {
