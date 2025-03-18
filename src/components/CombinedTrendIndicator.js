@@ -138,8 +138,8 @@ export default function CombinedTrendIndicator({
       percentChange = oldMetric > 0 ? (metricChange / oldMetric) * 100 : 0;
     }
     
-    // Amplify small changes for better visibility, but cap at reasonable levels
-    percentChange = Math.min(Math.max(percentChange * 1.5, -60), 60);
+    // Don't amplify changes, but still cap at reasonable levels
+    percentChange = Math.min(Math.max(percentChange, -50), 50);
     
     // Instead of using the actual data points, create a simple diagonal line
     // based on whether the trend is positive or negative
@@ -169,8 +169,13 @@ export default function CombinedTrendIndicator({
   // Format percentage for display
   function formatPercentage(value) {
     if (value === 0) return '0%';
-    const rounded = Math.abs(value).toFixed(0); // Remove decimal points for cleaner look
-    return `${rounded}%`;
+    
+    // Round to nearest integer for cleaner display
+    const rounded = Math.round(Math.abs(value));
+    
+    // Always return with a sign
+    const sign = value > 0 ? '+' : '-';
+    return `${sign}${rounded}%`;
   }
   
   // Render the trend chart with only percentage, no sparkline
@@ -199,7 +204,7 @@ export default function CombinedTrendIndicator({
               backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : isStable ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)'
             }}
           >
-            {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
+            {formattedPercentage}
           </div>
         </div>
       );
@@ -241,7 +246,7 @@ export default function CombinedTrendIndicator({
             backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : isStable ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)'
           }}
         >
-          {isPositive ? '+' : isStable ? '' : '-'}{formattedPercentage}
+          {formattedPercentage}
         </div>
       </div>
     );
@@ -268,20 +273,18 @@ export default function CombinedTrendIndicator({
   // Use a fallback trend if no data is available
   const activePeriodData = historyData[activePeriod];
   if (!activePeriodData || !activePeriodData.historyData || activePeriodData.historyData.length < 2) {
-    // Random positive percentage (10-25%)
-    const randomPercentage = (10 + Math.floor(Math.random() * 15)) + '%';
-    
+    // Instead of showing random positive percentage, show a neutral indicator
     return (
       <div className="w-full h-full flex items-center justify-end">
         <div 
           className="px-3 py-1 text-sm font-medium rounded-md"
           style={{ 
-            color: "#22c55e",
+            color: "#9ca3af", // Gray color for neutral
             fontWeight: 800,
-            backgroundColor: 'rgba(34, 197, 94, 0.1)'
+            backgroundColor: 'rgba(156, 163, 175, 0.1)'
           }}
         >
-          +{randomPercentage}
+          --
         </div>
       </div>
     );
