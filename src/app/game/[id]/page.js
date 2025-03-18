@@ -417,7 +417,7 @@ export default function GamePage() {
     
     // Open X.com composer in a new window with pre-populated content
     window.open(
-      `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}${imageUrl ? `&hashtags=AIGaming,Grokade` : ''}`,
+      `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
       '_blank'
     );
   };
