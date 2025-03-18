@@ -25,13 +25,13 @@ export default function CompetitionsPage() {
             <div className="bg-gray-900 p-12 flex flex-col items-center justify-center">
               <h2 className="text-3xl font-bold text-white mb-8">🌟 2025 Vibe Coding Game Jam</h2>
               <p className="text-white text-center mb-4">
-                Run by <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">@levelsio</a>
+                Run by <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:underline">@levelsio</a>
               </p>
             </div>
             
             <div className="bg-gray-950 p-6">
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-blue-600 text-white px-3 py-1 text-sm rounded-full">Featured</span>
+                <span className="bg-purple-600 text-white px-3 py-1 text-sm rounded-full">Featured</span>
                 <span className="bg-green-600 text-white px-3 py-1 text-sm rounded-full">Enrolling Now</span>
               </div>
               
@@ -82,7 +82,7 @@ export default function CompetitionsPage() {
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdB8LEZIoYuh4_tO89s2DbMT7nqyDvJGrgrrUoBquLA4XCBRA/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition-colors text-center"
+                className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-colors text-center"
               >
                 Enter Competition
               </a>
@@ -113,7 +113,7 @@ export default function CompetitionsPage() {
                 <div>
                   <h4 className="font-semibold text-white">Track Games</h4>
                   <p className="text-grok-text-secondary text-sm">
-                    <a href="https://twitter.com/hashtag/vibejam" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                    <a href="https://twitter.com/hashtag/vibejam" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">
                       #vibejam
                     </a>
                   </p>
@@ -151,7 +151,7 @@ export default function CompetitionsPage() {
                 
                 <div className="pt-4 border-t border-gray-800">
                   <p className="text-white text-sm">
-                    Sponsorship opportunities available. Contact <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">@levelsio</a> for details.
+                    Sponsorship opportunities available. Contact <a href="https://x.com/levelsio" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:underline">@levelsio</a> for details.
                   </p>
                 </div>
               </div>
@@ -162,25 +162,25 @@ export default function CompetitionsPage() {
         {/* Tab Navigation */}
         <div className="mb-8 flex space-x-2 border-b border-gray-800">
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'upcoming' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('upcoming')}
           >
             Upcoming
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'active' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'active' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('active')}
           >
             Active
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'past' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'past' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('past')}
           >
             Past
           </button>
           <button 
-            className={`px-4 py-2 font-medium text-sm ${activeTab === 'myCompetitions' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'myCompetitions' ? 'text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
             onClick={() => setActiveTab('myCompetitions')}
           >
             My Competitions
@@ -197,7 +197,7 @@ export default function CompetitionsPage() {
                   <h3 className="text-xl font-bold text-white">AI Game Challenge</h3>
                   <p className="text-sm text-grok-text-secondary">Sponsored by AIGameLabs</p>
                 </div>
-                <span className="bg-blue-600 text-white px-2 py-1 text-xs rounded">Upcoming</span>
+                <span className="bg-purple-600 text-white px-2 py-1 text-xs rounded">Upcoming</span>
               </div>
               
               <p className="text-grok-text-secondary mb-6">
@@ -212,7 +212,7 @@ export default function CompetitionsPage() {
                 
                 <div>
                   <div className="text-sm text-grok-text-secondary mb-1">Prize Pool</div>
-                  <div className="font-medium text-blue-400">$800</div>
+                  <div className="font-medium text-purple-400">$800</div>
                 </div>
               </div>
               
@@ -222,11 +222,11 @@ export default function CompetitionsPage() {
                   <span>45 / 100</span>
                 </div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '45%' }}></div>
+                  <div className="bg-purple-600 h-2 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
               
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition-colors">
+              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 rounded transition-colors">
                 Get Notified
               </button>
             </div>
@@ -240,7 +240,7 @@ export default function CompetitionsPage() {
                   <h3 className="text-xl font-bold text-white">Retro Game Jam</h3>
                   <p className="text-sm text-grok-text-secondary">Sponsored by RetroGaming Alliance</p>
                 </div>
-                <span className="bg-blue-600 text-white px-2 py-1 text-xs rounded">Upcoming</span>
+                <span className="bg-purple-600 text-white px-2 py-1 text-xs rounded">Upcoming</span>
               </div>
               
               <p className="text-grok-text-secondary mb-6">
@@ -255,7 +255,7 @@ export default function CompetitionsPage() {
                 
                 <div>
                   <div className="text-sm text-grok-text-secondary mb-1">Prize Pool</div>
-                  <div className="font-medium text-blue-400">$750</div>
+                  <div className="font-medium text-purple-400">$750</div>
                 </div>
               </div>
               
@@ -265,11 +265,11 @@ export default function CompetitionsPage() {
                   <span>78 / 150</span>
                 </div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '52%' }}></div>
+                  <div className="bg-purple-600 h-2 rounded-full" style={{ width: '52%' }}></div>
                 </div>
               </div>
               
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded transition-colors">
+              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 rounded transition-colors">
                 Get Notified
               </button>
             </div>
@@ -282,7 +282,7 @@ export default function CompetitionsPage() {
           <p className="text-grok-text-secondary max-w-2xl mx-auto mb-8">
             Looking to promote your brand to game developers and players? Sponsor a competition and gain visibility.
           </p>
-          <button className="bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-medium px-6 py-2 rounded transition-colors">
+          <button className="bg-transparent border border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white font-medium px-6 py-2 rounded transition-colors">
             Become a Sponsor
           </button>
         </div>
