@@ -124,3 +124,19 @@ model PageView {
 
   @@map("page_views")
 }
+
+model RankingHistory {
+  id           String   @id @default(uuid())
+  entityId     String   // Game ID or Creator ID (X account)
+  entityType   String   // "game" or "creator" 
+  rankingType  String   // "popularity", "quality", "creator"
+  position     Int      // Rank position (1, 2, 3...)
+  score        Float?   // Optional score value (popularity/quality score)
+  views        Int?     // Point-in-time views count
+  plays        Int?     // Point-in-time plays count
+  recordedAt   DateTime @default(now())
+  
+  @@index([entityId, rankingType])
+  @@index([recordedAt])
+  @@map("ranking_history")
+}

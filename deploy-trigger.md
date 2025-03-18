@@ -8,3 +8,4 @@ This file triggers a new deployment to Netlify.
 - Fixed API response to include the featured field
 
 Deployment trigger: May 13, 2025
+
