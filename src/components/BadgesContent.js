@@ -47,12 +47,12 @@ export default function BadgesContent() {
   const getEmbedCode = (type) => {
     switch(type) {
       case 'html':
-        return `<a href="${badgeUrl}" target="_blank" rel="noopener noreferrer" title="Play on Grokade">
-  <img src="https://grokade.com${selectedBadgeImage}" alt="Play on Grokade" width="${width}" height="${height}" />
+        return `<a href="${badgeUrl}" target="_blank" rel="noopener noreferrer" title="Featured on Grokade">
+  <img src="https://grokade.com${selectedBadgeImage}" alt="Featured on Grokade" width="${width}" height="${height}" style="padding: 5px;" />
 </a>`;
       
       case 'markdown':
-        return `[![Play on Grokade](https://grokade.com${selectedBadgeImage})](${badgeUrl})`;
+        return `[![Featured on Grokade](https://grokade.com${selectedBadgeImage})](${badgeUrl})`;
       
       case 'bbcode':
         return `[url=${badgeUrl}][img]https://grokade.com${selectedBadgeImage}[/img][/url]`;
@@ -131,7 +131,7 @@ export default function BadgesContent() {
             <h2 className="text-2xl font-bold text-white mb-6">Preview</h2>
             
             <div className="flex items-center justify-center bg-grok-darker p-8 rounded-lg mb-6">
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center p-2">
                 <img 
                   src={selectedBadgeImage} 
                   alt="Grokade Badge Preview" 
