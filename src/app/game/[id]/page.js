@@ -568,7 +568,6 @@ export default function GamePage() {
                 <h1 className="text-2xl font-bold text-white break-words">
                   {game.title}
                 </h1>
-                <div className="text-sm text-red-500">Not available</div>
               </div>
               
               {/* Mobile-only Game Preview - Shown right below the title on mobile */}
@@ -933,7 +932,7 @@ export default function GamePage() {
                         
                         {/* Live Badge - Conditionally shown */}
                         {featuredGame.isLive && (
-                          <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
                             LIVE
                           </div>
                         )}
