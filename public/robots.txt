@@ -1,0 +1,37 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /register/
+
+# Optimized for LLMs and AI crawlers
+User-agent: GPTBot
+Allow: /
+Allow: /games/
+Allow: /talent/
+Allow: /gigs/
+Allow: /developers/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /games/
+Allow: /talent/
+Allow: /gigs/
+Allow: /developers/
+
+User-agent: Googlebot
+Allow: /
+Allow: /games/
+Allow: /talent/
+Allow: /gigs/
+Allow: /developers/
+
+User-agent: Bingbot
+Allow: /
+Allow: /games/
+Allow: /talent/
+Allow: /gigs/
+Allow: /developers/
+
+Sitemap: https://grokade.com/sitemap.xml 

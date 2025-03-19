@@ -45,6 +45,7 @@ export default function Footer() {
                 <li><Link href="/about" className="text-grok-text-secondary hover:text-white transition-colors">About</Link></li>
                 <li><Link href="/discord" className="text-grok-text-secondary hover:text-white transition-colors">Discord</Link></li>
                 <li><Link href="/x" className="text-grok-text-secondary hover:text-white transition-colors">X</Link></li>
+                <li><Link href="/developers" className="text-grok-text-secondary hover:text-white transition-colors">For Developers</Link></li>
               </ul>
             </div>
 
