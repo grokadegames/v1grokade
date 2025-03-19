@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default function BadgesContent() {
   const [copiedIndex, setCopiedIndex] = useState(null);
-  const [selectedBadge, setSelectedBadge] = useState('vibecoded');
+  const [selectedBadge, setSelectedBadge] = useState('basic');
   const [badgeSize, setBadgeSize] = useState('medium');
   const badgeColor = 'purple'; // Only using purple color
   
@@ -16,6 +16,21 @@ export default function BadgesContent() {
   };
 
   const badges = {
+    basic: {
+      name: 'Basic',
+      description: 'Simple Grokade badge for your game',
+      image: `/images/badges/grokade-basic-${badgeColor}.svg`
+    },
+    featured: {
+      name: 'Featured',
+      description: 'Show that your game is featured on Grokade',
+      image: `/images/badges/grokade-featured-${badgeColor}.svg`
+    },
+    spotlight: {
+      name: 'Spotlight',
+      description: 'Show that your game is spotlighted on Grokade',
+      image: `/images/badges/grokade-spotlight-${badgeColor}.svg`
+    },
     vibecoded: {
       name: 'Vibe Coded',
       description: 'Showcase your game as using vibe coding technology',
