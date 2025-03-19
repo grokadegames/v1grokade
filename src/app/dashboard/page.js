@@ -102,19 +102,34 @@ export default function Dashboard() {
                     
                     <p className="text-gray-400 mb-1">Account Type:</p>
                     <div className="flex flex-wrap gap-2">
-                      {user?.role && (
-                        <span className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full">
-                          {user.role}
-                        </span>
-                      )}
-                      {user?.roles?.map(role => (
-                        <span 
-                          key={role.role} 
-                          className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
-                        >
-                          {role.role}
-                        </span>
-                      ))}
+                      {(() => {
+                        // Create a Set of unique roles
+                        const uniqueRoles = new Set();
+                        
+                        // Add primary role if it exists
+                        if (user?.role) {
+                          uniqueRoles.add(user.role);
+                        }
+                        
+                        // Add roles from the roles array if it exists
+                        if (user?.roles && Array.isArray(user.roles)) {
+                          user.roles.forEach(roleObj => {
+                            if (roleObj.role) {
+                              uniqueRoles.add(roleObj.role);
+                            }
+                          });
+                        }
+                        
+                        // Convert Set back to array and render
+                        return Array.from(uniqueRoles).map(role => (
+                          <span 
+                            key={role} 
+                            className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
+                          >
+                            {role}
+                          </span>
+                        ));
+                      })()}
                     </div>
                   </div>
                 </div>
