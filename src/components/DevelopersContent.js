@@ -144,6 +144,17 @@ export default function DevelopersContent() {
                   Explore Vibe Coding →
                 </a>
               </div>
+
+              <div className="bg-grok-dark p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-white mb-3">Grokade Badges</h3>
+                <p className="text-grok-text-secondary mb-4">
+                  Add badges to your game website or repository to show it's featured on Grokade.
+                </p>
+                <a href="/developers/badges" 
+                  className="text-grok-purple hover:text-grok-purple-light font-medium">
+                  Get Badge Code →
+                </a>
+              </div>
             </div>
             
             <h2 className="text-2xl font-bold text-white mb-6">Community Resources</h2>

@@ -9,6 +9,7 @@ export default async function sitemap() {
     '/competitions',
     '/talent',
     '/developers',
+    '/developers/badges',
     '/roadmap',
     '/login',
     '/register',
