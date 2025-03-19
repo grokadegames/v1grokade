@@ -5,9 +5,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default function BadgesContent() {
   const [copiedIndex, setCopiedIndex] = useState(null);
-  const [selectedBadge, setSelectedBadge] = useState('default');
+  const [selectedBadge, setSelectedBadge] = useState('vibecoded');
   const [badgeSize, setBadgeSize] = useState('medium');
-  const [badgeColor, setBadgeColor] = useState('purple');
+  const badgeColor = 'purple'; // Only using purple color
   
   const codeRefs = {
     html: useRef(null),
@@ -16,16 +16,6 @@ export default function BadgesContent() {
   };
 
   const badges = {
-    default: {
-      name: 'Standard',
-      description: 'The standard Grokade badge for any game',
-      image: `/images/badges/grokade-badge-${badgeColor}.svg`
-    },
-    featured: {
-      name: 'Featured Game',
-      description: 'Show that your game is featured on Grokade',
-      image: `/images/badges/grokade-featured-${badgeColor}.svg`
-    },
     vibecoded: {
       name: 'Vibe Coded',
       description: 'Showcase your game as using vibe coding technology',
@@ -42,13 +32,6 @@ export default function BadgesContent() {
     small: { width: 120, height: 40 },
     medium: { width: 180, height: 60 },
     large: { width: 240, height: 80 }
-  };
-
-  const colors = {
-    purple: 'Purple (Default)',
-    dark: 'Dark',
-    light: 'Light',
-    blue: 'Blue'
   };
 
   const gameSlug = 'your-game-slug';
@@ -83,7 +66,7 @@ export default function BadgesContent() {
     <div className="max-w-5xl mx-auto">
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Grokade Game Badges</h1>
       <p className="text-xl text-grok-text-secondary mb-12">
-        Add a badge to your game website and let players know your game is featured on Grokade.
+        Add a badge to your game website and let players know your game is on Grokade.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -118,19 +101,6 @@ export default function BadgesContent() {
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
                 <option value="large">Large</option>
-              </select>
-            </div>
-            
-            <div className="mb-6">
-              <label className="block text-white mb-2">Color</label>
-              <select 
-                value={badgeColor}
-                onChange={e => setBadgeColor(e.target.value)}
-                className="w-full bg-grok-darker text-white border border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-grok-purple"
-              >
-                {Object.entries(colors).map(([key, name]) => (
-                  <option key={key} value={key}>{name}</option>
-                ))}
               </select>
             </div>
             
