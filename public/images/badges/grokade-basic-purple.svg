@@ -5,12 +5,7 @@
   <rect x="1" y="1" width="178" height="58" rx="7" stroke="#9966FF" stroke-width="2"/>
   
   <!-- Centered Grokade logo text -->
-  <g transform="translate(50, 35)">
-    <text font-family="system-ui, sans-serif" font-weight="700" font-size="22" fill="#9966FF" text-anchor="start">
-      GROK
-    </text>
-    <text x="60" font-family="system-ui, sans-serif" font-weight="700" font-size="22" fill="white" text-anchor="start">
-      ADE
-    </text>
-  </g>
+  <text x="90" y="35" font-family="system-ui, sans-serif" font-weight="700" font-size="22" fill="#9966FF" text-anchor="middle">
+    GROK<tspan fill="white">ADE</tspan>
+  </text>
 </svg> 

@@ -121,21 +121,23 @@ export default function BadgesContent() {
             
             <div className="mb-6">
               <label className="block text-white mb-2">Game Slug</label>
-              <div className="flex">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-700 bg-grok-darker text-gray-400">
-                  grokade.com/game/
-                </span>
-                <input
-                  type="text"
-                  className="flex-1 bg-grok-darker text-white border border-gray-700 rounded-r-lg p-3 focus:outline-none focus:ring-2 focus:ring-grok-purple"
-                  placeholder="your-game-slug"
-                  value={gameSlug}
-                  readOnly
-                />
+              <div className="flex flex-col">
+                <div className="flex text-sm">
+                  <span className="inline-flex items-center px-2 rounded-l-md border border-r-0 border-gray-700 bg-grok-darker text-gray-400 text-xs">
+                    grokade.com/game/
+                  </span>
+                  <input
+                    type="text"
+                    className="flex-1 bg-grok-darker text-white border border-gray-700 rounded-r-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-grok-purple text-xs"
+                    placeholder="your-game-slug"
+                    value={gameSlug}
+                    readOnly
+                  />
+                </div>
+                <p className="mt-2 text-grok-text-secondary text-xs">
+                  Replace with your game slug from URL
+                </p>
               </div>
-              <p className="mt-2 text-grok-text-secondary text-sm">
-                Replace with your actual game slug from your Grokade game page URL
-              </p>
             </div>
           </div>
         </div>

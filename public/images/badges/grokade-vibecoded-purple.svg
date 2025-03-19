@@ -6,14 +6,9 @@
   <rect x="2" y="2" width="176" height="56" rx="6" fill="url(#glow)" fill-opacity="0.1"/>
   
   <!-- Centered Grokade logo text -->
-  <g transform="translate(50, 28)">
-    <text font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#9966FF" text-anchor="start">
-      GROK
-    </text>
-    <text x="56" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="white" text-anchor="start">
-      ADE
-    </text>
-  </g>
+  <text x="90" y="28" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#9966FF" text-anchor="middle">
+    GROK<tspan fill="white">ADE</tspan>
+  </text>
   
   <!-- Centered VIBE CODED text below -->
   <text x="90" y="48" font-family="system-ui, sans-serif" font-size="14" fill="white" text-anchor="middle">
