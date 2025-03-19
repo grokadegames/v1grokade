@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
+import SchemaOrg from '@/components/SchemaOrg';
 import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
 
 // Sample data for featured talent
@@ -18,7 +20,9 @@ const featuredTalent = [
     skills: ['WebGL', 'Three.js', 'JavaScript', 'Game Optimization'],
     rate: '$65-85/hr',
     location: 'San Francisco, CA',
-    featured: true
+    featured: true,
+    specialization: 'AI-built games',
+    vibeCodingExpert: true
   },
   {
     id: 2,
@@ -30,7 +34,9 @@ const featuredTalent = [
     skills: ['AI', 'Machine Learning', 'JavaScript', 'Python'],
     rate: '$70-90/hr',
     location: 'Remote',
-    featured: true
+    featured: true,
+    specialization: 'Vibe coding',
+    vibeCodingExpert: true
   },
   {
     id: 3,
@@ -42,96 +48,65 @@ const featuredTalent = [
     skills: ['Unity', 'C#', '3D Modeling', 'Game Design'],
     rate: '$55-75/hr',
     location: 'Austin, TX',
-    featured: true
+    featured: true,
+    specialization: 'AI-driven game mechanics'
   }
 ];
 
 // Talent card component
 const TalentCard = ({ talent }) => {
   // Determine the initials to show in the circle if no profile image
-  const initials = talent.initials || talent.name?.charAt(0) || '?';
+  const initials = talent.initials || talent.name.split(' ').map(n => n[0]).join('');
   
+  // Function to render the skills tags
+  const renderSkills = (skills) => {
+    return skills.map((skill, index) => (
+      <span key={index} className="text-xs bg-gray-800 text-gray-200 px-2 py-1 rounded mr-1 mb-1 inline-block">
+        {skill}
+      </span>
+    ));
+  };
+  
+  // Determine if this talent specializes in vibe coding or AI games
+  const hasSpecialization = talent.specialization || talent.vibeCodingExpert;
+
   return (
-    <div className="bg-gray-900 rounded-xl overflow-hidden">
-      <div className="p-6">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden flex items-center justify-center text-white text-xl font-bold">
-              {talent.profileImageUrl ? (
-                <div className="w-full h-full relative">
-                  <img 
-                    src={talent.profileImageUrl} 
-                    alt={talent.name} 
-                    className="absolute w-full h-full object-cover object-center"
-                  />
-                </div>
-              ) : (
-                initials
-              )}
+    <div className="bg-grok-dark rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105 hover:shadow-xl border border-gray-800">
+      <div className="flex items-start">
+        <div className="w-16 h-16 bg-grok-purple rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+          {initials}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold text-white">{talent.name}</h3>
+          <p className="text-grok-text-secondary mb-1">{talent.title}</p>
+          <div className="flex items-center mb-2">
+            <div className="flex text-yellow-400 mr-1">
+              {'★'.repeat(Math.floor(talent.rating))}
+              {talent.rating % 1 !== 0 && '☆'}
+              {'☆'.repeat(5 - Math.ceil(talent.rating))}
             </div>
+            <span className="text-sm text-grok-text-secondary">({talent.reviews} reviews)</span>
           </div>
-          <div className="ml-3">
-            <div className="flex items-center">
-              <h3 className="text-xl font-medium text-white">{talent.name}</h3>
-              {talent.featured && (
-                <span className="ml-2 bg-purple-600 text-white text-xs px-2 py-0.5 rounded">
-                  Featured
-                </span>
-              )}
+          <p className="text-white font-semibold mb-4">{talent.rate}</p>
+          
+          {/* Specialization badge for vibe coding or AI expertise */}
+          {hasSpecialization && (
+            <div className="mb-3 bg-grok-purple bg-opacity-20 rounded-full px-3 py-1 inline-block">
+              <span className="text-grok-purple text-sm font-medium">
+                {talent.vibeCodingExpert ? '✦ Vibe Coding Expert' : `✦ ${talent.specialization}`}
+              </span>
             </div>
-            <p className="text-gray-300 text-sm">{talent.title}</p>
+          )}
+          
+          <div className="mb-3 flex flex-wrap">
+            {renderSkills(talent.skills)}
           </div>
-        </div>
-        
-        <div className="flex items-center mt-2">
-          <span className="text-yellow-400">★</span>
-          <span className="text-white ml-1 font-medium text-sm">{talent.rating}</span>
-          <span className="text-gray-400 ml-1 text-xs">({talent.reviews} reviews)</span>
-        </div>
-
-        <div className="flex flex-wrap mt-3 mb-4">
-          {talent.skills.slice(0, 4).map((skill, index) => (
-            <span 
-              key={index} 
-              className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded mr-1 mb-1"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex justify-between items-center mb-4 text-sm">
-          <div>
-            <div className="text-gray-400">Rate:</div>
-            <div className="text-white">{talent.rate}</div>
-          </div>
-          <div className="text-right">
-            <div className="text-gray-400">Location:</div>
-            <div className="text-white">{talent.location}</div>
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          {talent.xaccount ? (
-            <a
-              href={`https://x.com/${talent.xaccount.replace(/^@/, '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white bg-transparent hover:bg-gray-800 font-medium text-sm px-4 py-2 rounded transition-colors flex-1 text-center"
-            >
-              Contact
-            </a>
-          ) : (
-            <button
-              disabled
-              className="text-gray-400 bg-gray-800 font-medium text-sm px-4 py-2 rounded flex-1 cursor-not-allowed"
-            >
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-sm text-grok-text-secondary">{talent.location}</span>
+            <button className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors">
               Contact
             </button>
-          )}
-          <button className="text-white bg-purple-600 hover:bg-purple-500 font-medium text-sm px-4 py-2 rounded transition-colors flex-1">
-            View Profile
-          </button>
+          </div>
         </div>
       </div>
     </div>
@@ -139,179 +114,241 @@ const TalentCard = ({ talent }) => {
 };
 
 export default function TalentPage() {
-  const [talentProfiles, setTalentProfiles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('featured');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activePeriod, setActivePeriod] = useState('7d');
+  const [profiles, setProfiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const timePeriods = [
-    { id: '1d', label: '1d' },
-    { id: '7d', label: '7d' },
-    { id: '30d', label: '30d' },
-  ];
-  
-  // Fetch talent profiles
   useEffect(() => {
+    // In a real app, we'd fetch from an API
     const fetchProfiles = async () => {
       try {
-        setLoading(true);
-        
-        // Build query parameters
-        const params = new URLSearchParams();
-        if (searchQuery) {
-          params.append('skill', searchQuery);
+        setIsLoading(true);
+
+        // Try to fetch from API first
+        try {
+          const response = await fetch('/api/talent');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.profiles && data.profiles.length > 0) {
+              // Use API data if available
+              setProfiles(data.profiles);
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching profiles:', error);
+          // Fall back to sample data
         }
-        
-        const response = await fetch(`/api/talent/profiles?${params.toString()}`);
-        
-        if (response.ok) {
-          const data = await response.json();
-          setTalentProfiles(data.profiles);
-        } else {
-          console.error('Failed to fetch profiles');
-        }
+
+        // Fall back to sample data if API not available
+        setProfiles([...featuredTalent]);
       } catch (error) {
-        console.error('Error fetching talent profiles:', error);
+        console.error('Error:', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
-    
+
     fetchProfiles();
-  }, [searchQuery]);
-  
+  }, []);
+
   const handleSearch = (e) => {
-    e.preventDefault();
-    // Search is triggered by the effect when searchQuery changes
+    setSearchTerm(e.target.value);
+  };
+  
+  const filteredProfiles = profiles.filter(profile => {
+    const searchLower = searchTerm.toLowerCase();
+    return profile.name.toLowerCase().includes(searchLower) ||
+      profile.title.toLowerCase().includes(searchLower) ||
+      profile.skills.some(skill => skill.toLowerCase().includes(searchLower)) ||
+      profile.location.toLowerCase().includes(searchLower) ||
+      (profile.specialization && profile.specialization.toLowerCase().includes(searchLower));
+  });
+  
+  // Generate person schema for talents (for SEO)
+  const generatePersonSchemas = () => {
+    return profiles.slice(0, 5).map(talent => ({
+      '@type': 'Person',
+      name: talent.name,
+      jobTitle: talent.title,
+      description: `${talent.name} is a ${talent.title} specializing in ${talent.specialization || talent.skills.slice(0, 2).join(' and ')}. Available for hire on Grokade.`,
+      ...(talent.vibeCodingExpert && { knowsAbout: 'Vibe Coding, AI Game Development, WebGL, Three.js' })
+    }));
   };
 
+  // Generate structured data for talent page
+  const talentPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Grokade Talent - AI Game Developers & Vibe Coding Experts',
+    description: 'Discover and hire top AI game developers and vibe coding experts on Grokade. Find specialized talent for WebGL, Three.js, and AI-driven game development.',
+    url: 'https://grokade.com/talent',
+    hasPart: generatePersonSchemas()
+  };
+
+  // Create a metadata description that's optimized for SEO
+  const metaDescription = "Hire expert AI game developers and vibe coding specialists. Grokade's talent marketplace connects you with top WebGL, Three.js, and game development professionals for your next AI-built game project.";
+
+  // Generate relevant keywords based on talent profiles
+  const getMetaKeywords = () => {
+    const baseKeywords = ['AI game developers', 'vibe coding experts', 'game development talent', 'WebGL developers', 'Three.js specialists'];
+    
+    // Add skills from featured talent
+    const skillKeywords = profiles
+      .flatMap(profile => profile.skills || [])
+      .filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates
+    
+    return [...baseKeywords, ...skillKeywords].join(', ');
+  };
+  
   return (
-    <div className="min-h-screen bg-black">
-      <AuthNavbar />
+    <div className="min-h-screen bg-grok-darker">
+      {/* SEO metadata */}
+      <Head>
+        <title>Grokade Talent - Hire AI Game Developers & Vibe Coding Experts</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content={getMetaKeywords()} />
+        <link rel="canonical" href="https://grokade.com/talent" />
+      </Head>
       
-      <main className="container mx-auto max-w-6xl px-4 py-14">
-        <h1 className="text-4xl font-bold text-white text-center mb-3">
-          Game Development Talent Network
-        </h1>
-        <p className="text-center text-gray-300 mb-10">
-          Connect with specialized talent for your game projects or showcase your skills to get hired.
-        </p>
-        
-        {/* Search and join section */}
-        <div className="mb-12 p-4 bg-gray-900 rounded-xl">
-          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2">
+      {/* Schema.org structured data */}
+      <SchemaOrg
+        customSchema={talentPageSchema}
+      />
+      
+      <AuthNavbar />
+
+      <main className="container-custom mx-auto px-4 py-12 pt-20">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Grokade Talent</h1>
+          <p className="text-xl text-grok-text-secondary max-w-2xl mx-auto">
+            Discover and hire top AI game developers and vibe coding experts to bring your game vision to life.
+          </p>
+        </div>
+
+        <div className="max-w-2xl mx-auto mb-12">
+          <div className="relative">
             <input
               type="text"
-              placeholder="Search for talent by skill (e.g., WebGL, Unity, AI)..."
-              className="flex-grow px-4 py-2 bg-gray-800 text-white rounded-lg focus:outline-none border-0"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for skills, roles, or expertise in vibe coding and AI game development..."
+              className="w-full bg-grok-dark text-white border border-gray-800 rounded-lg p-4 pl-12 focus:outline-none focus:ring-2 focus:ring-grok-purple"
+              value={searchTerm}
+              onChange={handleSearch}
             />
-            <div className="flex gap-2">
-              <button 
-                type="submit"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                Search
-              </button>
-              <Link 
-                href="/dashboard" 
-                className="px-4 py-2 bg-transparent border border-purple-600 text-white text-sm font-medium rounded-lg transition-colors inline-flex items-center justify-center"
-              >
-                Join as Talent
-              </Link>
-            </div>
-          </form>
-        </div>
-        
-        {/* Talent categories */}
-        <div className="mb-8">
-          <div className="inline-flex">
-            <button
-              className={`px-4 py-2 mr-1 rounded-md text-sm font-medium ${
-                activeTab === 'featured'
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              onClick={() => setActiveTab('featured')}
-            >
-              Featured Talent
-            </button>
-            <button
-              className={`px-4 py-2 mr-1 rounded-md text-sm font-medium ${
-                activeTab === 'developers'
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              onClick={() => setActiveTab('developers')}
-            >
-              Developers
-            </button>
-            <button
-              className={`px-4 py-2 mr-1 rounded-md text-sm font-medium ${
-                activeTab === 'artists'
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              onClick={() => setActiveTab('artists')}
-            >
-              Artists
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
-                activeTab === 'consultants'
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              onClick={() => setActiveTab('consultants')}
-            >
-              Consultants
-            </button>
+            <svg className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
           </div>
         </div>
-        
-        {/* Featured talent section */}
+
         <div className="mb-12">
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-white">Featured Talent</h2>
+            <div className="flex items-center">
+              <span className="text-grok-text-secondary mr-2">Trending:</span>
+              <CombinedTrendIndicator value={15} />
             </div>
-          ) : talentProfiles.length === 0 ? (
-            <div className="bg-gray-900 rounded-xl p-8 text-center">
-              <p className="text-gray-400">No talent profiles found. {searchQuery && 'Try a different search term.'}</p>
-              {!searchQuery && (
-                <p className="text-gray-400 mt-2">
-                  Be the first to <Link href="/dashboard" className="text-purple-500 hover:text-purple-400">add your profile</Link>!
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {talentProfiles.map(talent => (
-                <TalentCard key={talent.id} talent={talent} />
-              ))}
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              Array(3).fill().map((_, index) => (
+                <div key={index} className="bg-grok-dark rounded-lg shadow-lg p-6 animate-pulse">
+                  <div className="flex items-start">
+                    <div className="w-16 h-16 bg-gray-700 rounded-full mr-4"></div>
+                    <div className="flex-1">
+                      <div className="h-6 bg-gray-700 rounded mb-2"></div>
+                      <div className="h-4 bg-gray-700 rounded mb-4 w-3/4"></div>
+                      <div className="h-3 bg-gray-700 rounded mb-3"></div>
+                      <div className="h-5 bg-gray-700 rounded mb-4 w-1/4"></div>
+                      <div className="flex flex-wrap mb-3">
+                        {Array(4).fill().map((_, i) => (
+                          <div key={i} className="h-6 bg-gray-700 rounded mr-1 mb-1 w-16"></div>
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <div className="h-4 bg-gray-700 rounded w-1/3"></div>
+                        <div className="h-8 bg-gray-700 rounded w-24"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              filteredProfiles.map(profile => (
+                <TalentCard key={profile.id} talent={profile} />
+              ))
+            )}
+          </div>
+          
+          {!isLoading && filteredProfiles.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-grok-text-secondary text-lg">No talent found matching your search criteria.</p>
             </div>
           )}
         </div>
-        
-        {/* Call to action */}
-        <div className="bg-gray-900 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">
-            Are you a game development expert?
-          </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto mb-6">
-            Join our talent network to find opportunities and connect with game developers who need your expertise.
+
+        <div className="bg-grok-dark rounded-lg p-6 md:p-8 text-center mb-12">
+          <h2 className="text-2xl font-bold text-white mb-4">Looking for Specialized AI Game Developers?</h2>
+          <p className="text-grok-text-secondary mb-6 max-w-2xl mx-auto">
+            Grokade connects you with expert talent who specialize in AI-built games and vibe coding technology. Our vetted professionals have experience with WebGL, Three.js, and cutting-edge game development.
           </p>
-          <Link 
-            href="/dashboard"
-            className="bg-gray-800 hover:bg-gray-700 text-white font-medium px-5 py-2 rounded-lg transition-colors inline-block"
-          >
-            Create Your Profile
-          </Link>
+          <button className="bg-grok-purple hover:bg-purple-700 text-white px-6 py-3 rounded-md font-semibold transition-colors">
+            Post a Job
+          </button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-grok-dark rounded-lg p-6">
+            <h3 className="text-xl font-bold text-white mb-4">For Game Studios</h3>
+            <p className="text-grok-text-secondary mb-4">
+              Find specialized talent to expand your team's capabilities in AI-driven game development and vibe coding technology.
+            </p>
+            <ul className="text-grok-text-secondary space-y-2 mb-6">
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Access a pool of pre-vetted AI and WebGL specialists</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Expand your team's capabilities with vibe coding experts</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Scale your team up or down based on project needs</span>
+              </li>
+            </ul>
+            <button className="text-grok-purple hover:text-purple-400 font-semibold transition-colors">
+              Learn More →
+            </button>
+          </div>
+          
+          <div className="bg-grok-dark rounded-lg p-6">
+            <h3 className="text-xl font-bold text-white mb-4">For Developers</h3>
+            <p className="text-grok-text-secondary mb-4">
+              Showcase your expertise in AI game development, WebGL, Three.js, or vibe coding to find exciting new projects.
+            </p>
+            <ul className="text-grok-text-secondary space-y-2 mb-6">
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Create a profile highlighting your AI game development skills</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Connect with studios building the future of gaming</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Find projects that match your expertise and interests</span>
+              </li>
+            </ul>
+            <button className="text-grok-purple hover:text-purple-400 font-semibold transition-colors">
+              Join as Talent →
+            </button>
+          </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
