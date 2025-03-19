@@ -15,16 +15,8 @@
     </text>
   </g>
   
-  <!-- Vibe Wave Icon -->
-  <path 
-    d="M105 22C109 22 109 32 113 32C117 32 117 22 121 22C125 22 125 32 129 32C133 32 133 22 137 22" 
-    stroke="#9966FF" 
-    stroke-width="3" 
-    stroke-linecap="round"
-  />
-  
   <!-- Vibe coded text -->
-  <text x="90" y="48" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="white">
+  <text x="122" y="36" font-family="system-ui, sans-serif" font-size="14" fill="white">
     VIBE CODED
   </text>
   
@@ -35,10 +27,4 @@
       <stop offset="100%" stop-color="#23232F" />
     </radialGradient>
   </defs>
-  
-  <!-- Play button -->
-  <g transform="translate(140, 30)">
-    <circle cx="15" cy="0" r="12" fill="#9966FF"/>
-    <path d="M12 -6L22 0L12 6V-6Z" fill="white"/>
-  </g>
 </svg> 
