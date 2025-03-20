@@ -88,21 +88,21 @@ export default function RankingsPage() {
         <div className="bg-black rounded-xl overflow-hidden mb-4">
           {activeTab === 'quality' && (
             <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Quality Rankings</h2>
+              <h2 className="text-xl font-bold text-white text-center">Quality</h2>
               <p className="text-purple-100 text-sm text-center">Based on likes and dislikes ratio</p>
             </div>
           )}
           
           {activeTab === 'popularity' && (
             <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Popularity Rankings</h2>
+              <h2 className="text-xl font-bold text-white text-center">Popularity</h2>
               <p className="text-purple-100 text-sm text-center">Based on total views and plays</p>
             </div>
           )}
           
           {activeTab === 'creators' && (
             <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Creator Rankings</h2>
+              <h2 className="text-xl font-bold text-white text-center">Creator</h2>
               <p className="text-purple-100 text-sm text-center">Based on number of games published</p>
             </div>
           )}
@@ -118,7 +118,7 @@ export default function RankingsPage() {
                   : 'text-grok-text-secondary hover:text-white'
               }`}
             >
-              Quality Ranking
+              Quality
             </button>
             <button 
               onClick={() => setActiveTab('popularity')}
@@ -128,7 +128,7 @@ export default function RankingsPage() {
                   : 'text-grok-text-secondary hover:text-white'
               }`}
             >
-              Popularity Ranking
+              Popularity
             </button>
             <button 
               onClick={() => setActiveTab('creators')}
@@ -138,7 +138,7 @@ export default function RankingsPage() {
                   : 'text-grok-text-secondary hover:text-white'
               }`}
             >
-              Creator Ranking
+              Creator
             </button>
           </div>
         </div>
