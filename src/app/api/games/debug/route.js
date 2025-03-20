@@ -1,120 +1,231 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prismaOriginal from '@/lib/prisma';
+import prismaFixed from '@/lib/prisma-fix';
 
 export async function GET(request) {
-  const debugInfo = {
-    timestamp: new Date().toISOString(),
-    queries: {},
-    filters: {},
-    environment: process.env.NODE_ENV
-  };
-  
   try {
-    // Extract query parameters
+    console.log('[DEBUG API] Debug endpoint called');
+    
     const { searchParams } = new URL(request.url);
-    const stage = searchParams.get('stage');
+    const stage = searchParams.get('stage') || 'PRODUCTION';
+    const useOriginal = searchParams.get('original') === 'true';
     
-    console.log('[Game Debug] Request with stage:', stage);
+    console.log('[DEBUG API] Parameters:', { stage, useOriginal });
     
-    // Check database connection
+    // Prepare diagnostics
+    const diagnostics = {
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'unknown',
+      hasDatabaseUrl: !!process.env.DATABASE_URL,
+      databaseUrlLength: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0,
+      stage: stage,
+      clientType: useOriginal ? 'original' : 'fixed',
+      tests: []
+    };
+    
+    // Use the selected Prisma client
+    const prisma = useOriginal ? prismaOriginal : prismaFixed;
+    
+    // Test 1: Basic connection
     try {
+      console.log('[DEBUG API] Testing basic database connection');
       await prisma.$queryRaw`SELECT 1`;
-      debugInfo.database = { connected: true };
+      diagnostics.tests.push({
+        name: 'Basic connection',
+        success: true,
+        message: 'Database connection successful'
+      });
     } catch (error) {
-      console.error('[Game Debug] Database connection error:', error);
-      debugInfo.database = { 
-        connected: false,
-        error: error.message
-      };
-      return NextResponse.json(debugInfo);
+      console.error('[DEBUG API] Basic connection test failed:', error);
+      diagnostics.tests.push({
+        name: 'Basic connection',
+        success: false,
+        message: error.message,
+        error: error.toString()
+      });
+      
+      // If basic connection fails, return early
+      return NextResponse.json(diagnostics, { status: 500 });
     }
     
-    // Test counting games in total
+    // Test 2: Count all games
     try {
-      const totalCount = await prisma.game.count();
-      debugInfo.counts = { total: totalCount };
-      console.log('[Game Debug] Total game count:', totalCount);
+      console.log('[DEBUG API] Counting all games');
+      const count = await prisma.game.count();
+      diagnostics.tests.push({
+        name: 'Count all games',
+        success: true,
+        count: count,
+        message: `Found ${count} games in total`
+      });
     } catch (error) {
-      console.error('[Game Debug] Error counting games:', error);
-      debugInfo.errors = { counting: error.message };
+      console.error('[DEBUG API] Count all games test failed:', error);
+      diagnostics.tests.push({
+        name: 'Count all games',
+        success: false,
+        message: error.message,
+        error: error.toString()
+      });
     }
     
-    // Check schema for stage column
+    // Test 3: Count games by stage
     try {
-      const columnInfo = await prisma.$queryRaw`
-        SELECT column_name, data_type, udt_name 
-        FROM information_schema.columns 
-        WHERE table_name = 'games' 
-        AND column_name = 'stage'
+      console.log(`[DEBUG API] Counting games with stage=${stage}`);
+      const count = await prisma.game.count({
+        where: { stage: stage }
+      });
+      diagnostics.tests.push({
+        name: 'Count games by stage',
+        success: true,
+        count: count,
+        stage: stage,
+        message: `Found ${count} games with stage=${stage}`
+      });
+    } catch (error) {
+      console.error('[DEBUG API] Count by stage test failed:', error);
+      diagnostics.tests.push({
+        name: 'Count games by stage',
+        success: false,
+        stage: stage,
+        message: error.message,
+        error: error.toString()
+      });
+      
+      // Try a raw SQL query as a fallback
+      try {
+        console.log('[DEBUG API] Attempting raw SQL count by stage');
+        const result = await prisma.$queryRaw`
+          SELECT COUNT(*) as count FROM games WHERE stage = ${stage}::text::"GameStage"
+        `;
+        
+        const rawCount = parseInt(result[0].count.toString());
+        
+        diagnostics.tests.push({
+          name: 'Raw SQL count by stage',
+          success: true,
+          count: rawCount,
+          stage: stage,
+          message: `Found ${rawCount} games with stage=${stage} using raw SQL`
+        });
+      } catch (rawError) {
+        console.error('[DEBUG API] Raw SQL count by stage failed:', rawError);
+        diagnostics.tests.push({
+          name: 'Raw SQL count by stage',
+          success: false,
+          stage: stage,
+          message: rawError.message,
+          error: rawError.toString()
+        });
+      }
+    }
+    
+    // Test 4: Get sample games by stage
+    try {
+      console.log(`[DEBUG API] Fetching sample games with stage=${stage}`);
+      const games = await prisma.game.findMany({
+        where: { stage: stage },
+        take: 3,
+        orderBy: { createdAt: 'desc' }
+      });
+      
+      diagnostics.tests.push({
+        name: 'Get games by stage',
+        success: true,
+        count: games.length,
+        stage: stage,
+        sample: games.map(g => ({ id: g.id, title: g.title, stage: g.stage })),
+        message: `Found ${games.length} games with stage=${stage}`
+      });
+    } catch (error) {
+      console.error('[DEBUG API] Get games by stage test failed:', error);
+      diagnostics.tests.push({
+        name: 'Get games by stage',
+        success: false,
+        stage: stage,
+        message: error.message,
+        error: error.toString()
+      });
+      
+      // Try a raw SQL query as a fallback
+      try {
+        console.log('[DEBUG API] Attempting raw SQL to fetch games by stage');
+        const result = await prisma.$queryRaw`
+          SELECT id, title, stage FROM games 
+          WHERE stage = ${stage}::text::"GameStage"
+          ORDER BY "createdAt" DESC
+          LIMIT 3
+        `;
+        
+        diagnostics.tests.push({
+          name: 'Raw SQL get games by stage',
+          success: true,
+          count: result.length,
+          stage: stage,
+          sample: result,
+          message: `Found ${result.length} games with stage=${stage} using raw SQL`
+        });
+      } catch (rawError) {
+        console.error('[DEBUG API] Raw SQL get games by stage failed:', rawError);
+        diagnostics.tests.push({
+          name: 'Raw SQL get games by stage',
+          success: false,
+          stage: stage,
+          message: rawError.message,
+          error: rawError.toString()
+        });
+      }
+    }
+    
+    // Test 5: Verify schema information
+    try {
+      console.log('[DEBUG API] Checking database schema');
+      const schemaInfo = await prisma.$queryRaw`
+        SELECT column_name, data_type, udt_name
+        FROM information_schema.columns
+        WHERE table_name = 'games'
+        ORDER BY ordinal_position
       `;
-      debugInfo.schema = { stageColumn: columnInfo };
-    } catch (error) {
-      console.error('[Game Debug] Error checking schema:', error);
-      debugInfo.errors = { 
-        ...debugInfo.errors, 
-        schema: error.message 
-      };
-    }
-    
-    // Test production filter
-    try {
-      const productionCount = await prisma.game.count({
-        where: { stage: 'PRODUCTION' }
-      });
-      debugInfo.counts.production = productionCount;
-      console.log('[Game Debug] PRODUCTION game count:', productionCount);
       
-      // Get a sample production game
-      if (productionCount > 0) {
-        const productionSample = await prisma.game.findFirst({
-          where: { stage: 'PRODUCTION' },
-          select: { id: true, title: true, stage: true }
-        });
-        debugInfo.samples = { production: productionSample };
-      }
-    } catch (error) {
-      console.error('[Game Debug] Error with PRODUCTION filter:', error);
-      debugInfo.errors = { 
-        ...debugInfo.errors, 
-        production: error.message 
-      };
-    }
-    
-    // Test beta filter
-    try {
-      const betaCount = await prisma.game.count({
-        where: { stage: 'BETA' }
-      });
-      debugInfo.counts.beta = betaCount;
-      console.log('[Game Debug] BETA game count:', betaCount);
+      // Check for GameStage enum
+      const enumInfo = await prisma.$queryRaw`
+        SELECT 
+            t.typname as enum_name,
+            e.enumlabel as enum_value
+        FROM 
+            pg_type t 
+            JOIN pg_enum e ON t.oid = e.enumtypid
+        WHERE 
+            t.typname = 'GameStage'
+        ORDER BY 
+            e.enumsortorder
+      `;
       
-      // Get a sample beta game
-      if (betaCount > 0) {
-        const betaSample = await prisma.game.findFirst({
-          where: { stage: 'BETA' },
-          select: { id: true, title: true, stage: true }
-        });
-        debugInfo.samples = { 
-          ...debugInfo.samples, 
-          beta: betaSample 
-        };
-      }
+      diagnostics.tests.push({
+        name: 'Schema information',
+        success: true,
+        columns: schemaInfo,
+        enums: enumInfo,
+        message: `Retrieved schema information for games table`
+      });
     } catch (error) {
-      console.error('[Game Debug] Error with BETA filter:', error);
-      debugInfo.errors = { 
-        ...debugInfo.errors, 
-        beta: error.message 
-      };
+      console.error('[DEBUG API] Schema information test failed:', error);
+      diagnostics.tests.push({
+        name: 'Schema information',
+        success: false,
+        message: error.message,
+        error: error.toString()
+      });
     }
     
-    return NextResponse.json(debugInfo);
+    console.log('[DEBUG API] All tests completed, returning diagnostics');
+    return NextResponse.json(diagnostics, { status: 200 });
   } catch (error) {
-    console.error('[Game Debug] Unexpected error:', error);
+    console.error('[DEBUG API] Unhandled error in debug endpoint:', error);
     return NextResponse.json(
       { 
         error: error.message, 
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
-      },
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      }, 
       { status: 500 }
     );
   }
