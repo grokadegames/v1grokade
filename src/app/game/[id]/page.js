@@ -721,7 +721,7 @@ export default function GamePage() {
                   onClick={handlePlayClick}
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex-1 flex justify-center items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white py-3 px-4 rounded-lg transition-colors"
+                  className="flex-1 flex justify-center items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
@@ -1075,7 +1075,7 @@ export default function GamePage() {
                           }`}>
                             <Link 
                               href={`/game/${featuredGame.id}`}
-                              className="w-full text-center bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              className="w-full text-center bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                               onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                             >
                               View Game
