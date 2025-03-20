@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useToast, TOAST_TYPES } from '@/contexts/ToastContext';
 
 export default function SubmitGameModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -18,8 +19,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
   
   const [characterCount, setCharacterCount] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const { showToast } = useToast();
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,8 +42,6 @@ export default function SubmitGameModal({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
-    setSuccess(false);
     
     try {
       // Create a FormData object to send files
@@ -82,8 +80,8 @@ export default function SubmitGameModal({ isOpen, onClose }) {
         throw new Error(result.message || 'Failed to submit game');
       }
       
-      // Show success message
-      setSuccess(true);
+      // Show success toast notification
+      showToast('Game submitted successfully! It will be reviewed shortly.', TOAST_TYPES.SUCCESS);
       
       // Reset form
       setFormData({
@@ -99,15 +97,12 @@ export default function SubmitGameModal({ isOpen, onClose }) {
       });
       setCharacterCount(0);
       
-      // Close modal after 2 seconds
-      setTimeout(() => {
-        onClose();
-        setSuccess(false);
-      }, 2000);
+      // Close modal
+      onClose();
       
     } catch (err) {
       console.error('Error submitting game:', err);
-      setError(err.message || 'An error occurred while submitting your game.');
+      showToast(err.message || 'An error occurred while submitting your game.', TOAST_TYPES.ERROR);
     } finally {
       setSubmitting(false);
     }
@@ -129,18 +124,6 @@ export default function SubmitGameModal({ isOpen, onClose }) {
           
           <h2 className="text-2xl font-bold text-white mb-2">Submit New Game</h2>
           <p className="text-gray-400 mb-6">Fill in the details below to submit your game. It will be reviewed before being published.</p>
-          
-          {error && (
-            <div className="mb-6 p-4 bg-red-800 text-white rounded-lg">
-              <p><strong>Error:</strong> {error}</p>
-            </div>
-          )}
-          
-          {success && (
-            <div className="mb-6 p-4 bg-green-800 text-white rounded-lg">
-              <p><strong>Success!</strong> Your game has been submitted and will be reviewed.</p>
-            </div>
-          )}
           
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
