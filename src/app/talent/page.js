@@ -117,41 +117,40 @@ const TalentCard = ({ talent }) => {
 
 export default function TalentPage() {
   const [profiles, setProfiles] = useState([]);
+  const [featuredProfiles, setFeaturedProfiles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // In a real app, we'd fetch from an API
-    const fetchProfiles = async () => {
+    const fetchAllProfiles = async () => {
       try {
         setIsLoading(true);
-
-        // Try to fetch from API first
-        try {
-          const response = await fetch('/api/talent');
-          if (response.ok) {
-            const data = await response.json();
-            if (data.profiles && data.profiles.length > 0) {
-              // Use API data if available
-              setProfiles(data.profiles);
-              return;
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching profiles:', error);
-          // Fall back to sample data
+        
+        // Fetch all profiles
+        const allProfilesResponse = await fetch('/api/talent/profiles');
+        const featuredProfilesResponse = await fetch('/api/talent/profiles?featured=true&limit=3');
+        
+        if (allProfilesResponse.ok && featuredProfilesResponse.ok) {
+          const allProfilesData = await allProfilesResponse.json();
+          const featuredProfilesData = await featuredProfilesResponse.json();
+          
+          setProfiles(allProfilesData.profiles || []);
+          setFeaturedProfiles(featuredProfilesData.profiles || []);
+        } else {
+          console.error('Failed to fetch profiles');
+          setProfiles([]);
+          setFeaturedProfiles([]);
         }
-
-        // Fall back to sample data if API not available
-        setProfiles([...featuredTalent]);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching profiles:', error);
+        setProfiles([]);
+        setFeaturedProfiles([]);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProfiles();
+    fetchAllProfiles();
   }, []);
 
   const handleSearch = (e) => {
@@ -252,10 +251,11 @@ export default function TalentPage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {isLoading ? (
+              // Loading skeletons (3 of them)
               Array(3).fill().map((_, index) => (
-                <div key={index} className="bg-grok-dark rounded-lg shadow-lg p-6 animate-pulse">
+                <div key={index} className="bg-grok-dark rounded-lg shadow-lg p-6 h-64 animate-pulse">
                   <div className="flex items-start">
                     <div className="w-16 h-16 bg-gray-700 rounded-full mr-4"></div>
                     <div className="flex-1">
@@ -277,15 +277,15 @@ export default function TalentPage() {
                 </div>
               ))
             ) : (
-              filteredProfiles.map(profile => (
+              featuredProfiles.map(profile => (
                 <TalentCard key={profile.id} talent={profile} />
               ))
             )}
           </div>
           
-          {!isLoading && filteredProfiles.length === 0 && (
+          {!isLoading && featuredProfiles.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-grok-text-secondary text-lg">No talent found matching your search criteria.</p>
+              <p className="text-grok-text-secondary text-lg">No featured talent profiles found.</p>
             </div>
           )}
         </div>
@@ -300,6 +300,26 @@ export default function TalentPage() {
           </button>
         </div>
         
+        {/* Search Results Section */}
+        {searchTerm.trim() !== '' && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">Search Results</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProfiles.map(profile => (
+                <TalentCard key={profile.id} talent={profile} />
+              ))}
+            </div>
+            
+            {filteredProfiles.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-grok-text-secondary text-lg">No talent found matching your search criteria.</p>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* For Game Studios and Developers Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="bg-grok-dark rounded-lg p-6">
             <h3 className="text-xl font-bold text-white mb-4">For Game Studios</h3>

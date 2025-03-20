@@ -6,6 +6,7 @@ export async function GET(request) {
     // Get query parameters for filtering/pagination
     const { searchParams } = new URL(request.url);
     const skillFilter = searchParams.get('skill');
+    const featured = searchParams.get('featured') === 'true';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
     
@@ -13,6 +14,7 @@ export async function GET(request) {
     const query = {
       where: {
         isActive: true,
+        ...(featured ? { featured: true } : {}),
         ...(skillFilter ? {
           skills: { has: skillFilter }
         } : {})
