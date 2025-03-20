@@ -340,24 +340,24 @@ export default function TalentPage() {
         )}
         
         {/* For Game Studios and Developers Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           <div className="bg-grok-dark rounded-lg p-6">
             <h3 className="text-xl font-bold text-white mb-4">For Game Studios</h3>
             <p className="text-grok-text-secondary mb-4">
-              Find specialized talent to expand your team's capabilities in AI-driven game development and vibe coding technology.
+              Find specialized talent to expand your team's capabilities in AI-driven game development.
             </p>
             <ul className="text-grok-text-secondary space-y-2 mb-6">
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Access a pool of pre-vetted AI and WebGL specialists</span>
+                <span>Access pre-vetted AI and WebGL specialists</span>
               </li>
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Expand your team's capabilities with vibe coding experts</span>
+                <span>Add vibe coding expertise to your team</span>
               </li>
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Scale your team up or down based on project needs</span>
+                <span>Scale your team based on project needs</span>
               </li>
             </ul>
             <button className="text-grok-purple hover:text-purple-400 font-semibold transition-colors">
@@ -366,22 +366,46 @@ export default function TalentPage() {
           </div>
           
           <div className="bg-grok-dark rounded-lg p-6">
-            <h3 className="text-xl font-bold text-white mb-4">For Developers</h3>
+            <h3 className="text-xl font-bold text-white mb-4">For Solo Entrepreneurs</h3>
             <p className="text-grok-text-secondary mb-4">
-              Showcase your expertise in AI game development, WebGL, Three.js, or vibe coding to find exciting new projects.
+              Partner with skilled developers to bring your game ideas to life without building a full team.
             </p>
             <ul className="text-grok-text-secondary space-y-2 mb-6">
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Create a profile highlighting your AI game development skills</span>
+                <span>Find the right talent for your indie project</span>
               </li>
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Connect with studios building the future of gaming</span>
+                <span>Work with experts on fixed-scope projects</span>
               </li>
               <li className="flex items-start">
                 <span className="text-grok-purple mr-2">✓</span>
-                <span>Find projects that match your expertise and interests</span>
+                <span>Turn your game concept into reality</span>
+              </li>
+            </ul>
+            <button className="text-grok-purple hover:text-purple-400 font-semibold transition-colors">
+              Find Talent →
+            </button>
+          </div>
+          
+          <div className="bg-grok-dark rounded-lg p-6">
+            <h3 className="text-xl font-bold text-white mb-4">For Developers</h3>
+            <p className="text-grok-text-secondary mb-4">
+              Showcase your expertise in AI game development to find exciting new projects.
+            </p>
+            <ul className="text-grok-text-secondary space-y-2 mb-6">
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Highlight your game development skills</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Connect with innovative game studios</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-grok-purple mr-2">✓</span>
+                <span>Find projects matching your expertise</span>
               </li>
             </ul>
             <button className="text-grok-purple hover:text-purple-400 font-semibold transition-colors">
