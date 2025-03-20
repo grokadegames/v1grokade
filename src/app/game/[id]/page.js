@@ -721,7 +721,7 @@ export default function GamePage() {
                   onClick={handlePlayClick}
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex-1 flex justify-center items-center gap-2 bg-grok-purple hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors"
+                  className="flex-1 flex justify-center items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white py-3 px-4 rounded-lg transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
@@ -733,7 +733,7 @@ export default function GamePage() {
                   href={game.xaccount ? (game.xaccount.startsWith('http') ? game.xaccount : `https://x.com/${game.xaccount.replace('@', '')}`) : '#'} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-grok-darker text-gray-300 py-2 px-4 rounded-md flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  className="bg-slate-700 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-slate-600 transition-colors"
                 >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1075,7 +1075,7 @@ export default function GamePage() {
                           }`}>
                             <Link 
                               href={`/game/${featuredGame.id}`}
-                              className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              className="w-full text-center bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                               onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                             >
                               View Game
@@ -1085,7 +1085,7 @@ export default function GamePage() {
                               href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="w-full text-center bg-grok-darker hover:bg-gray-800 text-gray-300 px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              className="w-full text-center bg-slate-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm hover:bg-slate-600"
                               onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                             >
                               Contact Author
