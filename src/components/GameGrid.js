@@ -14,6 +14,7 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
+    stage: 'PRODUCTION',
     plays: 120,
     views: 245
   },
@@ -26,6 +27,7 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
+    stage: 'PRODUCTION',
     plays: 85,
     views: 167
   },
@@ -38,6 +40,7 @@ const FALLBACK_GAMES = [
     image: null,
     createdAt: new Date().toISOString(),
     isLive: true,
+    stage: 'PRODUCTION',
     plays: 210,
     views: 318
   }
@@ -82,20 +85,35 @@ export default function GameGrid() {
       const data = await response.json();
       console.log('[GameGrid] Received games:', data.games?.length || 0);
       console.log('[GameGrid] API response message:', data.message || 'No message');
-      console.log('[GameGrid] First few games with their image URLs:', 
-        data.games?.slice(0, 3).map(game => ({
+      
+      // Enhanced debug logging for stage property
+      console.log('[GameGrid] First few games with their stage values:', 
+        data.games?.slice(0, 5).map(game => ({
           id: game.id,
           title: game.title,
           imageUrl: game.image,
-          stage: game.stage
+          stage: game.stage || 'UNDEFINED'
         }))
       );
       
       if (data.games && data.games.length > 0) {
-        setGames(data.games);
+        // Add stage property if missing based on current filter
+        const processedGames = data.games.map(game => {
+          // If game is missing stage property, set it based on the current filter
+          if (!game.stage) {
+            console.log(`[GameGrid] Game ${game.id} missing stage property, setting to ${filter.toUpperCase()}`);
+            return {
+              ...game,
+              stage: filter === 'all' ? 'PRODUCTION' : filter.toUpperCase()
+            };
+          }
+          return game;
+        });
+        
+        setGames(processedGames);
         
         // Log games stages for debugging
-        const stagesCount = data.games.reduce((acc, game) => {
+        const stagesCount = processedGames.reduce((acc, game) => {
           acc[game.stage || 'UNKNOWN'] = (acc[game.stage || 'UNKNOWN'] || 0) + 1;
           return acc;
         }, {});
