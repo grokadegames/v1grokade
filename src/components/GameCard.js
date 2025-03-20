@@ -17,6 +17,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
     plays: 120,
     views: 240,
     isLive: true,
+    stage: 'PRODUCTION',
     image: null,
     playUrl: '#'
   };
@@ -137,12 +138,14 @@ export default function GameCard({ game, onMetricsUpdate }) {
             );
           })()}
           
-          {/* Live indicator - moved to right of image and made green */}
-          {game.isLive && (
-            <div className="absolute top-2 right-2 z-10">
+          {/* Stage indicator - BETA in orange or LIVE in green */}
+          <div className="absolute top-2 right-2 z-10">
+            {game.stage === 'BETA' ? (
+              <span className="bg-orange-500 text-white text-xs font-semibold px-2 py-1 rounded">BETA</span>
+            ) : (
               <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded">LIVE</span>
-            </div>
-          )}
+            )}
+          </div>
           
           {/* Play count overlay - now on left side */}
           <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
