@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma-fix';
 import { v2 as cloudinary } from 'cloudinary';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
+import { GameStage } from '@prisma/client';
 
 // Configure Cloudinary
 cloudinary.config({
@@ -137,7 +138,7 @@ export async function POST(request) {
         description,
         playUrl,
         imageUrl: thumbnailUrl,
-        stage: 'BETA', // Set stage to BETA for new submissions
+        stage: GameStage.BETA, // Set stage to BETA for new submissions
         // Gallery images
         galleryImage1: galleryUrls[0] || null,
         galleryImage2: galleryUrls[1] || null,
