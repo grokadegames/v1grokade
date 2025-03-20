@@ -929,9 +929,9 @@ export default function GamePage() {
                 ref={featuredGamesContainerRef}
                 className="games-container overflow-x-auto scrollbar-hide cursor-grab"
               >
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 pb-4">
+                <div className="flex gap-4 pb-4 min-w-max">
                   {featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card-container flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
                       onClick={() => toggleOverlay(featuredGame.id)}
                     >
                       <div className="relative">
