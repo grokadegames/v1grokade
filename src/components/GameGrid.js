@@ -102,6 +102,8 @@ export default function GameGrid() {
         console.log('[GameGrid] Games by stage:', stagesCount);
       } else {
         console.warn('[GameGrid] No games found in API response, using fallback');
+        console.warn('[GameGrid] Current filter:', filter);
+        console.warn('[GameGrid] API response data:', data);
         setGames(FALLBACK_GAMES);
         setUsingFallback(true);
       }
@@ -285,6 +287,7 @@ export default function GameGrid() {
             <div>
               <div className="bg-amber-900/30 text-amber-200 px-4 py-2 rounded-md mb-4 text-sm">
                 <p>Using sample data while we work on connecting to the live database. Games shown are examples only.</p>
+                <p className="mt-1 text-white">Debug info: Filter = {filter}, Sort = {sortOrder}</p>
               </div>
               <div 
                 ref={gamesContainerRef}
