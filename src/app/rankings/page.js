@@ -76,10 +76,37 @@ export default function RankingsPage() {
       <AuthNavbar />
       
       <main className="container mx-auto max-w-6xl px-4 py-20">
-        <h1 className="text-4xl font-bold text-white text-center mb-2">Game Rankings</h1>
+        <h1 className="text-4xl font-bold text-white text-center mb-2">
+          Game Rankings
+        </h1>
+        
         <p className="text-center text-grok-text-secondary mb-6">
           Discover the most popular and highest quality AI games on the platform
         </p>
+        
+        {/* Dynamic Header Based on Active Tab */}
+        <div className="bg-black rounded-xl overflow-hidden mb-4">
+          {activeTab === 'quality' && (
+            <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
+              <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
+              <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
+            </div>
+          )}
+          
+          {activeTab === 'popularity' && (
+            <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
+              <h2 className="text-xl font-bold text-white">Popularity Rankings</h2>
+              <p className="text-purple-100 text-sm">Based on total views and plays</p>
+            </div>
+          )}
+          
+          {activeTab === 'creators' && (
+            <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
+              <h2 className="text-xl font-bold text-white">Creator Rankings</h2>
+              <p className="text-purple-100 text-sm">Based on number of games published</p>
+            </div>
+          )}
+        </div>
         
         <div className="mb-4 flex justify-center">
           <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
@@ -156,11 +183,6 @@ export default function RankingsPage() {
         
         {!loading && activeTab === 'popularity' && (
           <div className="bg-black rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Popularity Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on total views and plays</p>
-            </div>
-            
             <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
               <div className="w-full min-w-[500px]">
                 <table className="w-full table-auto">
@@ -267,11 +289,6 @@ export default function RankingsPage() {
         
         {!loading && activeTab === 'quality' && (
           <div className="bg-black rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
-            </div>
-            
             <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
               <div className="w-full min-w-[500px]">
                 <table className="w-full table-auto">
@@ -378,11 +395,6 @@ export default function RankingsPage() {
 
         {!loading && activeTab === 'creators' && (
           <div className="bg-black rounded-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Creator Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on number of games published</p>
-            </div>
-            
             <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
               <div className="w-full min-w-[500px]">
                 <table className="w-full table-auto">
