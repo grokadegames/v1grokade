@@ -10,6 +10,7 @@ import CTA from './CTA';
 import { FaLaravel, FaReact, FaNodeJs, FaAws, FaDigitalOcean, FaDatabase, FaStripe, FaGoogle, FaGithub, FaDocker, FaApple, FaNpm, FaPython, FaUbuntu } from 'react-icons/fa';
 import { useSponsorModal } from '@/contexts/SponsorModalContext';
 import { useRouter } from 'next/navigation';
+import { useToast, TOAST_TYPES } from '@/contexts/ToastContext';
 
 export default function Hero() {
   const sponsorsContainerRef = useRef(null);
@@ -19,6 +20,7 @@ export default function Hero() {
   const [sponsors, setSponsors] = useState([]);
   const { openSponsorModal } = useSponsorModal();
   const router = useRouter();
+  const { showToast } = useToast();
   
   // Handle Submit Game button click
   const handleSubmitGameClick = (e) => {
@@ -26,6 +28,7 @@ export default function Hero() {
     if (isAuthenticated) {
       setShowSubmitModal(true);
     } else {
+      showToast('Please login or register to submit your game', TOAST_TYPES.INFO);
       router.push('/login');
     }
   };
