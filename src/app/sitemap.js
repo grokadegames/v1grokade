@@ -14,6 +14,8 @@ export default async function sitemap() {
     '/login',
     '/register',
     '/newsletter',
+    '/learn/vibe-coding',
+    '/learn/ai-game-development',
   ].map(route => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
