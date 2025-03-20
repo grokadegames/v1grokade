@@ -62,6 +62,7 @@ export async function POST(request) {
       where: { userId: user.id },
       update: {
         title: data.title,
+        description: data.description || '',
         skills: data.skills || [],
         hourlyRate: data.hourlyRate,
         location: data.location,
@@ -72,6 +73,7 @@ export async function POST(request) {
       create: {
         userId: user.id,
         title: data.title,
+        description: data.description || '',
         skills: data.skills || [],
         hourlyRate: data.hourlyRate,
         location: data.location,

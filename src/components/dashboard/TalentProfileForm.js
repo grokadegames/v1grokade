@@ -5,6 +5,7 @@ export default function TalentProfileForm() {
   const { user, hasRole } = useAuth();
   const [profile, setProfile] = useState({
     title: '',
+    description: '',
     skills: [],
     hourlyRate: '',
     location: '',
@@ -14,6 +15,7 @@ export default function TalentProfileForm() {
   const [skillInput, setSkillInput] = useState('');
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [descriptionError, setDescriptionError] = useState('');
   
   useEffect(() => {
     // Load existing profile if available
@@ -30,6 +32,7 @@ export default function TalentProfileForm() {
           setProfile({
             ...data.profile,
             skills: data.profile.skills || [],
+            description: data.profile.description || '',
           });
         }
       }
@@ -42,6 +45,14 @@ export default function TalentProfileForm() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate three-word description
+    const wordCount = profile.description.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCount !== 3 && profile.description.trim() !== '') {
+      setDescriptionError('Description must be exactly three words.');
+      return;
+    }
+    
     setIsSubmitting(true);
     setMessage(null);
     
@@ -65,6 +76,22 @@ export default function TalentProfileForm() {
       setMessage({ type: 'error', text: error.message });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+  
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    setProfile({...profile, description: value});
+    
+    // Clear error when user starts typing again
+    if (descriptionError) {
+      setDescriptionError('');
+    }
+    
+    // Real-time validation feedback
+    const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCount > 3) {
+      setDescriptionError('Description must be exactly three words.');
     }
   };
   
@@ -125,6 +152,25 @@ export default function TalentProfileForm() {
             placeholder="e.g., Senior WebGL Developer"
             required
           />
+        </div>
+        
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Three-Word Description</label>
+          <input
+            type="text"
+            value={profile.description}
+            onChange={handleDescriptionChange}
+            className={`w-full px-4 py-2 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 ${descriptionError ? 'ring-red-500' : 'focus:ring-purple-500'}`}
+            placeholder="e.g., Creative Passionate Developer"
+          />
+          {descriptionError ? (
+            <p className="text-red-400 text-sm mt-1">{descriptionError}</p>
+          ) : (
+            <p className="text-gray-400 text-sm mt-1">
+              Describe yourself in exactly three words
+              {profile.description && ` (${profile.description.trim().split(/\s+/).filter(Boolean).length}/3 words)`}
+            </p>
+          )}
         </div>
         
         <div className="mb-4">

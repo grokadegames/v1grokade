@@ -152,6 +152,7 @@ model TalentProfile {
   id          String   @id @default(uuid())
   userId      String   @unique
   title       String
+  description String   @default("")
   skills      String[]
   hourlyRate  String
   location    String
