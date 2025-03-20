@@ -267,26 +267,26 @@ export default function GamePage() {
     
     const onMouseDown = (e) => {
       isDown = true;
-      container.classList.add('cursor-grabbing');
+      container.classList.add('active');
       startX = e.pageX - container.offsetLeft;
       scrollLeft = container.scrollLeft;
     };
     
     const onMouseLeave = () => {
       isDown = false;
-      container.classList.remove('cursor-grabbing');
+      container.classList.remove('active');
     };
     
     const onMouseUp = () => {
       isDown = false;
-      container.classList.remove('cursor-grabbing');
+      container.classList.remove('active');
     };
     
     const onMouseMove = (e) => {
       if(!isDown) return;
       e.preventDefault();
       const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2;
+      const walk = (x - startX) * 2; // Increased scroll speed multiplier
       container.scrollLeft = scrollLeft - walk;
     };
     
@@ -927,112 +927,116 @@ export default function GamePage() {
             <div className="relative">
               <div 
                 ref={featuredGamesContainerRef}
-                className="games-container overflow-x-auto scrollbar-hide cursor-grab"
+                className="games-container overflow-x-auto scrollbar-hide"
               >
-                <div className="flex gap-4 pb-4 min-w-max">
+                <div className="flex gap-6 pb-4 min-w-max">
                   {featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
-                      onClick={() => toggleOverlay(featuredGame.id)}
-                    >
-                      <div className="relative">
-                        <div className="aspect-video bg-black bg-opacity-60 flex items-center justify-center">
-                          {featuredGame.image ? (
-                            <img 
-                              src={featuredGame.image} 
-                              alt={featuredGame.title} 
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-12 h-12 flex items-center justify-center">
-                              <svg className="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                                <path d="M3 7L21 7" stroke="currentColor" strokeWidth="2" />
-                                <path d="M7 21L7 7" stroke="currentColor" strokeWidth="2" />
+                    <div key={featuredGame.id} className="w-80 flex-shrink-0">
+                      <div 
+                        className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group min-h-[400px] sm:min-h-[420px] md:min-h-[440px]"
+                        onClick={() => toggleOverlay(featuredGame.id)}
+                      >
+                        <div className="relative">
+                          {/* Game thumbnail/image */}
+                          <div className="h-48 sm:h-52 md:h-56 lg:h-60 bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
+                            {featuredGame.image ? (
+                              <img 
+                                src={featuredGame.image} 
+                                alt={featuredGame.title} 
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-purple-900/30 to-black">
+                                <div className="text-4xl font-bold text-grok-purple mb-2">
+                                  {featuredGame.title.slice(0, 1).toUpperCase()}
+                                </div>
+                                <div className="text-sm text-grok-purple/80 text-center px-4">
+                                  {featuredGame.title}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Live indicator badge */}
+                            {featuredGame.isLive && (
+                              <div className="absolute top-2 right-2 z-10">
+                                <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded">LIVE</span>
+                              </div>
+                            )}
+                            
+                            {/* Play count overlay - on left side */}
+                            <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
+                              <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                               </svg>
+                              <span className="text-white text-xs">{featuredGame.plays || 0}</span>
                             </div>
-                          )}
-                        </div>
-                        
-                        {/* Live Badge - Conditionally shown */}
-                        {featuredGame.isLive && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-                            LIVE
+                            
+                            {/* View count overlay - on right side */}
+                            <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 rounded-md px-2 py-1 flex items-center z-20">
+                              <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              <span className="text-white text-xs">{featuredGame.views || 0}</span>
+                            </div>
                           </div>
-                        )}
-                        
-                        {/* Play count badge - now on left side */}
-                        <div className="absolute bottom-2 left-2 flex items-center px-2 py-1 rounded-md bg-black bg-opacity-70 z-20">
-                          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                          <span className="text-white text-xs">{featuredGame.plays || 0}</span>
                         </div>
                         
-                        {/* View count badge - now on right side */}
-                        <div className="absolute bottom-2 right-2 flex items-center px-2 py-1 rounded-md bg-black bg-opacity-70 z-20">
-                          <svg className="w-4 h-4 mr-1 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 4C5 4 1 12 1 12C1 12 5 20 12 20C19 20 23 12 23 12C23 12 19 4 12 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                          <span className="text-white text-xs">{featuredGame.views || 0}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="relative">
-                        <div className="p-4">
-                          <h3 className="text-white font-semibold break-words whitespace-normal line-clamp-2">{featuredGame.title}</h3>
-                          <p className="text-gray-400 text-sm truncate">
+                        <div className="p-4 flex flex-col flex-grow relative">
+                          <div className="flex items-start justify-between mb-1">
+                            <h3 className="text-white font-semibold">{featuredGame.title}</h3>
+                          </div>
+                          <div className="text-xs text-grok-text-secondary mb-2">
                             {featuredGame.xaccount ? (
                               <a 
                                 href={`https://x.com/${featuredGame.xaccount.replace('@', '')}`} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="hover:text-purple-400 transition-colors"
+                                onClick={(e) => e.stopPropagation()}
                               >
                                 {featuredGame.xaccount}
                               </a>
                             ) : (
                               `By: ${featuredGame.creator || 'Unknown'}`
                             )}
-                          </p>
-                          
-                          <p className="text-gray-400 text-xs mt-2 mb-4 line-clamp-2">
+                          </div>
+                          <p className="text-grok-text-secondary text-sm mb-4 flex-grow line-clamp-3 sm:line-clamp-4">
                             {featuredGame.description || 'No description available'}
                           </p>
                           
-                          {/* Time indicator with production grid style date format */}
-                          <div className="flex items-center mt-3">
-                            <svg className="w-3 h-3 text-gray-400 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                              <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                            <span className="text-gray-400 text-xs">
-                              {formatDate(featuredGame.updatedAt)}
-                            </span>
+                          <div className="flex justify-end items-center text-xs text-grok-text-secondary">
+                            <div className="flex items-center">
+                              <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                                <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              <span>{formatDate(featuredGame.updatedAt)}</span>
+                            </div>
                           </div>
-                        </div>
-                        
-                        {/* Slide-up action buttons overlay - positioned over text content */}
-                        <div className={`absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transition-transform duration-300 ease-in-out ${
-                          visibleOverlays[featuredGame.id] ? 'transform translate-y-0' : 'transform translate-y-full group-hover:translate-y-0'
-                        }`}>
-                          <Link 
-                            href={`/game/${featuredGame.id}`}
-                            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
-                            onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
-                          >
-                            View Game
-                          </Link>
                           
-                          <a 
-                            href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
-                            onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
-                          >
-                            Contact Author
-                          </a>
+                          {/* Slide-up action buttons overlay */}
+                          <div className={`absolute inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center px-4 gap-3 transition-transform duration-300 ease-in-out ${
+                            visibleOverlays[featuredGame.id] ? 'transform translate-y-0' : 'transform translate-y-full group-hover:translate-y-0'
+                          }`}>
+                            <Link 
+                              href={`/game/${featuredGame.id}`}
+                              className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
+                            >
+                              View Game
+                            </Link>
+                            
+                            <a 
+                              href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
+                            >
+                              Contact Author
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1040,15 +1044,15 @@ export default function GamePage() {
                 </div>
               </div>
               
-              {/* Carousel Navigation - moved on top of thumbnails with transparent background */}
+              {/* Carousel Navigation Arrows */}
               {featuredGames.length > 0 && (
-                <div className="flex items-center justify-between absolute top-[25%] w-full -translate-y-1/2 pointer-events-none px-2">
+                <div className="hidden md:flex items-center justify-between absolute top-[30%] w-full -translate-y-1/2 pointer-events-none px-2">
                   <button
                     onClick={scrollFeaturedLeft}
                     className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
                     aria-label="Scroll left"
                   >
-                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
@@ -1057,13 +1061,27 @@ export default function GamePage() {
                     className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
                     aria-label="Scroll right"
                   >
-                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
                 </div>
               )}
             </div>
+            
+            {/* Add CSS to hide scrollbar but maintain functionality */}
+            <style jsx>{`
+              .games-container {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;     /* Firefox */
+              }
+              .games-container::-webkit-scrollbar {
+                display: none;             /* Chrome, Safari and Opera */
+              }
+              .games-container.active {
+                cursor: grabbing;
+              }
+            `}</style>
           </div>
         </div>
       )}
