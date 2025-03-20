@@ -14,7 +14,8 @@ export default function CombinedTrendIndicator({
   width = 120,
   height = 40,
   showPeriods = ['1d'],
-  activePeriod = '1d'
+  activePeriod = '1d',
+  showPercentOnly = false
 }) {
   const [historyData, setHistoryData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -252,75 +253,63 @@ export default function CombinedTrendIndicator({
     );
   }
   
-  // If there's a loading error, show nothing
-  if (error) {
+  // Calculate change data based on history data
+  const change = historyData[activePeriod] ? calculateChange(historyData[activePeriod]) : null;
+  
+  // For "showPercentOnly" mode, render just the percentage for active period
+  if (showPercentOnly) {
+    // Check if we have data
+    if (!change || !change.hasData) {
+      return (
+        <div className="px-3 py-1 text-sm font-medium rounded-md text-gray-500 bg-gray-800/20">
+          --
+        </div>
+      );
+    }
+    
+    const isPositive = change.percentChange > 0;
+    const isStable = change.percentChange === 0;
+    
+    // Color palette
+    const upColor = "#10b981"; // Green
+    const downColor = "#ef4444"; // Red
+    const stableColor = "#9ca3af"; // Gray
+    
+    const textColor = isPositive ? upColor : isStable ? stableColor : downColor;
+    
+    const formattedPercentage = formatPercentage(change.percentChange);
+    
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="bg-gray-800/20 w-full h-full rounded-md"></div>
+      <div 
+        className="px-3 py-1 text-sm font-medium rounded-md"
+        style={{ 
+          color: textColor,
+          fontWeight: 700,
+          backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : isStable ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)'
+        }}
+      >
+        {formattedPercentage}
       </div>
     );
   }
   
-  // Show loading placeholder
+  // For regular mode, return the standard component
   if (loading) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="animate-pulse bg-gray-800/20 w-full h-full rounded-md"></div>
+        <div className="w-4 h-4 border-2 border-grok-purple rounded-full animate-spin border-t-transparent"></div>
       </div>
     );
   }
   
-  // Use a fallback trend if no data is available
-  const activePeriodData = historyData[activePeriod];
-  if (!activePeriodData || !activePeriodData.historyData || activePeriodData.historyData.length < 2) {
-    // Instead of showing random positive percentage, show a neutral indicator
+  if (error) {
     return (
-      <div className="w-full h-full flex items-center justify-end">
-        <div 
-          className="px-3 py-1 text-sm font-medium rounded-md"
-          style={{ 
-            color: "#9ca3af", // Gray color for neutral
-            fontWeight: 800,
-            backgroundColor: 'rgba(156, 163, 175, 0.1)'
-          }}
-        >
-          --
-        </div>
-      </div>
+      <div className="text-xs text-red-500">Error</div>
     );
   }
   
-  // Calculate the change data for tooltip and rendering
-  const change = calculateChange(historyData[activePeriod]);
+  // Display active period chart, or the first chart if active period is not in showPeriods
+  const periodToRender = showPeriods.includes(activePeriod) ? activePeriod : showPeriods[0];
   
-  // Calculate the tooltip content
-  const tooltipText = (() => {
-    if (!change.hasData) return `No trend data for ${activePeriod}`;
-    
-    const direction = change.percentChange > 0 
-      ? 'Increased' 
-      : change.percentChange < 0 
-        ? 'Decreased' 
-        : 'Stable';
-    
-    // Format the tooltip based on ranking type
-    if (historyData[activePeriod].rankingType === 'popularity') {
-      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in popularity over ${activePeriod}`;
-    } else if (historyData[activePeriod].rankingType === 'quality') {
-      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in quality rating over ${activePeriod}`;
-    } else {
-      return `${direction} by ${Math.abs(change.percentChange.toFixed(1))}% in engagement over ${activePeriod}`;
-    }
-  })();
-  
-  return (
-    <div 
-      className="w-full h-full flex items-center"
-      data-tooltip-id={`trend-tooltip-${entityId}`}
-      data-tooltip-content={tooltipText}
-    >
-      {renderTrendChart(activePeriod)}
-      <Tooltip id={`trend-tooltip-${entityId}`} />
-    </div>
-  );
+  return renderTrendChart(periodToRender);
 } 
