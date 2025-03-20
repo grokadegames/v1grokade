@@ -297,12 +297,13 @@ export default function RankingsPage() {
                       <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Likes</th>
                       <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Dislikes</th>
                       <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Rating</th>
+                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">% Change</th>
                     </tr>
                   </thead>
                   <tbody>
                     {qualityGames.length === 0 ? (
                       <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
+                        <td colSpan="7" className="px-6 py-8 text-center text-gray-400">
                           No ranking data available
                         </td>
                       </tr>
@@ -367,6 +368,20 @@ export default function RankingsPage() {
                           </td>
                           <td className="px-3 py-3 text-center">
                             <span className="text-xs text-white">{(game.qualityScore * 100).toFixed(1)}%</span>
+                          </td>
+                          <td className="px-3 py-3 text-center">
+                            <div className="h-8 w-full flex items-center justify-center">
+                              <CombinedTrendIndicator
+                                entityId={game.id}
+                                entityType="game"
+                                rankingType="quality"
+                                width={70}
+                                height={40}
+                                showPeriods={[activePeriod]}
+                                activePeriod={activePeriod}
+                                showPercentOnly={true}
+                              />
+                            </div>
                           </td>
                         </tr>
                       ))
