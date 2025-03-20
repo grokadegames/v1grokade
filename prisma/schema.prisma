@@ -157,7 +157,7 @@ model TalentProfile {
   hourlyRate  String
   location    String
   xaccount    String?
-  isRemoteOk  Boolean  @default(false)
+  isRemoteOk  Boolean  @default(true)
   featured    Boolean  @default(false)
   rating      Float    @default(0)
   reviewCount Int      @default(0)
