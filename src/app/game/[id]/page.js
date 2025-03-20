@@ -929,9 +929,9 @@ export default function GamePage() {
                 ref={featuredGamesContainerRef}
                 className="games-container overflow-x-auto scrollbar-hide cursor-grab"
               >
-                <div className="flex gap-4 pb-4 min-w-max">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 pb-4">
                   {featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="game-card-container w-[280px] flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    <div key={featuredGame.id} className="game-card-container flex-shrink-0 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
                       onClick={() => toggleOverlay(featuredGame.id)}
                     >
                       <div className="relative">
@@ -1025,14 +1025,13 @@ export default function GamePage() {
                           </Link>
                           
                           <a 
-                            href={featuredGame.playUrl || '#'} 
-                            onClick={handlePlayClick}
+                            href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                            onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                           >
-                            <svg className="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M5 5V19L19 12L5 5Z" fill="currentColor" />
-                            </svg>
-                            Play Now
+                            Contact Author
                           </a>
                         </div>
                       </div>
