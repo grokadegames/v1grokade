@@ -88,22 +88,22 @@ export default function RankingsPage() {
         <div className="bg-black rounded-xl overflow-hidden mb-4">
           {activeTab === 'quality' && (
             <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Quality Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on likes and dislikes ratio</p>
+              <h2 className="text-xl font-bold text-white text-center">Quality Rankings</h2>
+              <p className="text-purple-100 text-sm text-center">Based on likes and dislikes ratio</p>
             </div>
           )}
           
           {activeTab === 'popularity' && (
             <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Popularity Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on total views and plays</p>
+              <h2 className="text-xl font-bold text-white text-center">Popularity Rankings</h2>
+              <p className="text-purple-100 text-sm text-center">Based on total views and plays</p>
             </div>
           )}
           
           {activeTab === 'creators' && (
             <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Creator Rankings</h2>
-              <p className="text-purple-100 text-sm">Based on number of games published</p>
+              <h2 className="text-xl font-bold text-white text-center">Creator Rankings</h2>
+              <p className="text-purple-100 text-sm text-center">Based on number of games published</p>
             </div>
           )}
         </div>
