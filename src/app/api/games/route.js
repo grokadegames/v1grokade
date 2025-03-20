@@ -105,9 +105,17 @@ export async function GET(request) {
     }
     
     // Add stage filter if specified
-    if (stage && (stage === 'PRODUCTION' || stage === 'BETA')) {
-      console.log('[API] Filtering by game stage:', stage);
-      where.stage = stage;
+    if (stage) {
+      const normalizedStage = stage.toUpperCase();
+      console.log('[API] Filtering by game stage (raw):', stage);
+      console.log('[API] Normalized stage value:', normalizedStage);
+      
+      if (normalizedStage === 'PRODUCTION' || normalizedStage === 'BETA') {
+        console.log('[API] Applying stage filter:', normalizedStage);
+        where.stage = normalizedStage;
+      } else {
+        console.log('[API] Invalid stage value, ignoring filter');
+      }
     }
     
     if (searchTerm) {

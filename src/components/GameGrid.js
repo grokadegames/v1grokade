@@ -81,11 +81,13 @@ export default function GameGrid() {
       
       const data = await response.json();
       console.log('[GameGrid] Received games:', data.games?.length || 0);
+      console.log('[GameGrid] API response message:', data.message || 'No message');
       console.log('[GameGrid] First few games with their image URLs:', 
         data.games?.slice(0, 3).map(game => ({
           id: game.id,
           title: game.title,
-          imageUrl: game.image
+          imageUrl: game.image,
+          stage: game.stage
         }))
       );
       
