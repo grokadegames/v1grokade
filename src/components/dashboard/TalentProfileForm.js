@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast, TOAST_TYPES } from '@/contexts/ToastContext';
 
 export default function TalentProfileForm() {
   const { user, hasRole } = useAuth();
+  const { showToast } = useToast();
   const [profile, setProfile] = useState({
     title: '',
     description: '',
@@ -13,7 +15,6 @@ export default function TalentProfileForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [skillInput, setSkillInput] = useState('');
-  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [descriptionError, setDescriptionError] = useState('');
   
@@ -54,7 +55,6 @@ export default function TalentProfileForm() {
     }
     
     setIsSubmitting(true);
-    setMessage(null);
     
     try {
       const response = await fetch('/api/talent/profile', {
@@ -70,10 +70,10 @@ export default function TalentProfileForm() {
         throw new Error(data.error || 'Failed to save profile');
       }
       
-      setMessage({ type: 'success', text: 'Profile saved successfully!' });
+      showToast('Profile saved successfully!', TOAST_TYPES.SUCCESS);
     } catch (error) {
       console.error('Error saving profile:', error);
-      setMessage({ type: 'error', text: error.message });
+      showToast(error.message, TOAST_TYPES.ERROR);
     } finally {
       setIsSubmitting(false);
     }
@@ -134,12 +134,6 @@ export default function TalentProfileForm() {
     <div className="bg-gray-900 rounded-xl p-6">
       <h2 className="text-xl font-bold text-white mb-3">My Talent Profile</h2>
       <p className="text-gray-400 mb-6">Complete your profile to appear in the talent directory</p>
-      
-      {message && (
-        <div className={`mb-4 p-3 rounded ${message.type === 'success' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'}`}>
-          {message.text}
-        </div>
-      )}
       
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
