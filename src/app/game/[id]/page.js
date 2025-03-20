@@ -1085,7 +1085,7 @@ export default function GamePage() {
                               href={featuredGame.xaccount ? (featuredGame.xaccount.startsWith('http') ? featuredGame.xaccount : `https://x.com/${featuredGame.xaccount.replace('@', '')}`) : '#'} 
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="w-full text-center bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md transition-colors duration-200 text-sm"
+                              className="w-full text-center bg-grok-darker hover:bg-gray-800 text-gray-300 px-3 py-2 rounded-md transition-colors duration-200 text-sm"
                               onClick={(e) => e.stopPropagation()} // Prevent toggle overlay
                             >
                               Contact Author
