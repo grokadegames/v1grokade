@@ -53,8 +53,9 @@ export async function GET(request) {
     const sortBy = searchParams.get('sort') || 'newest';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const featured = searchParams.get('featured') === 'true';
+    const stage = searchParams.get('stage'); // Get stage parameter
     
-    console.log('[API] Query params:', { searchTerm, sortBy, limit, featured });
+    console.log('[API] Query params:', { searchTerm, sortBy, limit, featured, stage });
     
     // If we don't have a DATABASE_URL, return sample data
     if (!hasDatabaseUrl) {
@@ -103,6 +104,12 @@ export async function GET(request) {
       where.featured = true;
     }
     
+    // Add stage filter if specified
+    if (stage && (stage === 'PRODUCTION' || stage === 'BETA')) {
+      console.log('[API] Filtering by game stage:', stage);
+      where.stage = stage;
+    }
+    
     if (searchTerm) {
       console.log('[API] Applying search filter:', searchTerm);
       where = {
@@ -125,7 +132,12 @@ export async function GET(request) {
         orderBy = { createdAt: 'asc' };
         break;
       case 'popular':
-        orderBy = { createdAt: 'desc' }; // Default to newest for now
+        // For popular, we'll sort in the query result based on metrics
+        orderBy = { metrics: { views: 'desc' } };
+        break;
+      case 'most_played':
+        // For most played, sort by play count
+        orderBy = { metrics: { plays: 'desc' } };
         break;
       default:
         orderBy = { createdAt: 'desc' };
@@ -192,6 +204,7 @@ export async function GET(request) {
         updatedAt: game.updatedAt,
         isLive: true, // Assuming all games from DB are live
         featured: game.featured || false, // Include the featured field from database
+        stage: game.stage || 'PRODUCTION', // Include the stage field
         plays: game.metrics?.plays || 0,
         views: game.metrics?.views || 0,
         likes: game.metrics?.likes || 0,

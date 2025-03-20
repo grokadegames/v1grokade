@@ -65,7 +65,12 @@ export default function GameGrid() {
       queryParams.append('sort', sortOrder);
       queryParams.append('limit', '1000'); // Ensure we get all games, up to 1000
       
-      console.log('[GameGrid] Fetching games from API...');
+      // Add filter parameter for game stage
+      if (filter !== 'all') {
+        queryParams.append('stage', filter.toUpperCase());
+      }
+      
+      console.log('[GameGrid] Fetching games from API with params:', Object.fromEntries(queryParams));
       
       const response = await fetch(`/api/games?${queryParams.toString()}`);
       
@@ -86,6 +91,13 @@ export default function GameGrid() {
       
       if (data.games && data.games.length > 0) {
         setGames(data.games);
+        
+        // Log games stages for debugging
+        const stagesCount = data.games.reduce((acc, game) => {
+          acc[game.stage || 'UNKNOWN'] = (acc[game.stage || 'UNKNOWN'] || 0) + 1;
+          return acc;
+        }, {});
+        console.log('[GameGrid] Games by stage:', stagesCount);
       } else {
         console.warn('[GameGrid] No games found in API response, using fallback');
         setGames(FALLBACK_GAMES);
@@ -104,10 +116,10 @@ export default function GameGrid() {
     }
   };
   
-  // Fetch games when component mounts or when search/sort changes
+  // Fetch games when component mounts or when search/sort/filter changes
   useEffect(() => {
     fetchGames();
-  }, [searchTerm, sortOrder]);
+  }, [searchTerm, sortOrder, filter]);
   
   // Implement horizontal scrolling
   useEffect(() => {
@@ -168,24 +180,40 @@ export default function GameGrid() {
       )
     );
     
-    // If we're sorting by popularity, re-sort the games
-    if (sortOrder === 'popular') {
-      setGames(prevGames => [...prevGames].sort((a, b) => {
-        // Sort by views first, then by plays if views are equal
-        if (b.views !== a.views) return b.views - a.views;
-        return b.plays - a.plays;
-      }));
+    // If we're using a metric-based sort, re-sort the games with updated metrics
+    if (sortOrder === 'popular' || sortOrder === 'most_played') {
+      setGames(prevGames => {
+        const sortedGames = [...prevGames];
+        if (sortOrder === 'popular') {
+          // Sort by views first, then by plays if views are equal
+          sortedGames.sort((a, b) => {
+            if (b.views !== a.views) return b.views - a.views;
+            return b.plays - a.plays;
+          });
+        } else if (sortOrder === 'most_played') {
+          // Sort by plays
+          sortedGames.sort((a, b) => b.plays - a.plays);
+        }
+        return sortedGames;
+      });
     }
   };
   
   // Apply additional sorting based on metrics if needed
   useEffect(() => {
-    if (games.length > 0 && sortOrder === 'popular') {
-      setGames(prevGames => [...prevGames].sort((a, b) => {
-        // Sort by views first, then by plays if views are equal
-        if (b.views !== a.views) return b.views - a.views;
-        return b.plays - a.plays;
-      }));
+    if (games.length > 0) {
+      if (sortOrder === 'popular') {
+        setGames(prevGames => [...prevGames].sort((a, b) => {
+          // Sort by views first, then by plays if views are equal
+          if (b.views !== a.views) return b.views - a.views;
+          return b.plays - a.plays;
+        }));
+      } else if (sortOrder === 'most_played') {
+        setGames(prevGames => [...prevGames].sort((a, b) => {
+          // Sort by plays
+          return b.plays - a.plays;
+        }));
+      }
     }
   }, [sortOrder, games.length]);
 
