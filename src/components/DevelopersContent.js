@@ -139,7 +139,7 @@ export default function DevelopersContent() {
                 <p className="text-grok-text-secondary mb-4">
                   Learn about vibe coding and how to use AI to create immersive game experiences.
                 </p>
-                <a href="/developers/vibe-coding" 
+                <a href="/learn/vibe-coding" 
                   className="text-grok-purple hover:text-grok-purple-light font-medium">
                   Explore Vibe Coding →
                 </a>
