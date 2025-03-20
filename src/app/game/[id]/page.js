@@ -47,65 +47,71 @@ export default function GamePage() {
     const fetchGame = async () => {
       try {
         setLoading(true);
-        // Fetch all games and find the one with matching ID
-        const response = await fetch(`/api/games`);
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch game data');
-        }
+        // First try to fetch the specific game by ID
+        const gameResponse = await fetch(`/api/games/${params.id}`);
         
-        const data = await response.json();
-        const foundGame = data.games.find(g => g.id === params.id);
-        
-        if (foundGame) {
-          setGame(foundGame);
+        if (gameResponse.ok) {
+          const gameData = await gameResponse.json();
           
-          // Set initial like/dislike counts from game metrics
-          if (foundGame.likes !== undefined) setLikeCount(foundGame.likes);
-          if (foundGame.dislikes !== undefined) setDislikeCount(foundGame.dislikes);
-          
-          // Track page view once game is loaded
-          if (params.id) {
-            trackGameView(params.id)
-              .then(result => {
-                console.log('View tracked:', result);
-                // Update view count locally if the API returned updated metrics
-                if (result && result.metrics && result.metrics.views) {
-                  setGame(prevGame => ({
-                    ...prevGame,
-                    views: result.metrics.views
-                  }));
-                }
-              })
-              .catch(error => {
-                console.error('Error tracking view:', error);
-              });
+          if (gameData.game) {
+            setGame(gameData.game);
+            
+            // Set initial like/dislike counts from game metrics
+            if (gameData.game.likes !== undefined) setLikeCount(gameData.game.likes);
+            if (gameData.game.dislikes !== undefined) setDislikeCount(gameData.game.dislikes);
+            
+            // Track page view once game is loaded
+            if (params.id) {
+              trackGameView(params.id)
+                .then(result => {
+                  console.log('View tracked:', result);
+                  // Update view count locally if the API returned updated metrics
+                  if (result && result.metrics && result.metrics.views) {
+                    setGame(prevGame => ({
+                      ...prevGame,
+                      views: result.metrics.views
+                    }));
+                  }
+                })
+                .catch(error => {
+                  console.error('Error tracking view:', error);
+                });
+            }
+            
+            // Now fetch all games for featured games section
+            const allGamesResponse = await fetch(`/api/games`);
+            
+            if (allGamesResponse.ok) {
+              const allGamesData = await allGamesResponse.json();
+              
+              // Filter out the current game and use real data from API
+              const gamesWithoutCurrent = allGamesData.games
+                .filter(g => g.id !== params.id)
+                .map(game => ({
+                  ...game,
+                  // Only use fallbacks if data is missing
+                  plays: game.plays || 0,
+                  views: game.views || 0,
+                  // Only mark as live if explicitly set to true
+                  isLive: !!game.isLive,
+                  creator: game.creator || 'Grokade Developer',
+                  description: game.description || '',
+                  // Format dates properly
+                  updatedAt: game.updatedAt || null
+                }));
+              
+              // Filter for featured games only and sort by popularity
+              const featured = gamesWithoutCurrent
+                .filter(game => game.featured === true)
+                .sort((a, b) => b.views - a.views)
+                .slice(0, 10);
+              
+              setFeaturedGames(featured);
+            }
+          } else {
+            setError('Game not found');
           }
-          
-          // Filter out the current game and use real data from API
-          // Only fill in missing properties if absolutely necessary
-          const gamesWithoutCurrent = data.games
-            .filter(g => g.id !== params.id)
-            .map(game => ({
-              ...game,
-              // Only use fallbacks if data is missing
-              plays: game.plays || 0,
-              views: game.views || 0,
-              // Only mark as live if explicitly set to true
-              isLive: !!game.isLive,
-              creator: game.creator || 'Grokade Developer',
-              description: game.description || '',
-              // Format dates properly
-              updatedAt: game.updatedAt || null
-            }));
-          
-          // Filter for featured games only and sort by popularity
-          const featured = gamesWithoutCurrent
-            .filter(game => game.featured === true)
-            .sort((a, b) => b.views - a.views)
-            .slice(0, 10);
-          
-          setFeaturedGames(featured);
         } else {
           setError('Game not found');
         }
