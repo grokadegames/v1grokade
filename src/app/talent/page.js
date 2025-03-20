@@ -6,7 +6,6 @@ import Head from 'next/head';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import SchemaOrg from '@/components/SchemaOrg';
-import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
 
 // Sample data for featured talent
 const featuredTalent = [
@@ -265,10 +264,6 @@ export default function TalentPage() {
         <div className="mb-12">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-white">Featured Talent</h2>
-            <div className="flex items-center">
-              <span className="text-grok-text-secondary mr-2">Trending:</span>
-              <CombinedTrendIndicator value={15} />
-            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
