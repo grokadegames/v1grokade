@@ -80,7 +80,7 @@ export default function GamePage() {
             }
             
             // Now fetch all games for featured games section
-            const allGamesResponse = await fetch(`/api/games`);
+            const allGamesResponse = await fetch(`/api/games?featured=true&limit=50`);
             
             if (allGamesResponse.ok) {
               const allGamesData = await allGamesResponse.json();
@@ -101,9 +101,8 @@ export default function GamePage() {
                   updatedAt: game.updatedAt || null
                 }));
               
-              // Filter for featured games only and sort by popularity
+              // Already filtered by API, just sort and limit
               const featured = gamesWithoutCurrent
-                .filter(game => game.featured === true)
                 .sort((a, b) => b.views - a.views)
                 .slice(0, 10);
               
