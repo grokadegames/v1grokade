@@ -67,6 +67,7 @@ export async function POST(request) {
         hourlyRate: data.hourlyRate,
         location: data.location,
         xaccount: xaccount,
+        isRemoteOk: data.isRemoteOk || false,
         isActive: true,
         updatedAt: new Date()
       },
@@ -78,6 +79,7 @@ export async function POST(request) {
         hourlyRate: data.hourlyRate,
         location: data.location,
         xaccount: xaccount,
+        isRemoteOk: data.isRemoteOk || false,
         isActive: true
       }
     });

@@ -100,6 +100,15 @@ const TalentCard = ({ talent }) => {
             </div>
           )}
           
+          {/* Remote OK badge */}
+          {talent.isRemoteOk && (
+            <div className="mb-3 ml-2 bg-green-600 bg-opacity-20 rounded-full px-3 py-1 inline-block">
+              <span className="text-green-500 text-sm font-medium">
+                ✓ Remote OK
+              </span>
+            </div>
+          )}
+          
           <div className="mb-3 flex flex-wrap">
             {renderSkills(talent.skills)}
           </div>

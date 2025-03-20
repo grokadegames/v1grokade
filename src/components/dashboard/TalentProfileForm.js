@@ -12,6 +12,7 @@ export default function TalentProfileForm() {
     hourlyRate: '',
     location: '',
     xaccount: user?.xaccount || '',
+    isRemoteOk: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [skillInput, setSkillInput] = useState('');
@@ -226,6 +227,27 @@ export default function TalentProfileForm() {
             placeholder="e.g., San Francisco, CA"
             required
           />
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex items-center">
+            <label className="flex items-center cursor-pointer">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  className="sr-only"
+                  checked={profile.isRemoteOk}
+                  onChange={(e) => setProfile({...profile, isRemoteOk: e.target.checked})}
+                />
+                <div className={`block w-10 h-6 rounded-full transition ${profile.isRemoteOk ? 'bg-grok-purple' : 'bg-gray-600'}`}></div>
+                <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition transform ${profile.isRemoteOk ? 'translate-x-full' : ''}`}></div>
+              </div>
+              <div className="ml-3 text-gray-300 font-medium">Remote Work OK</div>
+            </label>
+          </div>
+          <p className="text-gray-400 text-sm mt-1">
+            Indicate if you're available for remote work opportunities
+          </p>
         </div>
         
         <div className="mb-6">

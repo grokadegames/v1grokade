@@ -52,6 +52,7 @@ export async function GET(request) {
       skills: profile.skills,
       rate: profile.hourlyRate,
       location: profile.location,
+      isRemoteOk: profile.isRemoteOk || false,
       xaccount: profile.xaccount,
       featured: profile.featured,
       profileImageUrl: profile.user.profileImageUrl,
