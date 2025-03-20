@@ -43,6 +43,7 @@ model Game {
   galleryImage3 String?
   galleryImage4 String?
   featured      Boolean        @default(false)
+  stage         String         @default("BETA")
   favoritedBy   GameFavorite[]
   metrics       GameMetrics?
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)

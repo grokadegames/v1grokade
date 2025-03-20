@@ -12,11 +12,14 @@ export default function SubmitGameModal({ isOpen, onClose }) {
     description: '',
     thumbnail: null,
     galleryImages: [],
-    tags: [],
+    gameTags: '',
     officialPageUrl: ''
   });
   
   const [characterCount, setCharacterCount] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,11 +39,78 @@ export default function SubmitGameModal({ isOpen, onClose }) {
     }
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // This will be implemented later as per requirements
-    console.log('Form submitted:', formData);
-    onClose();
+    setSubmitting(true);
+    setError(null);
+    setSuccess(false);
+    
+    try {
+      // Create a FormData object to send files
+      const submitData = new FormData();
+      
+      // Add all form fields
+      submitData.append('title', formData.title);
+      submitData.append('creatorName', formData.creatorName);
+      submitData.append('handle', formData.handle);
+      submitData.append('email', formData.email);
+      submitData.append('description', formData.description);
+      submitData.append('officialPageUrl', formData.officialPageUrl);
+      submitData.append('gameTags', formData.gameTags);
+      
+      // Add thumbnail file if it exists
+      if (formData.thumbnail) {
+        submitData.append('thumbnail', formData.thumbnail);
+      }
+      
+      // Add gallery images if they exist
+      if (formData.galleryImages.length > 0) {
+        formData.galleryImages.forEach((image, index) => {
+          submitData.append(`galleryImages[${index}]`, image);
+        });
+      }
+      
+      // Send the data to the API
+      const response = await fetch('/api/games/submit', {
+        method: 'POST',
+        body: submitData,
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to submit game');
+      }
+      
+      // Show success message
+      setSuccess(true);
+      
+      // Reset form
+      setFormData({
+        title: '',
+        creatorName: '',
+        handle: '',
+        email: '',
+        description: '',
+        thumbnail: null,
+        galleryImages: [],
+        gameTags: '',
+        officialPageUrl: ''
+      });
+      setCharacterCount(0);
+      
+      // Close modal after 2 seconds
+      setTimeout(() => {
+        onClose();
+        setSuccess(false);
+      }, 2000);
+      
+    } catch (err) {
+      console.error('Error submitting game:', err);
+      setError(err.message || 'An error occurred while submitting your game.');
+    } finally {
+      setSubmitting(false);
+    }
   };
   
   if (!isOpen) return null;
@@ -60,6 +130,18 @@ export default function SubmitGameModal({ isOpen, onClose }) {
           <h2 className="text-2xl font-bold text-white mb-2">Submit New Game</h2>
           <p className="text-gray-400 mb-6">Fill in the details below to submit your game. It will be reviewed before being published.</p>
           
+          {error && (
+            <div className="mb-6 p-4 bg-red-800 text-white rounded-lg">
+              <p><strong>Error:</strong> {error}</p>
+            </div>
+          )}
+          
+          {success && (
+            <div className="mb-6 p-4 bg-green-800 text-white rounded-lg">
+              <p><strong>Success!</strong> Your game has been submitted and will be reviewed.</p>
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -75,6 +157,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   onChange={handleChange}
                   value={formData.title}
+                  disabled={submitting}
                 />
               </div>
               
@@ -91,6 +174,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   onChange={handleChange}
                   value={formData.creatorName}
+                  disabled={submitting}
                 />
               </div>
             </div>
@@ -109,6 +193,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   onChange={handleChange}
                   value={formData.handle}
+                  disabled={submitting}
                 />
               </div>
               
@@ -125,6 +210,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                   className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   onChange={handleChange}
                   value={formData.email}
+                  disabled={submitting}
                 />
               </div>
             </div>
@@ -143,6 +229,7 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                 onChange={handleChange}
                 value={formData.description}
                 maxLength="1000"
+                disabled={submitting}
               ></textarea>
               <div className="text-gray-400 text-sm mt-1">
                 {characterCount}/1000 characters
@@ -161,10 +248,11 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                 accept="image/png,image/jpeg"
                 className="hidden"
                 onChange={handleFileChange}
+                disabled={submitting}
               />
               <label
                 htmlFor="thumbnail"
-                className="cursor-pointer block w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg hover:bg-gray-600 transition"
+                className={`cursor-pointer block w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg hover:bg-gray-600 transition ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {formData.thumbnail ? formData.thumbnail.name : 'Choose File'}
               </label>
@@ -185,10 +273,11 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                 className="hidden"
                 onChange={handleFileChange}
                 multiple
+                disabled={submitting}
               />
               <label
                 htmlFor="galleryImages"
-                className="cursor-pointer block w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg hover:bg-gray-600 transition"
+                className={`cursor-pointer block w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg hover:bg-gray-600 transition ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {formData.galleryImages.length > 0 
                   ? `${formData.galleryImages.length} file(s) selected` 
@@ -205,7 +294,11 @@ export default function SubmitGameModal({ isOpen, onClose }) {
               </label>
               <select
                 id="gameTags"
+                name="gameTags"
                 className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                onChange={handleChange}
+                value={formData.gameTags}
+                disabled={submitting}
               >
                 <option value="">Select game type...</option>
                 <option value="action">Action</option>
@@ -221,16 +314,18 @@ export default function SubmitGameModal({ isOpen, onClose }) {
             
             <div className="mb-8">
               <label htmlFor="officialPageUrl" className="block text-white mb-2">
-                Official Game Page (optional)
+                Official Game Page <span className="text-red-500">*</span>
               </label>
               <input
                 id="officialPageUrl"
                 name="officialPageUrl"
                 type="url"
+                required
                 placeholder="https://yourgame.com"
                 className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 onChange={handleChange}
                 value={formData.officialPageUrl}
+                disabled={submitting}
               />
               <p className="text-gray-400 text-sm mt-1">
                 This is where users will play your game
@@ -242,14 +337,24 @@ export default function SubmitGameModal({ isOpen, onClose }) {
                 type="button"
                 onClick={onClose}
                 className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+                disabled={submitting}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition"
+                className={`px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition flex items-center justify-center ${submitting ? 'opacity-75 cursor-wait' : ''}`}
+                disabled={submitting}
               >
-                Submit Game
+                {submitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : 'Submit Game'}
               </button>
             </div>
           </form>
