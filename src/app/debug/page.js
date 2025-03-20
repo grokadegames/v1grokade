@@ -25,6 +25,9 @@ export default function DebugPage() {
   const availableEndpoints = [
     '/api/games',
     '/api/games?sample=true',
+    '/api/games/debug',
+    '/api/games?stage=PRODUCTION',
+    '/api/games?stage=BETA',
     '/api/debug/db-test',
     '/api/auth/me',
     '/api/test-db',
@@ -349,6 +352,53 @@ export default function DebugPage() {
               >
                 Test Endpoint
               </button>
+            </div>
+          </div>
+          
+          {/* Stage Filter Testing */}
+          <div className="bg-grok-card p-6 rounded-lg mb-8">
+            <h2 className="text-xl font-semibold mb-4">Game Stage Filter Testing</h2>
+            <p className="mb-4">Test the stage filtering functionality for games.</p>
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                onClick={() => {
+                  setEndpoint('/api/games/debug');
+                  setQueryParams('');
+                  fetchEndpoint();
+                }}
+                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+              >
+                Test Debug Endpoint
+              </button>
+              <button
+                onClick={() => {
+                  setEndpoint('/api/games');
+                  setQueryParams('stage=PRODUCTION');
+                  fetchEndpoint();
+                }}
+                className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+              >
+                Test PRODUCTION Filter
+              </button>
+              <button
+                onClick={() => {
+                  setEndpoint('/api/games');
+                  setQueryParams('stage=BETA');
+                  fetchEndpoint();
+                }}
+                className="bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition"
+              >
+                Test BETA Filter
+              </button>
+            </div>
+            
+            <div className="bg-amber-900/30 text-amber-200 p-4 rounded mt-4">
+              <p className="text-sm">
+                <strong>Note:</strong> If you see <code>"Unknown argument 'stage'"</code> errors in the response, 
+                this confirms the issue with the stage filtering. The debug endpoint shows detailed schema information 
+                that can be used to fix this problem.
+              </p>
             </div>
           </div>
           
