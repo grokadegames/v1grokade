@@ -188,6 +188,16 @@ export async function GET(request) {
       
       // If no games match the query, return sample data
       if (games.length === 0) {
+        // Check if we're filtering by stage - if so, we should return empty array instead of fallback
+        if (stage) {
+          console.log('[API] No games match stage filter, returning empty array');
+          return NextResponse.json({ 
+            games: [],
+            message: `No games found with stage: ${stage}`,
+            filteredBy: { stage }
+          }, { status: 200 });
+        }
+        
         console.log('[API] No games match search criteria, returning sample data');
         return NextResponse.json({ 
           games: SAMPLE_GAMES,
