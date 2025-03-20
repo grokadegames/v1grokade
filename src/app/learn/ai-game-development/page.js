@@ -202,7 +202,7 @@ export default function AIGameDevelopmentGuidePage() {
                   className="bg-white text-grok-purple font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
                   Developer Resources
                 </Link>
-                <Link href="/games" 
+                <Link href="/" 
                   className="bg-transparent border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition">
                   Explore AI-Built Games
                 </Link>
