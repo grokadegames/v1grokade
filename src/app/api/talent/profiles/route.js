@@ -44,6 +44,7 @@ export async function GET(request) {
       initials: getInitials(profile.user.displayName),
       name: profile.user.displayName,
       title: profile.title,
+      description: profile.description || '',
       rating: profile.rating,
       reviews: profile.reviewCount,
       skills: profile.skills,
@@ -51,7 +52,8 @@ export async function GET(request) {
       location: profile.location,
       xaccount: profile.xaccount,
       featured: profile.featured,
-      profileImageUrl: profile.user.profileImageUrl
+      profileImageUrl: profile.user.profileImageUrl,
+      vibeCodingExpert: profile.description ? true : false // Set to true if description exists
     }));
     
     return NextResponse.json({

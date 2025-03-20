@@ -93,7 +93,9 @@ const TalentCard = ({ talent }) => {
           {hasSpecialization && (
             <div className="mb-3 bg-grok-purple bg-opacity-20 rounded-full px-3 py-1 inline-block">
               <span className="text-grok-purple text-sm font-medium">
-                {talent.vibeCodingExpert ? '✦ Vibe Coding Expert' : `✦ ${talent.specialization}`}
+                {talent.vibeCodingExpert ? 
+                  (talent.description ? `✦ ${talent.description}` : '✦ Vibe Coding Expert') : 
+                  `✦ ${talent.specialization}`}
               </span>
             </div>
           )}
