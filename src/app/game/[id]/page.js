@@ -328,22 +328,39 @@ export default function GamePage() {
     e.preventDefault();
     e.stopPropagation();
     
+    // Check if the user is on a mobile device
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
     if (game && game.id) {
       trackGamePlay(game.id)
         .then(result => {
           console.log('Play tracked:', result);
           // After tracking, redirect to the game URL
-          window.open(game.playUrl, '_blank');
+          if (isMobile && game.playUrl) {
+            // Use direct location change for mobile to avoid popup blocking
+            window.location.href = game.playUrl;
+          } else {
+            // Use window.open for desktop
+            window.open(game.playUrl, '_blank');
+          }
         })
         .catch(error => {
           console.error('Error tracking play:', error);
           // Still redirect even if tracking fails
-          window.open(game.playUrl, '_blank');
+          if (isMobile && game.playUrl) {
+            window.location.href = game.playUrl;
+          } else if (game.playUrl) {
+            window.open(game.playUrl, '_blank');
+          }
         });
     } else {
       // If for some reason we don't have the game data, just redirect
       if (game && game.playUrl) {
-        window.open(game.playUrl, '_blank');
+        if (isMobile) {
+          window.location.href = game.playUrl;
+        } else {
+          window.open(game.playUrl, '_blank');
+        }
       }
     }
   };
