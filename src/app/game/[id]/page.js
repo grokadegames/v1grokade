@@ -256,7 +256,7 @@ export default function GamePage() {
     };
   }, []);
   
-  // Horizontal scrolling for featured games
+  // Horizontal scrolling for featured games with improved handling
   useEffect(() => {
     const container = featuredGamesContainerRef.current;
     if (!container) return;
@@ -286,33 +286,87 @@ export default function GamePage() {
       if(!isDown) return;
       e.preventDefault();
       const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2; // Increased scroll speed multiplier
+      const walk = (x - startX) * 3; // Increased scroll speed multiplier
       container.scrollLeft = scrollLeft - walk;
     };
     
+    // Touch events for mobile support
+    const onTouchStart = (e) => {
+      isDown = true;
+      container.classList.add('active');
+      startX = e.touches[0].pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    };
+    
+    const onTouchEnd = () => {
+      isDown = false;
+      container.classList.remove('active');
+    };
+    
+    const onTouchMove = (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - container.offsetLeft;
+      const walk = (x - startX) * 3;
+      container.scrollLeft = scrollLeft - walk;
+    };
+    
+    // Mouse events
     container.addEventListener('mousedown', onMouseDown);
     container.addEventListener('mouseleave', onMouseLeave);
     container.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
     
+    // Touch events
+    container.addEventListener('touchstart', onTouchStart);
+    container.addEventListener('touchend', onTouchEnd);
+    container.addEventListener('touchcancel', onTouchEnd);
+    container.addEventListener('touchmove', onTouchMove);
+    
+    // Improved scroll buttons
+    const scrollAmount = 300; // Amount to scroll with arrow buttons
+    
+    // Update scroll methods
+    window.scrollFeaturedLeft = () => {
+      if (container) {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      }
+    };
+    
+    window.scrollFeaturedRight = () => {
+      if (container) {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    };
+    
     return () => {
+      // Mouse cleanup
       container.removeEventListener('mousedown', onMouseDown);
       container.removeEventListener('mouseleave', onMouseLeave);
       container.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mousemove', onMouseMove);
+      
+      // Touch cleanup
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchcancel', onTouchEnd);
+      container.removeEventListener('touchmove', onTouchMove);
     };
   }, [featuredGames]);
 
   // Carousel navigation handlers
   const scrollFeaturedLeft = () => {
-    if (featuredGamesContainerRef.current) {
-      featuredGamesContainerRef.current.scrollLeft -= 300;
+    if (window.scrollFeaturedLeft) {
+      window.scrollFeaturedLeft();
+    } else if (featuredGamesContainerRef.current) {
+      featuredGamesContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
     }
   };
 
   const scrollFeaturedRight = () => {
-    if (featuredGamesContainerRef.current) {
-      featuredGamesContainerRef.current.scrollLeft += 300;
+    if (window.scrollFeaturedRight) {
+      window.scrollFeaturedRight();
+    } else if (featuredGamesContainerRef.current) {
+      featuredGamesContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
   
@@ -919,19 +973,20 @@ export default function GamePage() {
       {/* Featured Games Section */}
       {featuredGames.length > 0 && (
         <div className="border-t border-gray-800 py-8">
-          <div className="container-custom mx-auto px-4">
-            <div className="flex justify-between items-center mb-6">
+          <div className="container-custom mx-auto px-0 md:px-4">
+            <div className="flex justify-between items-center mb-6 px-4">
               <h2 className="text-xl text-white font-semibold">FEATURED GAMES</h2>
             </div>
             
-            <div className="relative">
+            <div className="relative w-full overflow-visible">
               <div 
                 ref={featuredGamesContainerRef}
-                className="games-container overflow-x-auto scrollbar-hide"
+                className="games-container overflow-x-auto w-full scrollbar-hide"
+                style={{ overscrollBehaviorX: 'contain' }}
               >
-                <div className="flex gap-6 pb-4 min-w-max">
+                <div className="flex gap-4 pb-4 min-w-max pl-4 pr-8">
                   {featuredGames.map((featuredGame) => (
-                    <div key={featuredGame.id} className="w-80 flex-shrink-0">
+                    <div key={featuredGame.id} className="w-72 flex-shrink-0">
                       <div 
                         className="bg-black bg-opacity-50 backdrop-blur-sm rounded-md overflow-hidden shadow-lg h-full flex flex-col group min-h-[400px] sm:min-h-[420px] md:min-h-[440px]"
                         onClick={() => toggleOverlay(featuredGame.id)}
@@ -1045,11 +1100,11 @@ export default function GamePage() {
               </div>
               
               {/* Carousel Navigation Arrows */}
-              {featuredGames.length > 0 && (
-                <div className="hidden md:flex items-center justify-between absolute top-[30%] w-full -translate-y-1/2 pointer-events-none px-2">
+              {featuredGames.length > 1 && (
+                <div className="flex items-center justify-between absolute top-[30%] w-full -translate-y-1/2 pointer-events-none px-0">
                   <button
                     onClick={scrollFeaturedLeft}
-                    className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
+                    className="bg-black bg-opacity-50 hover:bg-opacity-70 p-3 rounded-full shadow-lg pointer-events-auto transition-all z-10"
                     aria-label="Scroll left"
                   >
                     <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1058,7 +1113,7 @@ export default function GamePage() {
                   </button>
                   <button
                     onClick={scrollFeaturedRight}
-                    className="bg-black bg-opacity-25 hover:bg-opacity-50 p-2 rounded-full shadow-lg pointer-events-auto transition-all"
+                    className="bg-black bg-opacity-50 hover:bg-opacity-70 p-3 rounded-full shadow-lg pointer-events-auto transition-all z-10"
                     aria-label="Scroll right"
                   >
                     <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
