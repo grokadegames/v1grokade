@@ -46,30 +46,20 @@ function ToastItem({ toast, onClose }) {
   const getIcon = () => {
     switch (toast.type) {
       case TOAST_TYPES.SUCCESS:
-        return <CheckCircleIcon className="h-6 w-6 text-green-400" />;
+        return <CheckCircleIcon className="h-6 w-6 text-white" />;
       case TOAST_TYPES.ERROR:
-        return <ExclamationCircleIcon className="h-6 w-6 text-red-400" />;
+        return <ExclamationCircleIcon className="h-6 w-6 text-white" />;
       case TOAST_TYPES.WARNING:
-        return <ExclamationCircleIcon className="h-6 w-6 text-yellow-400" />;
+        return <ExclamationCircleIcon className="h-6 w-6 text-white" />;
       case TOAST_TYPES.INFO:
       default:
-        return <InformationCircleIcon className="h-6 w-6 text-blue-400" />;
+        return <InformationCircleIcon className="h-6 w-6 text-white" />;
     }
   };
   
-  // Get the appropriate background color based on the toast type
+  // Always return the grokade-purple color for all toast types
   const getBgColor = () => {
-    switch (toast.type) {
-      case TOAST_TYPES.SUCCESS:
-        return 'bg-green-600';
-      case TOAST_TYPES.ERROR:
-        return 'bg-red-600';
-      case TOAST_TYPES.WARNING:
-        return 'bg-yellow-600';
-      case TOAST_TYPES.INFO:
-      default:
-        return 'bg-blue-600';
-    }
+    return 'bg-grok-purple';
   };
   
   return (
