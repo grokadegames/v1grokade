@@ -55,7 +55,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li><Link href="/documentation" className="text-grok-text-secondary hover:text-white transition-colors">Documentation</Link></li>
                 <li><Link href="/feedback" className="text-grok-text-secondary hover:text-white transition-colors">Feedback</Link></li>
-                <li><Link href="/github" className="text-grok-text-secondary hover:text-white transition-colors">GitHub</Link></li>
+                <li><a href="https://github.com/grokadegames" target="_blank" rel="noopener noreferrer" className="text-grok-text-secondary hover:text-white transition-colors">GitHub</a></li>
               </ul>
             </div>
           </div>
