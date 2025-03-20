@@ -317,6 +317,7 @@ export default function GameGrid() {
                       <GameCard 
                         game={game} 
                         onMetricsUpdate={handleMetricsUpdate}
+                        currentFilter={filter}
                       />
                     </div>
                   ))}
@@ -336,6 +337,7 @@ export default function GameGrid() {
                       <GameCard 
                         game={game} 
                         onMetricsUpdate={handleMetricsUpdate}
+                        currentFilter={filter}
                       />
                     </div>
                   ))}
@@ -357,6 +359,7 @@ export default function GameGrid() {
                     <GameCard 
                       game={game} 
                       onMetricsUpdate={handleMetricsUpdate}
+                      currentFilter={filter}
                     />
                   </div>
                 ))}

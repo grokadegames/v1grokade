@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { trackGamePlay } from '@/lib/metricsUtil';
 
-export default function GameCard({ game, onMetricsUpdate }) {
+export default function GameCard({ game, onMetricsUpdate, currentFilter }) {
   const [localPlays, setLocalPlays] = useState(game?.plays || 0);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   
@@ -140,7 +140,7 @@ export default function GameCard({ game, onMetricsUpdate }) {
           
           {/* Stage indicator - BETA in orange or LIVE in green */}
           <div className="absolute top-2 right-2 z-10">
-            {(game.stage && game.stage === 'BETA') ? (
+            {(currentFilter === 'beta' || (game.stage && game.stage === 'BETA')) ? (
               <span className="bg-orange-500 text-white text-xs font-semibold px-2 py-1 rounded">BETA</span>
             ) : (
               <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded">LIVE</span>
