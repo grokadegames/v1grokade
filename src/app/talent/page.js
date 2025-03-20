@@ -114,9 +114,20 @@ const TalentCard = ({ talent }) => {
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-sm text-grok-text-secondary">{talent.location}</span>
-            <button className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors">
-              Contact
-            </button>
+            {talent.xaccount ? (
+              <a 
+                href={`https://x.com/${talent.xaccount.replace(/^@/, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors"
+              >
+                Contact
+              </a>
+            ) : (
+              <button className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors opacity-75 cursor-not-allowed">
+                Contact
+              </button>
+            )}
           </div>
         </div>
       </div>
