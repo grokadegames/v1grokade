@@ -10,12 +10,16 @@ export default function RankingsPage() {
   const [popularityGames, setPopularityGames] = useState([]);
   const [qualityGames, setQualityGames] = useState([]);
   const [creatorRanking, setCreatorRanking] = useState([]);
+  const [activityGames, setActivityGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activityLoading, setActivityLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('quality');
   const [popularityLimit, setPopularityLimit] = useState(10);
   const [qualityLimit, setQualityLimit] = useState(10);
   const [creatorLimit, setCreatorLimit] = useState(10);
+  const [activityLimit, setActivityLimit] = useState(10);
   const [activePeriod, setActivePeriod] = useState('7d');
+  const [activitySortBy, setActivitySortBy] = useState('views');
 
   const timePeriods = [
     { id: '1d', label: '1d' },
@@ -59,6 +63,26 @@ export default function RankingsPage() {
     fetchRankings();
   }, []);
 
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      try {
+        setActivityLoading(true);
+        const response = await fetch('/api/rankings/activity');
+        
+        if (response.ok) {
+          const data = await response.json();
+          setActivityGames(data);
+        }
+      } catch (error) {
+        console.error('Error fetching activity data:', error);
+      } finally {
+        setActivityLoading(false);
+      }
+    };
+    
+    fetchActivityData();
+  }, []);
+
   const showMorePopularity = () => {
     setPopularityLimit(prev => prev + 10);
   };
@@ -70,6 +94,22 @@ export default function RankingsPage() {
   const showMoreCreators = () => {
     setCreatorLimit(prev => prev + 10);
   };
+
+  const showMoreActivity = () => {
+    setActivityLimit(prev => prev + 10);
+  };
+
+  const sortActivityGames = (games, sortBy) => {
+    return [...games].sort((a, b) => {
+      return b.activityMetrics[sortBy] - a.activityMetrics[sortBy];
+    });
+  };
+
+  const handleActivitySort = (sortBy) => {
+    setActivitySortBy(sortBy);
+  };
+
+  const sortedActivityGames = activityGames.length > 0 ? sortActivityGames(activityGames, activitySortBy) : [];
 
   return (
     <div className="min-h-screen bg-black">
@@ -475,6 +515,189 @@ export default function RankingsPage() {
             )}
           </div>
         )}
+
+        {/* 24-Hour Activity Section */}
+        <div className="mt-16 mb-8">
+          <h2 className="text-2xl font-bold text-white text-center mb-2">
+            24-Hour Activity
+          </h2>
+          <p className="text-center text-grok-text-secondary mb-6">
+            Games with the most activity in the last 24 hours
+          </p>
+
+          <div className="bg-gradient-to-r from-blue-700 to-blue-600 rounded-t-xl px-6 py-4">
+            <h3 className="text-xl font-bold text-white text-center">Recent Activity</h3>
+            <p className="text-blue-100 text-sm text-center">Based on activity in the last 24 hours</p>
+          </div>
+
+          <div className="mb-4 flex justify-center">
+            <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
+              <button 
+                onClick={() => handleActivitySort('views')}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  activitySortBy === 'views' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-grok-text-secondary hover:text-white'
+                }`}
+              >
+                Views
+              </button>
+              <button 
+                onClick={() => handleActivitySort('plays')}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  activitySortBy === 'plays' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-grok-text-secondary hover:text-white'
+                }`}
+              >
+                Plays
+              </button>
+              <button 
+                onClick={() => handleActivitySort('likes')}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  activitySortBy === 'likes' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-grok-text-secondary hover:text-white'
+                }`}
+              >
+                Likes
+              </button>
+              <button 
+                onClick={() => handleActivitySort('dislikes')}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  activitySortBy === 'dislikes' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-grok-text-secondary hover:text-white'
+                }`}
+              >
+                Dislikes
+              </button>
+            </div>
+          </div>
+
+          {/* Information note about activity data */}
+          <div className="text-center mb-6">
+            <p className="text-xs text-gray-400 bg-gray-900/50 inline-block px-3 py-1 rounded-md">
+              Note: Activity data is updated in real-time and represents the last 24 hours only.
+            </p>
+          </div>
+
+          {/* Mobile helper text for horizontal scrolling */}
+          <div className="text-center mb-4 sm:hidden">
+            <p className="text-xs text-gray-400 italic">
+              ← Swipe horizontally to see more →
+            </p>
+          </div>
+
+          {activityLoading && (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          )}
+
+          {!activityLoading && (
+            <div className="bg-black rounded-xl overflow-hidden">
+              <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
+                <div className="w-full min-w-[500px]">
+                  <table className="w-full table-auto">
+                    <thead>
+                      <tr className="border-b border-gray-800">
+                        <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
+                        <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
+                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Views</th>
+                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Plays</th>
+                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Likes</th>
+                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Dislikes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedActivityGames.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
+                            No activity data available for the last 24 hours
+                          </td>
+                        </tr>
+                      ) : (
+                        sortedActivityGames.slice(0, activityLimit).map((game, index) => (
+                          <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                            <td className="px-3 py-3 text-center">
+                              <span className="text-xs text-white font-bold">
+                                {index + 1}
+                              </span>
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="flex items-center space-x-2">
+                                <a href={`/game/${game.id}`} className="flex-shrink-0">
+                                  {game.imageUrl ? (
+                                    <img src={game.imageUrl} alt={game.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
+                                  ) : (
+                                    <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
+                                      <span className="text-xs text-gray-400">No img</span>
+                                    </div>
+                                  )}
+                                </a>
+                                <div className="min-w-0 max-w-[120px] sm:max-w-none">
+                                  <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-blue-400 transition-colors truncate block">
+                                    {game.title}
+                                  </Link>
+                                  <p className="text-xs text-gray-400 truncate">
+                                    {game.xaccount ? (
+                                      <a 
+                                        href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="hover:text-blue-400 transition-colors"
+                                      >
+                                        @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                                      </a>
+                                    ) : (
+                                      `by ${game.author?.username || 'Unknown'}`
+                                    )}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-3 py-3 text-center">
+                              <span className={`text-xs ${activitySortBy === 'views' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                {game.activityMetrics.views.toLocaleString()}
+                              </span>
+                            </td>
+                            <td className="px-3 py-3 text-center">
+                              <span className={`text-xs ${activitySortBy === 'plays' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                {game.activityMetrics.plays.toLocaleString()}
+                              </span>
+                            </td>
+                            <td className="px-3 py-3 text-center">
+                              <span className={`text-xs ${activitySortBy === 'likes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                {game.activityMetrics.likes.toLocaleString()}
+                              </span>
+                            </td>
+                            <td className="px-3 py-3 text-center">
+                              <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                {game.activityMetrics.dislikes.toLocaleString()}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              {sortedActivityGames.length > activityLimit && (
+                <div className="py-4 text-center">
+                  <button 
+                    onClick={showMoreActivity}
+                    className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+                  >
+                    Show More
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </main>
       
       <Footer />

@@ -46,6 +46,7 @@ model Game {
   stage         GameStage      @default(BETA)
   favoritedBy   GameFavorite[]
   metrics       GameMetrics?
+  activities    GameActivity[]
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("games")
@@ -167,6 +168,21 @@ model TalentProfile {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("talent_profiles")
+}
+
+model GameActivity {
+  id          String   @id @default(uuid())
+  gameId      String
+  views       Int      @default(0)
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  dislikes    Int      @default(0)
+  timestamp   DateTime @default(now())
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId])
+  @@index([timestamp])
+  @@map("game_activities")
 }
 
 enum UserRole {
