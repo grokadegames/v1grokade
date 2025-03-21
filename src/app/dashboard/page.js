@@ -298,18 +298,16 @@ export default function Dashboard() {
                     onUploadSuccess={handleImageUpdate}
                   />
                   
-                  {/* Status indicators - condensed horizontal layout */}
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    <div className="inline-flex items-center bg-green-900/20 text-green-400 text-xs px-2 py-1 rounded-full">
+                  {/* Status indicators - now horizontal badges */}
+                  <div className="flex space-x-2 mb-3">
+                    <div className="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-400 mr-1.5"></div>
                       Active
                     </div>
                     
-                    {isAdmin && (
-                      <div className="inline-flex items-center bg-indigo-900/20 text-indigo-400 text-xs px-2 py-1 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
+                    {user.isAdmin && (
+                      <div className="px-2 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-medium flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-purple-400 mr-1.5"></div>
                         Admin
                       </div>
                     )}
@@ -317,38 +315,38 @@ export default function Dashboard() {
                   
                   {/* Tabs for profile sections - cleaner design */}
                   <div className="border-t border-gray-800 pt-3 mt-2">
-                    <div className="flex justify-between mb-3">
+                    <div className="flex justify-around mb-3">
                       <button 
                         onClick={() => setActiveTab('profile')}
-                        className={`flex items-center ${activeTab === 'profile' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex flex-col items-center ${activeTab === 'profile' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Personal Info"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span className="ml-1.5 text-sm">Profile</span>
+                        <span className="text-xs mt-1">Profile</span>
                       </button>
                       
                       <button 
                         onClick={() => setActiveTab('security')}
-                        className={`flex items-center ${activeTab === 'security' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex flex-col items-center ${activeTab === 'security' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Account Security"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
-                        <span className="ml-1.5 text-sm">Security</span>
+                        <span className="text-xs mt-1">Security</span>
                       </button>
                       
                       <button 
                         onClick={() => setActiveTab('image')}
-                        className={`flex items-center ${activeTab === 'image' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex flex-col items-center ${activeTab === 'image' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Profile Image"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span className="ml-1.5 text-sm">Image</span>
+                        <span className="text-xs mt-1">Image</span>
                       </button>
                     </div>
                     
@@ -370,12 +368,11 @@ export default function Dashboard() {
                       </div>
                       
                       {/* Profile Image Tab */}
-                      <div className={`${activeTab === 'image' ? 'block' : 'hidden'}`}>
-                        <div className="bg-gray-800/50 rounded-lg p-3">
-                          <h3 className="text-sm font-medium mb-2">Profile Image</h3>
-                          <ProfileImageUpload onUploadSuccess={handleImageUpdate} />
+                      {activeTab === 'image' && (
+                        <div className="p-4 rounded-xl bg-gray-800/30">
+                          <ProfileImageUpload />
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>

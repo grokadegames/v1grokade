@@ -1,208 +1,167 @@
 import { useState, useRef, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function ProfileImageUpload({ minimal = false, onUploadSuccess }) {
-  const { user, refreshUser } = useAuth();
+export default function ProfileImageUpload({ minimal = false, triggerRef = null }) {
+  const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+  const { user, refreshUser } = useAuth();
   const fileInputRef = useRef(null);
-  
-  // Auto-hide message after 5 seconds
+
+  // Auto-hide messages after 5 seconds
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
-        setMessage(null);
+        setMessage('');
+        setIsError(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
   }, [message]);
-  
+
+  // Allow parent component to trigger file selection
+  useEffect(() => {
+    if (triggerRef) {
+      triggerRef.current = triggerFileSelect;
+    }
+  }, [triggerRef]);
+
   const triggerFileSelect = () => {
-    fileInputRef.current?.click();
+    fileInputRef.current.click();
   };
-  
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    // Check file type
-    if (!file.type.startsWith('image/')) {
-      setMessage({ type: 'error', text: 'Please select an image file' });
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(selectedFile.type)) {
+      setMessage('Invalid file type. Please upload a JPG, PNG, GIF, or WEBP image.');
+      setIsError(true);
       return;
     }
-    
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setMessage({ type: 'error', text: 'Image must be less than 5MB' });
+
+    // Validate file size (5MB limit)
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setMessage('File is too large. Maximum size is 5MB.');
+      setIsError(true);
       return;
     }
-    
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setPreview(e.target.result);
-    };
-    reader.readAsDataURL(file);
-    
-    // If in minimal mode, trigger upload immediately
-    if (minimal) {
-      handleUpload(null, file);
+
+    setFile(selectedFile);
+    if (!minimal) {
+      handleUpload(selectedFile);
     }
   };
-  
-  const handleUpload = async (e, fileOverride = null) => {
-    if (e) e.preventDefault();
-    
-    const file = fileOverride || fileInputRef.current.files[0];
-    if (!file) {
-      setMessage({ type: 'error', text: 'Please select an image to upload' });
-      return;
-    }
-    
+
+  const handleUpload = async (fileToUpload) => {
+    if (!fileToUpload) return;
+
     setIsUploading(true);
-    setMessage(null);
-    
+    setMessage('Uploading image...');
+    setIsError(false);
+
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      
+      formData.append('image', fileToUpload);
+
       const response = await fetch('/api/users/profile-image', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload image');
+        throw new Error(errorData.message || 'Failed to upload image');
       }
-      
+
       const data = await response.json();
+      setMessage('Profile image updated successfully!');
       
-      // Update the UI with success message
-      setMessage({ type: 'success', text: 'Profile image uploaded successfully!' });
-      
-      // Clear the file input
-      fileInputRef.current.value = '';
-      
-      // Refresh user data to get the updated profile image URL
+      // Refresh user data to get the updated image URL
       await refreshUser();
       
-      // Call onUploadSuccess callback if provided
-      if (typeof onUploadSuccess === 'function') {
-        onUploadSuccess(data.imageUrl);
+      // Reset the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
-      
+      setFile(null);
     } catch (error) {
       console.error('Error uploading image:', error);
-      setMessage({ type: 'error', text: error.message });
+      setMessage(`Error: ${error.message || 'Failed to upload image'}`);
+      setIsError(true);
     } finally {
       setIsUploading(false);
     }
   };
-  
-  // If in minimal mode, only render the hidden input
+
+  // Minimal version just provides a hidden file input and triggers
   if (minimal) {
     return (
-      <>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          accept="image/*"
-          className="hidden"
-          id="profile-image-upload"
-        />
-        {message && (
-          <div className={`fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 ${message.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`} style={{maxWidth: '300px'}}>
-            <div className="flex items-center">
-              {message.type === 'success' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              )}
-              {message.text}
-            </div>
-          </div>
-        )}
-        {isUploading && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-900 rounded-lg p-6 max-w-sm mx-auto text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-              <p className="text-white">Uploading your profile image...</p>
-            </div>
-          </div>
-        )}
-      </>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/jpeg, image/png, image/gif, image/webp"
+        className="hidden"
+      />
     );
   }
-  
+
   return (
-    <div className="bg-gray-900 rounded-xl p-6 mb-6">
-      <h2 className="text-xl font-bold text-white mb-3">Profile Image</h2>
-      <p className="text-gray-400 mb-4">Upload a professional photo for your talent profile</p>
-      
+    <div className="w-full max-w-md mx-auto">
+      {/* File Upload Area */}
+      <div className="flex flex-col items-center">
+        {/* Current Profile Image or Placeholder */}
+        <div className="relative mb-4 group">
+          <div 
+            className="h-28 w-28 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center border-2 border-gray-600 hover:border-purple-500 transition-all cursor-pointer"
+            onClick={triggerFileSelect}
+          >
+            {user?.profileImageUrl ? (
+              <img 
+                src={user.profileImageUrl} 
+                alt="Profile" 
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            )}
+            
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <p className="text-xs text-gray-400 mb-3">Max: 5MB • Square recommended</p>
+          
+          {/* Hidden file input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/jpeg, image/png, image/gif, image/webp"
+            className="hidden"
+          />
+        </div>
+      </div>
+
+      {/* Status Message */}
       {message && (
-        <div className={`mb-4 p-3 rounded ${message.type === 'success' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'}`}>
-          {message.text}
+        <div className={`mt-3 text-center text-sm ${isError ? 'text-red-400' : 'text-green-400'}`}>
+          {message}
         </div>
       )}
-      
-      <div className="flex flex-col items-center mb-4">
-        <div 
-          className="w-32 h-32 rounded-full overflow-hidden bg-gray-800 mb-4 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity hover:ring-2 hover:ring-purple-400 relative group"
-          onClick={triggerFileSelect}
-          title="Click to change profile photo"
-        >
-          {preview ? (
-            <img src={preview} alt="Profile preview" className="w-full h-full object-cover" />
-          ) : user?.profileImageUrl ? (
-            <img src={user.profileImageUrl} alt="Current profile" className="w-full h-full object-cover" />
-          ) : (
-            <div className="text-white text-5xl font-bold">
-              {user?.displayName?.charAt(0) || user?.username?.charAt(0) || '?'}
-            </div>
-          )}
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-        </div>
-        
-        <div className="text-center text-sm text-purple-400 mb-4">
-          Click the image above to upload a new photo
-        </div>
-        
-        <form onSubmit={handleUpload} className="w-full">
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Select Image</label>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*"
-              className="w-full px-3 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-purple-600 file:text-white hover:file:bg-purple-500"
-            />
-            <p className="mt-1 text-sm text-gray-400">
-              Max size: 5MB. Recommended: Square image.
-            </p>
-          </div>
-          
-          <button
-            type="submit"
-            disabled={isUploading}
-            className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed"
-          >
-            {isUploading ? 'Uploading...' : 'Upload Image'}
-          </button>
-        </form>
-      </div>
     </div>
   );
 }
