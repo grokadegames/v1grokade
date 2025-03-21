@@ -30,7 +30,7 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-semibold mb-4">Platform</h3>
               <ul className="space-y-3">
-                <li><Link href="/" className="text-grok-text-secondary hover:text-white transition-colors">Games</Link></li>
+                <li><Link href="/games" className="text-grok-text-secondary hover:text-white transition-colors">Games</Link></li>
                 <li><Link href="/gigs" className="text-grok-text-secondary hover:text-white transition-colors">Gigs</Link></li>
                 <li><Link href="/talent" className="text-grok-text-secondary hover:text-white transition-colors">Talent</Link></li>
                 <li><Link href="/rankings" className="text-grok-text-secondary hover:text-white transition-colors">Rankings</Link></li>

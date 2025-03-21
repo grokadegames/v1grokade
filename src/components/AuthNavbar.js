@@ -36,7 +36,7 @@ export default function AuthNavbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/" className="text-white hover:text-purple-500 transition-colors mx-3">
+            <Link href="/games" className="text-white hover:text-purple-500 transition-colors mx-3">
               Games
             </Link>
             <Link href="/coming-soon?feature=Gigs" className="text-white hover:text-purple-500 transition-colors mx-3">
@@ -109,13 +109,9 @@ export default function AuthNavbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-3">
-              <Link 
-                href="/" 
-                className="text-white hover:text-purple-500 transition-colors px-2 py-1"
-                onClick={() => setIsMenuOpen(false)}
-              >
+          <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-gray-900 border-b border-gray-800 py-3`}>
+            <div className="flex flex-col px-4 space-y-3">
+              <Link href="/games" className="text-white hover:text-purple-500 transition-colors" onClick={() => setIsMenuOpen(false)}>
                 Games
               </Link>
               <Link 

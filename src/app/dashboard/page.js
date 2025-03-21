@@ -393,17 +393,17 @@ export default function Dashboard() {
                         <div className="bg-gray-800/50 rounded-lg p-3">
                           <h3 className="text-sm font-medium mb-2">Change Password</h3>
                           <ChangePasswordForm />
-                        </div>
-                      </div>
-                      
+                  </div>
+                </div>
+                
                       {/* Profile Image Tab */}
                       {activeTab === 'image' && (
                         <div className="p-4 rounded-xl bg-gray-800/30">
                           <ProfileImageUpload />
-                        </div>
+                    </div>
                       )}
                     </div>
-                  </div>
+                    </div>
                 </div>
               </div>
               
