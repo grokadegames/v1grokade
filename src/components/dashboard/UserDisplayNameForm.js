@@ -21,7 +21,7 @@ export default function UserDisplayNameForm() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/users/profile', {
+      const response = await fetch('/api/users/displayname', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
