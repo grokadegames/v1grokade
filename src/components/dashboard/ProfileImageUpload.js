@@ -63,6 +63,7 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
     setIsUploading(true);
     setMessage('Uploading image...');
     setIsError(false);
+    toast.loading('Uploading image...');
 
     try {
       const formData = new FormData();
@@ -80,6 +81,7 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
 
       const data = await response.json();
       setMessage('Profile image updated successfully!');
+      toast.success('Profile image updated successfully!');
       
       // Refresh user data to get the updated image URL
       await refreshUser();
@@ -93,6 +95,7 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
       console.error('Error uploading image:', error);
       setMessage(`Error: ${error.message || 'Failed to upload image'}`);
       setIsError(true);
+      toast.error(`Error: ${error.message || 'Failed to upload image'}`);
     } finally {
       setIsUploading(false);
     }

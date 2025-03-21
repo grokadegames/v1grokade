@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
@@ -206,6 +207,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-grok-dark text-white">
       <AuthNavbar />
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <div className="container mx-auto px-4 pt-16 pb-16">
         {loading ? (
           <div className="flex justify-center items-center h-64">
