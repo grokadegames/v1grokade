@@ -300,14 +300,6 @@ export default function Dashboard() {
               
               {/* Main content area - right side */}
               <div className="lg:col-span-2">
-                {/* Admin Section - Only visible to admins */}
-                {isAdmin && (
-                  <section className="mb-8">
-                    <h2 className="text-2xl font-bold text-white mb-4">Admin Tools</h2>
-                    <UserPasswordTool />
-                  </section>
-                )}
-                
                 {/* Achievements Section - Moved to top */}
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold mb-4">Achievements</h2>
@@ -455,6 +447,14 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
+                
+                {/* Admin Section - Only visible to admins */}
+                {isAdmin && (
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-bold text-white mb-4">Admin Tools</h2>
+                    <UserPasswordTool />
+                  </section>
+                )}
                 
                 {/* Work Profile Section */}
                 <section className="mb-8">
