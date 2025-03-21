@@ -143,21 +143,14 @@ export default function Dashboard() {
       // Update was successful - immediately update local state to avoid waiting for refresh
       const trimmedName = newDisplayName.trim();
       
-      // Update local user state immediately
+      // Use the safer functional update form for setUser
       if (user) {
-        // Create a new user object with the updated displayName
-        const updatedUser = {
-          ...user,
+        // Update local user state immediately using the functional form
+        setUser(currentUser => ({
+          ...currentUser,
           displayName: trimmedName
-        };
-        
-        // Force the UI to update with new name immediately
-        setUser(updatedUser);
+        }));
       }
-      
-      // Also refresh user data from server for complete update
-      await refreshUser();
-      setIsEditingName(false);
       
       // Show success message
       setNameUpdateStatus({ 
@@ -166,6 +159,9 @@ export default function Dashboard() {
         success: true, 
         message: 'Display name updated successfully!' 
       });
+      
+      // Exit editing mode
+      setIsEditingName(false);
       
       // Clear success message after 3 seconds
       setTimeout(() => {

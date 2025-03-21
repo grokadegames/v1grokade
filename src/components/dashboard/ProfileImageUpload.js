@@ -63,7 +63,9 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
     setIsUploading(true);
     setMessage('Uploading image...');
     setIsError(false);
-    toast.loading('Uploading image...');
+    
+    // Use a unique ID for the toast to be able to dismiss it later
+    const toastId = toast.loading('Uploading image...', { id: 'upload-toast' });
 
     try {
       const formData = new FormData();
@@ -81,7 +83,9 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
 
       const data = await response.json();
       setMessage('Profile image updated successfully!');
-      toast.success('Profile image updated successfully!');
+      
+      // Update the existing toast instead of creating a new one
+      toast.success('Profile image updated successfully!', { id: toastId });
       
       // Refresh user data to get the updated image URL
       await refreshUser();
@@ -95,7 +99,9 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
       console.error('Error uploading image:', error);
       setMessage(`Error: ${error.message || 'Failed to upload image'}`);
       setIsError(true);
-      toast.error(`Error: ${error.message || 'Failed to upload image'}`);
+      
+      // Update the existing toast instead of creating a new one
+      toast.error(`Error: ${error.message || 'Failed to upload image'}`, { id: toastId });
     } finally {
       setIsUploading(false);
     }
