@@ -69,9 +69,9 @@ export default function RankingsPage() {
           
           {/* Activity Rankings Section */}
           <div>
-            <div className="bg-gradient-to-r from-blue-700 to-blue-600 rounded-t-xl px-6 py-4">
+            <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-t-xl px-6 py-4">
               <h3 className="text-xl font-bold text-white text-center">Activity Rankings</h3>
-              <p className="text-blue-100 text-sm text-center">
+              <p className="text-purple-100 text-sm text-center">
                 Based on activity in the last {activityPeriod === '24h' ? '24 hours' : 
                   activityPeriod === '7d' ? '7 days' : 
                   activityPeriod === '30d' ? '30 days' : 
@@ -85,7 +85,7 @@ export default function RankingsPage() {
                   onClick={() => handleActivitySort('views')}
                   className={`px-4 py-2 rounded-md text-sm ${
                     activitySortBy === 'views' 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-purple-600 text-white' 
                       : 'text-grok-text-secondary hover:text-white'
                   }`}
                 >
@@ -95,7 +95,7 @@ export default function RankingsPage() {
                   onClick={() => handleActivitySort('plays')}
                   className={`px-4 py-2 rounded-md text-sm ${
                     activitySortBy === 'plays' 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-purple-600 text-white' 
                       : 'text-grok-text-secondary hover:text-white'
                   }`}
                 >
@@ -105,7 +105,7 @@ export default function RankingsPage() {
                   onClick={() => handleActivitySort('likes')}
                   className={`px-4 py-2 rounded-md text-sm ${
                     activitySortBy === 'likes' 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-purple-600 text-white' 
                       : 'text-grok-text-secondary hover:text-white'
                   }`}
                 >
@@ -115,7 +115,7 @@ export default function RankingsPage() {
                   onClick={() => handleActivitySort('dislikes')}
                   className={`px-4 py-2 rounded-md text-sm ${
                     activitySortBy === 'dislikes' 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-purple-600 text-white' 
                       : 'text-grok-text-secondary hover:text-white'
                   }`}
                 >
@@ -156,17 +156,17 @@ export default function RankingsPage() {
 
             {activityLoading && (
               <div className="flex justify-center items-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
               </div>
             )}
 
             {!activityLoading && (
-              <div className="bg-black rounded-xl overflow-hidden">
+              <div className="bg-gradient-to-b from-purple-900/20 to-black rounded-xl overflow-hidden">
                 <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
                   <div className="w-full min-w-[500px]">
                     <table className="w-full table-auto">
                       <thead>
-                        <tr className="border-b border-gray-800">
+                        <tr className="border-b border-purple-900/50">
                           <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
                           <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
                           <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Views</th>
@@ -184,7 +184,7 @@ export default function RankingsPage() {
                           </tr>
                         ) : (
                           sortedActivityGames.slice(0, activityLimit).map((game, index) => (
-                            <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                            <tr key={game.id} className="border-b border-purple-900/30 hover:bg-purple-900/10 transition-colors">
                               <td className="px-3 py-3 text-center">
                                 <span className="text-xs text-white font-bold">
                                   {index + 1}
@@ -202,7 +202,7 @@ export default function RankingsPage() {
                                     )}
                                   </a>
                                   <div className="min-w-0 max-w-[120px] sm:max-w-none">
-                                    <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-blue-400 transition-colors truncate block">
+                                    <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
                                       {game.title}
                                     </Link>
                                     <p className="text-xs text-gray-400 truncate">
@@ -211,7 +211,7 @@ export default function RankingsPage() {
                                           href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
                                           target="_blank" 
                                           rel="noopener noreferrer"
-                                          className="hover:text-blue-400 transition-colors"
+                                          className="hover:text-purple-400 transition-colors"
                                         >
                                           @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
                                         </a>
@@ -223,22 +223,22 @@ export default function RankingsPage() {
                                 </div>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'views' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'views' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
                                   {game.activityMetrics.views.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'plays' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'plays' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
                                   {game.activityMetrics.plays.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'likes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'likes' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
                                   {game.activityMetrics.likes.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
                                   {game.activityMetrics.dislikes.toLocaleString()}
                                 </span>
                               </td>
@@ -254,7 +254,7 @@ export default function RankingsPage() {
                   <div className="py-4 text-center">
                     <button 
                       onClick={showMoreActivity}
-                      className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+                      className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-md transition-colors"
                     >
                       Show More
                     </button>
