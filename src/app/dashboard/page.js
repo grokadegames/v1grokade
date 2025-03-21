@@ -217,13 +217,11 @@ export default function Dashboard() {
               {/* Left sidebar - user info and profile */}
               <div className="lg:col-span-1 flex flex-col">
                 {/* Profile sections grouped together */}
-                <div className="bg-gray-900 rounded-xl p-6 mb-6">
-                  <h2 className="text-xl font-bold text-white mb-4">Your Profile</h2>
-                  
-                  {/* User profile card */}
-                  <div className="flex items-center mb-6">
+                <div className="bg-gray-900 rounded-xl p-5 mb-6">
+                  {/* User profile header - more compact */}
+                  <div className="flex items-center mb-3">
                     <div 
-                      className="w-16 h-16 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-2xl font-bold mr-4 cursor-pointer"
+                      className="w-14 h-14 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-xl font-bold mr-3 cursor-pointer"
                       onClick={() => document.getElementById('hidden-file-input')?.click()}
                     >
                       {user?.profileImageUrl ? (
@@ -236,7 +234,7 @@ export default function Dashboard() {
                         user?.displayName?.charAt(0) || user?.username?.charAt(0) || '?'
                       )}
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       {isEditingName ? (
                         <div className="relative">
                           <input
@@ -252,7 +250,7 @@ export default function Dashboard() {
                                 setIsEditingName(false);
                               }
                             }}
-                            className="text-xl font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
+                            className="text-lg font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
                             placeholder="Your display name"
                             maxLength={50}
                             aria-label="Edit display name"
@@ -271,22 +269,25 @@ export default function Dashboard() {
                         </div>
                       ) : (
                         <h2 
-                          className="text-xl font-bold text-white hover:text-purple-300 cursor-pointer group relative"
+                          className="text-lg font-bold text-white hover:text-purple-300 cursor-pointer group relative truncate"
                           onClick={() => setIsEditingName(true)}
+                          title={user?.displayName || user?.username}
                         >
                           {user?.displayName || user?.username}
-                          <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 text-sm">
-                            ✏️ Edit
+                          <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 text-xs">
+                            ✏️
                           </span>
                           {nameUpdateStatus.success && (
-                            <span className="ml-2 text-green-400 text-sm animate-fadeOut">
-                              ✓ Updated
+                            <span className="ml-1 text-green-400 text-xs animate-fadeOut">
+                              ✓
                             </span>
                           )}
                         </h2>
                       )}
-                      <p className="text-gray-400">@{user?.username}</p>
-                      <p className="text-gray-400 text-sm mt-1">{user?.email}</p>
+                      <div className="flex flex-col space-y-0.5">
+                        <p className="text-gray-400 text-sm truncate">@{user?.username}</p>
+                        <p className="text-gray-500 text-xs truncate">{user?.email}</p>
+                      </div>
                     </div>
                   </div>
                   
@@ -297,83 +298,81 @@ export default function Dashboard() {
                     onUploadSuccess={handleImageUpdate}
                   />
                   
-                  {/* Tabs for profile sections */}
-                  <div className="border-t border-gray-800 pt-4 mt-4">
-                    <div className="flex justify-center space-x-12 mb-4 border-b border-gray-800">
+                  {/* Status indicators - condensed horizontal layout */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <div className="inline-flex items-center bg-green-900/20 text-green-400 text-xs px-2 py-1 rounded-full">
+                      <div className="w-2 h-2 rounded-full bg-green-400 mr-1.5"></div>
+                      Active
+                    </div>
+                    
+                    {isAdmin && (
+                      <div className="inline-flex items-center bg-indigo-900/20 text-indigo-400 text-xs px-2 py-1 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Admin
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Tabs for profile sections - cleaner design */}
+                  <div className="border-t border-gray-800 pt-3 mt-2">
+                    <div className="flex justify-between mb-3">
                       <button 
                         onClick={() => setActiveTab('profile')}
-                        className={`pb-3 px-3 ${activeTab === 'profile' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex items-center ${activeTab === 'profile' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Personal Info"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
+                        <span className="ml-1.5 text-sm">Profile</span>
                       </button>
+                      
                       <button 
                         onClick={() => setActiveTab('security')}
-                        className={`pb-3 px-3 ${activeTab === 'security' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex items-center ${activeTab === 'security' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Account Security"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
+                        <span className="ml-1.5 text-sm">Security</span>
                       </button>
+                      
                       <button 
                         onClick={() => setActiveTab('image')}
-                        className={`pb-3 px-3 ${activeTab === 'image' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        className={`flex items-center ${activeTab === 'image' ? 'text-purple-500' : 'text-gray-400 hover:text-white'}`}
                         title="Profile Image"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
+                        <span className="ml-1.5 text-sm">Image</span>
                       </button>
                     </div>
                     
-                    {/* Tab contents */}
-                    <div className="mt-4">
+                    {/* Tab contents - more compact */}
+                    <div className="mt-3">
                       {/* Profile Info */}
                       <div className={`${activeTab === 'profile' ? 'block' : 'hidden'}`}>
-                        {/* Account status section */}
-                        <div className="mb-6 bg-gray-800 bg-opacity-40 rounded-lg p-4">
-                          <div className="flex items-center mb-2">
-                            <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
-                            <h3 className="text-lg font-semibold">Account Active</h3>
-                          </div>
-                          <p className="text-sm text-gray-400">Your account is in good standing</p>
-                        </div>
-                        
-                        {isAdmin && (
-                          <div className="bg-indigo-900 bg-opacity-30 border border-indigo-500 rounded-lg p-4 mb-6">
-                            <div className="flex items-center mb-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                              </svg>
-                              <h3 className="text-lg font-semibold text-indigo-300">Admin Access</h3>
-                            </div>
-                            <p className="text-sm text-indigo-200">You have administrator privileges</p>
-                          </div>
-                        )}
-                        
-                        {/* Work Profile section */}
-                        <div className="mb-6">
+                        <div className="mb-3">
                           <WorkProfileActivation />
                         </div>
                       </div>
                       
                       {/* Security settings */}
                       <div className={`${activeTab === 'security' ? 'block' : 'hidden'}`}>
-                        <div className="bg-gray-800 bg-opacity-40 rounded-lg p-4 mb-6">
-                          <h3 className="text-lg font-semibold mb-4">Change Password</h3>
-                          <p className="text-sm text-gray-400 mb-4">Update your password to keep your account secure</p>
+                        <div className="bg-gray-800/50 rounded-lg p-3">
+                          <h3 className="text-sm font-medium mb-2">Change Password</h3>
                           <ChangePasswordForm />
                         </div>
                       </div>
                       
                       {/* Profile Image Tab */}
                       <div className={`${activeTab === 'image' ? 'block' : 'hidden'}`}>
-                        <div className="bg-gray-800 bg-opacity-40 rounded-lg p-4 mb-6">
-                          <h3 className="text-lg font-semibold mb-4">Profile Image</h3>
-                          <p className="text-sm text-gray-400 mb-4">Upload or update your profile picture</p>
+                        <div className="bg-gray-800/50 rounded-lg p-3">
+                          <h3 className="text-sm font-medium mb-2">Profile Image</h3>
                           <ProfileImageUpload onUploadSuccess={handleImageUpdate} />
                         </div>
                       </div>
