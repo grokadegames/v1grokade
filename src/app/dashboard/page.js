@@ -16,7 +16,7 @@ import { HiUserCircle } from 'react-icons/hi';
 
 // Main dashboard page component
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, refreshUser } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, refreshUser, setUser } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
@@ -26,7 +26,12 @@ export default function Dashboard() {
   const [achievementsLoaded, setAchievementsLoaded] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState('');
-  const [nameUpdateStatus, setNameUpdateStatus] = useState({ loading: false, error: null });
+  const [nameUpdateStatus, setNameUpdateStatus] = useState({ 
+    loading: false, 
+    error: null,
+    success: false,
+    message: null
+  });
   const displayNameInputRef = useRef(null);
 
   // Force profile image to reload when updated
@@ -134,10 +139,37 @@ export default function Dashboard() {
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Update was successful
+      // Update was successful - immediately update local state to avoid waiting for refresh
+      const trimmedName = newDisplayName.trim();
+      
+      // Update local user state immediately
+      if (user) {
+        // Create a new user object with the updated displayName
+        const updatedUser = {
+          ...user,
+          displayName: trimmedName
+        };
+        
+        // Force the UI to update with new name immediately
+        setUser(updatedUser);
+      }
+      
+      // Also refresh user data from server for complete update
       await refreshUser();
       setIsEditingName(false);
-      setNameUpdateStatus({ loading: false, error: null });
+      
+      // Show success message
+      setNameUpdateStatus({ 
+        loading: false, 
+        error: null, 
+        success: true, 
+        message: 'Display name updated successfully!' 
+      });
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setNameUpdateStatus(prevState => ({ ...prevState, success: false, message: null }));
+      }, 3000);
       
     } catch (error) {
       console.error('Error updating display name:', error);
@@ -152,7 +184,7 @@ export default function Dashboard() {
     } else if (e.key === 'Escape') {
       setIsEditingName(false);
       setNewDisplayName(user?.displayName || '');
-      setNameUpdateStatus({ loading: false, error: null });
+      setNameUpdateStatus({ loading: false, error: null, success: false, message: null });
     }
   };
 
@@ -233,6 +265,9 @@ export default function Dashboard() {
                           {nameUpdateStatus.error && (
                             <p className="text-red-400 text-xs mt-1">{nameUpdateStatus.error}</p>
                           )}
+                          {nameUpdateStatus.success && (
+                            <p className="text-green-400 text-xs mt-1">{nameUpdateStatus.message}</p>
+                          )}
                         </div>
                       ) : (
                         <h2 
@@ -243,6 +278,11 @@ export default function Dashboard() {
                           <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 text-sm">
                             ✏️ Edit
                           </span>
+                          {nameUpdateStatus.success && (
+                            <span className="ml-2 text-green-400 text-sm animate-fadeOut">
+                              ✓ Updated
+                            </span>
+                          )}
                         </h2>
                       )}
                       <p className="text-gray-400">@{user?.username}</p>
