@@ -112,19 +112,19 @@ export default function RoadmapModal({ isOpen, onClose }) {
           </div>
 
           {/* Performance Rankings */}
-          <div className="mb-8 relative pl-8 border-l-2 border-yellow-500">
+          <div className="mb-8 relative pl-8 border-l-2 border-green-500">
             <div className="absolute -left-2 top-0">
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500"></span>
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-green-500"></span>
             </div>
             <div className="flex items-center gap-2 mb-2">
               <h3 className="text-xl font-bold text-white">Performance Rankings</h3>
-              <span className="bg-yellow-500 text-black px-2 py-0.5 rounded text-xs font-bold">NEXT</span>
+              <span className="bg-green-500 text-black px-2 py-0.5 rounded text-xs font-bold">LIVE</span>
             </div>
             <p className="text-gray-300 mb-3">Comprehensive leaderboards for games and creators</p>
             <div className="flex flex-wrap gap-2 mt-2">
-              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Popularity Rankings</span>
-              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Quality Rankings</span>
-              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Creator Leaderboards</span>
+              <span className="bg-green-900/50 border border-green-500 text-green-100 px-3 py-1 rounded-full text-sm">Popularity Rankings</span>
+              <span className="bg-green-900/50 border border-green-500 text-green-100 px-3 py-1 rounded-full text-sm">Quality Rankings</span>
+              <span className="bg-green-900/50 border border-green-500 text-green-100 px-3 py-1 rounded-full text-sm">Creator Leaderboards</span>
             </div>
           </div>
 
@@ -163,19 +163,19 @@ export default function RoadmapModal({ isOpen, onClose }) {
           </div>
 
           {/* Talent & Gigs */}
-          <div className="mb-8 relative pl-8 border-l-2 border-purple-500">
+          <div className="mb-8 relative pl-8 border-l-2 border-yellow-500">
             <div className="absolute -left-2 top-0">
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-purple-500"></span>
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500"></span>
             </div>
             <div className="flex items-center gap-2 mb-2">
               <h3 className="text-xl font-bold text-white">Talent & Gigs Marketplace</h3>
-              <span className="bg-purple-500 text-white px-2 py-0.5 rounded text-xs font-bold">COMING SOON</span>
+              <span className="bg-yellow-500 text-black px-2 py-0.5 rounded text-xs font-bold">NEXT</span>
             </div>
             <p className="text-gray-300 mb-3">Connect developers with opportunities</p>
             <div className="flex flex-wrap gap-2 mt-2">
-              <span className="bg-purple-900/50 border border-purple-500 text-purple-100 px-3 py-1 rounded-full text-sm">Talent Profiles</span>
-              <span className="bg-purple-900/50 border border-purple-500 text-purple-100 px-3 py-1 rounded-full text-sm">Gig Listings</span>
-              <span className="bg-purple-900/50 border border-purple-500 text-purple-100 px-3 py-1 rounded-full text-sm">Networking</span>
+              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Talent Profiles</span>
+              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Gig Listings</span>
+              <span className="bg-yellow-900/50 border border-yellow-500 text-yellow-100 px-3 py-1 rounded-full text-sm">Networking</span>
             </div>
           </div>
 
