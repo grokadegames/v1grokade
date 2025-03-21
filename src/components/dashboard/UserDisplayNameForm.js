@@ -3,117 +3,111 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast, TOAST_TYPES } from '@/contexts/ToastContext';
 
 export default function UserDisplayNameForm() {
+  // Get user data but don't use refreshUser
   const { user } = useAuth();
   const { showToast } = useToast();
-  const [displayName, setDisplayName] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [updateSuccessful, setUpdateSuccessful] = useState(false);
+  const [formData, setFormData] = useState('');
+  const [status, setStatus] = useState({
+    isSubmitting: false,
+    error: '',
+    success: false
+  });
   
-  // Initialize the form field whenever the user object changes
+  // Set initial value once when component mounts
   useEffect(() => {
     if (user?.displayName) {
-      setDisplayName(user.displayName);
+      setFormData(user.displayName);
     }
   }, [user?.displayName]);
   
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     
-    if (!displayName || !displayName.trim()) {
-      setError('Display name cannot be empty');
+    // Validation
+    if (!formData.trim()) {
+      setStatus(prev => ({ ...prev, error: 'Display name cannot be empty' }));
       return;
     }
     
-    setError('');
-    setIsSubmitting(true);
-    setUpdateSuccessful(false);
+    // Clear errors and set submitting
+    setStatus({ isSubmitting: true, error: '', success: false });
     
     try {
-      // Show processing toast
-      showToast({
-        message: 'Updating display name...',
-        type: TOAST_TYPES.INFO,
-      });
-      
-      // Make the API call
+      // Make API call
       const response = await fetch('/api/users/displayname', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ displayName: displayName.trim() }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ displayName: formData.trim() })
       });
       
-      // Get response data
-      const data = await response.json();
-      
-      // Handle non-OK responses
+      // Simple error handling
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Update was successful
-      setUpdateSuccessful(true);
-      
-      // Show success toast
+      // Show success message
       showToast({
         message: 'Display name updated successfully',
-        type: TOAST_TYPES.SUCCESS,
+        type: TOAST_TYPES.SUCCESS
       });
       
-      // Manually update the document title if needed
-      if (typeof document !== 'undefined') {
-        document.title = `${displayName.trim()} | Grokade Dashboard`;
-      }
-      
-      // We don't refresh the user data here to avoid the error
-      // The user's display name will update on the next page navigation
+      // Set success state
+      setStatus({ isSubmitting: false, error: '', success: true });
       
     } catch (error) {
       console.error('Error updating display name:', error);
-      setError(error.message || 'An error occurred');
       
+      // Show error toast
       showToast({
         message: error.message || 'Failed to update display name',
-        type: TOAST_TYPES.ERROR,
+        type: TOAST_TYPES.ERROR
       });
-    } finally {
-      setIsSubmitting(false);
+      
+      // Set error state
+      setStatus({ 
+        isSubmitting: false, 
+        error: error.message || 'An error occurred', 
+        success: false 
+      });
     }
-  };
+  }
   
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} id="displayNameForm">
       <div className="mb-4">
-        <label htmlFor="displayName" className="block text-gray-300 mb-2">
+        <label htmlFor="displayNameInput" className="block text-gray-300 mb-2">
           Display Name
         </label>
         <input
-          id="displayName"
+          id="displayNameInput"
+          name="displayName"
           type="text"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
+          value={formData}
+          onChange={(e) => setFormData(e.target.value)}
           className="w-full px-4 py-2 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Your display name"
-          disabled={isSubmitting}
+          disabled={status.isSubmitting}
           maxLength={50}
-          required
         />
-        {error && (
-          <p className="text-red-400 text-sm mt-1">{error}</p>
+        
+        {status.error && (
+          <p className="text-red-400 text-sm mt-1" role="alert">{status.error}</p>
         )}
-        {updateSuccessful && (
-          <p className="text-green-400 text-sm mt-1">Your display name has been updated successfully.</p>
+        
+        {status.success && (
+          <p className="text-green-400 text-sm mt-1" role="alert">
+            Display name updated successfully.
+          </p>
         )}
       </div>
       
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={status.isSubmitting}
         className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors disabled:opacity-50"
       >
-        {isSubmitting ? 'Saving...' : 'Save Display Name'}
+        {status.isSubmitting ? 'Saving...' : 'Save Display Name'}
       </button>
     </form>
   );

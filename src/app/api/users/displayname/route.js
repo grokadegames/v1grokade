@@ -1,75 +1,86 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
+import { authenticateUser } from '@/lib/auth';
 
 // Update user's display name
 export async function PUT(request) {
   try {
-    console.log('[API/displayname] Processing display name update request');
+    console.log('[API/users/displayname] Processing display name update');
     
-    // Authenticate user first
-    const user = await authenticateUser(request);
-    if (!user) {
-      console.log('[API/displayname] Authentication failed');
-      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    // Authenticate the user
+    const auth = await authenticateUser(request);
+    if (!auth.success) {
+      console.log('[API/users/displayname] Authentication failed:', auth.message);
+      return NextResponse.json(
+        { error: auth.message, reason: auth.reason },
+        { status: 401 }
+      );
     }
     
-    // Parse request body safely
-    let requestBody;
-    try {
-      requestBody = await request.json();
-    } catch (jsonError) {
-      console.error('[API/displayname] Invalid JSON in request body:', jsonError);
+    const userId = auth.user.id;
+    console.log(`[API/users/displayname] Authenticated user ID: ${userId}`);
+    
+    // Parse request body
+    const body = await request.json();
+    console.log('[API/users/displayname] Request body:', body);
+    
+    // Validate the display name
+    if (!body.displayName || typeof body.displayName !== 'string') {
+      console.log('[API/users/displayname] Invalid display name:', body.displayName);
       return NextResponse.json(
-        { error: 'Invalid request format' },
+        { error: 'Display name is required and must be a string' },
         { status: 400 }
       );
     }
     
-    const { displayName } = requestBody;
+    const displayName = body.displayName.trim();
     
-    // Validate displayName
-    if (!displayName || typeof displayName !== 'string' || displayName.trim() === '') {
-      console.log('[API/displayname] Empty or invalid display name provided');
+    if (displayName.length === 0) {
+      console.log('[API/users/displayname] Empty display name');
       return NextResponse.json(
         { error: 'Display name cannot be empty' },
         { status: 400 }
       );
     }
     
-    const trimmedName = displayName.trim();
-    
-    // Update the user's display name
-    console.log(`[API/displayname] Updating display name for user ${user.id} to "${trimmedName}"`);
-    try {
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          displayName: trimmedName,
-          updatedAt: new Date()
-        },
-      });
-      
-      console.log('[API/displayname] Display name updated successfully');
-      
-      // Return a minimal successful response without the entire user object
-      return NextResponse.json({
-        success: true,
-        message: 'Display name updated successfully',
-      });
-      
-    } catch (prismaError) {
-      console.error('[API/displayname] Database error:', prismaError);
+    if (displayName.length > 50) {
+      console.log('[API/users/displayname] Display name too long:', displayName.length);
       return NextResponse.json(
-        { error: 'Database error when updating display name' },
-        { status: 500 }
+        { error: 'Display name must be 50 characters or less' },
+        { status: 400 }
       );
     }
     
+    // Update the user in the database
+    console.log(`[API/users/displayname] Updating display name for user ${userId} to "${displayName}"`);
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: { displayName },
+        select: { id: true, displayName: true }
+      });
+      
+      console.log('[API/users/displayname] Update successful:', updatedUser);
+      
+      // Return a simple success response with minimal data
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Display name updated successfully',
+        user: { displayName: updatedUser.displayName } 
+      });
+      
+    } catch (dbError) {
+      console.error('[API/users/displayname] Database error:', dbError);
+      return NextResponse.json(
+        { error: 'Failed to update display name', reason: dbError.message },
+        { status: 500 }
+      );
+    }
   } catch (error) {
-    console.error('[API/displayname] Unhandled error updating display name:', error);
+    console.error('[API/users/displayname] Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Failed to update display name' },
+      { error: 'Internal server error', reason: error.message },
       { status: 500 }
     );
   }
