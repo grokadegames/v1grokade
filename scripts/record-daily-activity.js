@@ -80,20 +80,20 @@ async function recordDailyActivity() {
       }
     }
 
-    // Delete old activity records (older than 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Delete old activity records (older than 1 year)
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     
     const deletedCount = await prisma.gameActivity.deleteMany({
       where: {
         timestamp: {
-          lt: thirtyDaysAgo
+          lt: oneYearAgo
         }
       }
     });
 
     console.log(`Successfully recorded ${newActivitiesCount} new activity records`);
-    console.log(`Deleted ${deletedCount.count} activity records older than 30 days`);
+    console.log(`Deleted ${deletedCount.count} activity records older than 1 year`);
   } catch (error) {
     console.error('Error recording daily activity:', error);
   } finally {

@@ -19,12 +19,21 @@ export default function RankingsPage() {
   const [creatorLimit, setCreatorLimit] = useState(10);
   const [activityLimit, setActivityLimit] = useState(10);
   const [activePeriod, setActivePeriod] = useState('7d');
+  const [activityPeriod, setActivityPeriod] = useState('24h');
   const [activitySortBy, setActivitySortBy] = useState('views');
 
   const timePeriods = [
     { id: '1d', label: '1d' },
     { id: '7d', label: '7d' },
     { id: '30d', label: '30d' },
+  ];
+
+  const activityTimePeriods = [
+    { id: '24h', label: '24h' },
+    { id: '7d', label: '7d' },
+    { id: '30d', label: '30d' },
+    { id: '90d', label: '90d' },
+    { id: '1y', label: '1y' },
   ];
 
   useEffect(() => {
@@ -67,7 +76,7 @@ export default function RankingsPage() {
     const fetchActivityData = async () => {
       try {
         setActivityLoading(true);
-        const response = await fetch('/api/rankings/activity');
+        const response = await fetch(`/api/rankings/activity?period=${activityPeriod}`);
         
         if (response.ok) {
           const data = await response.json();
@@ -81,7 +90,7 @@ export default function RankingsPage() {
     };
     
     fetchActivityData();
-  }, []);
+  }, [activityPeriod]);
 
   const showMorePopularity = () => {
     setPopularityLimit(prev => prev + 10);
@@ -519,19 +528,24 @@ export default function RankingsPage() {
         {/* 24-Hour Activity Section */}
         <div className="mt-16 mb-8">
           <h2 className="text-2xl font-bold text-white text-center mb-2">
-            24-Hour Activity
+            Activity Rankings
           </h2>
           <p className="text-center text-grok-text-secondary mb-6">
-            Games with the most activity in the last 24 hours
+            Games with the most activity over time
           </p>
 
           <div className="bg-gradient-to-r from-blue-700 to-blue-600 rounded-t-xl px-6 py-4">
             <h3 className="text-xl font-bold text-white text-center">Recent Activity</h3>
-            <p className="text-blue-100 text-sm text-center">Based on activity in the last 24 hours</p>
+            <p className="text-blue-100 text-sm text-center">
+              Based on activity in the last {activityPeriod === '24h' ? '24 hours' : 
+                activityPeriod === '7d' ? '7 days' : 
+                activityPeriod === '30d' ? '30 days' : 
+                activityPeriod === '90d' ? '90 days' : '1 year'}
+            </p>
           </div>
 
-          <div className="mb-4 flex justify-center">
-            <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-4">
+            <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center mb-2 sm:mb-0">
               <button 
                 onClick={() => handleActivitySort('views')}
                 className={`px-4 py-2 rounded-md text-sm ${
@@ -573,12 +587,28 @@ export default function RankingsPage() {
                 Dislikes
               </button>
             </div>
+
+            <div className="bg-gray-900 rounded-lg inline-flex">
+              {activityTimePeriods.map(period => (
+                <button
+                  key={period.id}
+                  onClick={() => setActivityPeriod(period.id)}
+                  className={`px-3 py-1.5 text-xs ${
+                    activityPeriod === period.id
+                      ? 'bg-gray-700 text-white rounded-md'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {period.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Information note about activity data */}
           <div className="text-center mb-6">
             <p className="text-xs text-gray-400 bg-gray-900/50 inline-block px-3 py-1 rounded-md">
-              Note: Activity data is updated in real-time and represents the last 24 hours only.
+              Note: Activity data is updated daily and represents cumulative metrics for the selected time period.
             </p>
           </div>
 

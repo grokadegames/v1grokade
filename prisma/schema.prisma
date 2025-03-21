@@ -182,6 +182,7 @@ model GameActivity {
 
   @@index([gameId])
   @@index([timestamp])
+  @@index([gameId, timestamp])
   @@map("game_activities")
 }
 
