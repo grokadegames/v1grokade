@@ -248,7 +248,7 @@ export default function GamesPage() {
                                 : `@${game.xaccount}`}
                           </a>
                         ) : (
-                          <span>{game.creator || 'Unknown'}</span>
+                          <span className="text-gray-500">-</span>
                         )}
                       </td>
                       <td className="py-4 px-4 text-right text-gray-300 text-sm">
