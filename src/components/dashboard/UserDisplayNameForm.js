@@ -35,13 +35,22 @@ export default function UserDisplayNameForm() {
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Refresh user data to update the UI
-      await refreshUser();
-      
+      // Show success message immediately
       showToast({
         message: 'Display name updated successfully',
         type: TOAST_TYPES.SUCCESS,
       });
+      
+      // Refresh user data to update the UI after a small delay
+      try {
+        // Small delay to ensure the API has time to complete its processing
+        setTimeout(async () => {
+          await refreshUser();
+        }, 300);
+      } catch (refreshError) {
+        console.error('Error refreshing user data:', refreshError);
+        // Don't show this error to the user, as the save was successful
+      }
       
     } catch (error) {
       console.error('Error updating display name:', error);

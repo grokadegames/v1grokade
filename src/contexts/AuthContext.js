@@ -190,21 +190,36 @@ export function AuthProvider({ children }) {
     try {
       console.log('[Auth] Refreshing user data');
       const response = await fetch('/api/auth/me', {
+        method: 'GET',
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
       
       if (response.ok) {
         const data = await response.json();
         console.log('[Auth] User data refreshed:', data.user?.username);
-        setUser(data.user);
+        
+        // Only update user state if we actually got valid user data
+        if (data.user && data.user.id) {
+          setUser(data.user);
+          return true;
+        } else {
+          console.warn('[Auth] Refresh returned ok but no valid user data');
+          return false;
+        }
       } else {
-        console.error('[Auth] Failed to refresh user data');
+        console.error('[Auth] Failed to refresh user data, status:', response.status);
+        // Don't modify user state if refresh fails
+        return false;
       }
     } catch (error) {
       console.error('[Auth] Error refreshing user data:', error);
+      // Don't modify user state on error
+      return false;
     }
   };
 
