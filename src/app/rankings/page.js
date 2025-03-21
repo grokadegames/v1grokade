@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function RankingsPage() {
   const [activityGames, setActivityGames] = useState([]);
@@ -12,6 +13,7 @@ export default function RankingsPage() {
   const [activityLimit, setActivityLimit] = useState(10);
   const [activityPeriod, setActivityPeriod] = useState('24h');
   const [activitySortBy, setActivitySortBy] = useState('views');
+  const { isAuthenticated } = useAuth();
 
   const activityTimePeriods = [
     { id: '24h', label: '24h' },
@@ -40,6 +42,20 @@ export default function RankingsPage() {
     
     fetchActivityData();
   }, [activityPeriod]);
+
+  // Unlock the rankings explorer achievement when page loads
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Unlock rankings explorer achievement
+      fetch('/api/achievements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ achievementId: 'rankings_explorer' }),
+      }).catch(err => console.error('Error unlocking achievement:', err));
+    }
+  }, [isAuthenticated]);
 
   const showMoreActivity = () => {
     setActivityLimit(prev => prev + 10);

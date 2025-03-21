@@ -382,6 +382,20 @@ export default function GamePage() {
     }
   };
   
+  // Unlock the game explorer achievement when page loads
+  useEffect(() => {
+    if (isAuthenticated && game) {
+      // Unlock game explorer achievement
+      fetch('/api/achievements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ achievementId: 'game_explorer' }),
+      }).catch(err => console.error('Error unlocking achievement:', err));
+    }
+  }, [isAuthenticated, game]);
+  
   // Track play click and redirect to game URL
   const handlePlayClick = (e) => {
     e.preventDefault();
@@ -421,6 +435,17 @@ export default function GamePage() {
           window.open(game.playUrl, '_blank');
         }
       }
+    }
+    
+    // Unlock game player achievement if authenticated
+    if (isAuthenticated) {
+      fetch('/api/achievements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ achievementId: 'game_player' }),
+      }).catch(err => console.error('Error unlocking achievement:', err));
     }
   };
 
