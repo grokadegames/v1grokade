@@ -72,8 +72,18 @@ const TalentCard = ({ talent }) => {
   return (
     <div className="bg-grok-dark rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105 hover:shadow-xl border border-gray-800">
       <div className="flex items-start">
-        <div className="w-16 h-16 bg-grok-purple rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
-          {initials}
+        <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4 overflow-hidden">
+          {talent.profileImageUrl ? (
+            <img 
+              src={talent.profileImageUrl} 
+              alt={talent.name} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-grok-purple flex items-center justify-center">
+              {initials}
+            </div>
+          )}
         </div>
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-white">{talent.name}</h3>
@@ -272,7 +282,7 @@ export default function TalentPage() {
               Array(3).fill().map((_, index) => (
                 <div key={index} className="bg-grok-dark rounded-lg shadow-lg p-6 h-64 animate-pulse">
                   <div className="flex items-start">
-                    <div className="w-16 h-16 bg-gray-700 rounded-full mr-4"></div>
+                    <div className="w-16 h-16 bg-gray-700 rounded-full mr-4 overflow-hidden"></div>
                     <div className="flex-1">
                       <div className="h-6 bg-gray-700 rounded mb-2"></div>
                       <div className="h-4 bg-gray-700 rounded mb-4 w-3/4"></div>
