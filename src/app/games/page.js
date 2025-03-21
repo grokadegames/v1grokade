@@ -14,7 +14,6 @@ export default function GamesPage() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('production');
   const [sortOption, setSortOption] = useState('newest');
-  const [viewTimeframe, setViewTimeframe] = useState('all');
 
   // Fetch games based on current filters
   useEffect(() => {
@@ -131,17 +130,6 @@ export default function GamesPage() {
                   <option value="oldest">Oldest</option>
                   <option value="popular">Most Viewed</option>
                   <option value="most_played">Most Played</option>
-                </select>
-                
-                <select 
-                  className="bg-gray-800 text-gray-300 px-3 py-2 rounded-md text-sm border border-gray-700 focus:outline-none focus:ring-2 focus:ring-grok-purple"
-                  value={viewTimeframe}
-                  onChange={(e) => setViewTimeframe(e.target.value)}
-                >
-                  <option value="all">All Time</option>
-                  <option value="30d">30 Days</option>
-                  <option value="7d">7 Days</option>
-                  <option value="1d">24 Hours</option>
                 </select>
               </div>
             </div>
