@@ -119,8 +119,8 @@ export default function Dashboard() {
   
   // Function to handle saving the display name
   const handleSaveDisplayName = async () => {
-    // Make sure newDisplayName is a string and not empty after trimming
-    const trimmedName = (newDisplayName || '').trim();
+    // Simple validation
+    const trimmedName = newDisplayName.trim();
     
     if (!trimmedName) {
       setNameUpdateStatus({ loading: false, error: 'Display name cannot be empty' });
@@ -130,74 +130,36 @@ export default function Dashboard() {
     setNameUpdateStatus({ loading: true, error: null });
     
     try {
+      // Send update request to API
       const response = await fetch('/api/users/displayname', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ displayName: trimmedName }),
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Use the safer functional update form for setUser
-      if (user) {
-        // Update local user state immediately using the functional form
-        setUser((currentUser) => {
-          if (!currentUser) return currentUser;
-          return {
-            ...currentUser,
-            displayName: trimmedName
-          };
-        });
-      }
-      
-      // Show success message
-      setNameUpdateStatus({ 
-        loading: false, 
-        error: null, 
-        success: true, 
-        message: 'Display name updated successfully!' 
-      });
-      
-      // Exit editing mode
+      // Success - update local UI 
+      setNameUpdateStatus({ loading: false, error: null, success: true, message: 'Display name updated successfully!' });
       setIsEditingName(false);
       
-      // Clear success message after 3 seconds
+      // Refresh user data after a short delay
       setTimeout(() => {
-        setNameUpdateStatus(prevState => ({ ...prevState, success: false, message: null }));
+        refreshUser();
+      }, 500);
+      
+      // Clear success message after a delay
+      setTimeout(() => {
+        setNameUpdateStatus({ loading: false, error: null, success: false, message: null });
       }, 3000);
       
     } catch (error) {
       console.error('Error updating display name:', error);
-      setNameUpdateStatus({ 
-        loading: false, 
-        error: error.message || 'An error occurred',
-        success: false,
-        message: null
-      });
-    }
-  };
-  
-  // Handle key presses in the edit field
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      const currentDisplayName = user?.displayName || '';
-      const trimmedNewName = (newDisplayName || '').trim();
-      
-      if (trimmedNewName !== '' && trimmedNewName !== currentDisplayName) {
-        handleSaveDisplayName();
-      } else {
-        setIsEditingName(false);
-        setNewDisplayName(currentDisplayName);
-      }
-    } else if (e.key === 'Escape') {
-      setIsEditingName(false);
-      setNewDisplayName(user?.displayName || '');
-      setNameUpdateStatus({ loading: false, error: null, success: false, message: null });
+      setNameUpdateStatus({ loading: false, error: error.message || 'An error occurred', success: false, message: null });
     }
   };
 
@@ -262,24 +224,34 @@ export default function Dashboard() {
                             type="text"
                             value={newDisplayName}
                             onChange={(e) => setNewDisplayName(e.target.value)}
-                            onKeyDown={handleKeyPress}
-                            onBlur={() => {
-                              const currentDisplayName = user?.displayName || '';
-                              const trimmedNewName = (newDisplayName || '').trim();
-                              
-                              // Only save if name changed and is not empty
-                              if (trimmedNewName !== '' && trimmedNewName !== currentDisplayName) {
-                                handleSaveDisplayName();
-                              } else {
-                                setIsEditingName(false);
-                                setNewDisplayName(currentDisplayName);
-                              }
-                            }}
                             className="text-lg font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
                             placeholder="Your display name"
                             maxLength={50}
                             aria-label="Edit display name"
                           />
+                          <div className="flex mt-2 space-x-2">
+                            <button
+                              onClick={() => {
+                                if (newDisplayName.trim()) {
+                                  handleSaveDisplayName();
+                                }
+                              }}
+                              disabled={nameUpdateStatus.loading}
+                              className="text-xs bg-purple-600 hover:bg-purple-500 text-white px-2 py-1 rounded"
+                            >
+                              {nameUpdateStatus.loading ? 'Saving...' : 'Save'}
+                            </button>
+                            <button
+                              onClick={() => {
+                                setIsEditingName(false);
+                                setNewDisplayName(user?.displayName || '');
+                                setNameUpdateStatus({ loading: false, error: null, success: false, message: null });
+                              }}
+                              className="text-xs bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded"
+                            >
+                              Cancel
+                            </button>
+                          </div>
                           {nameUpdateStatus.loading && (
                             <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
                               <div className="animate-spin h-4 w-4 border-2 border-purple-500 rounded-full border-t-transparent"></div>
