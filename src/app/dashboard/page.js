@@ -19,6 +19,7 @@ export default function Dashboard() {
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
   const [imageTimestamp, setImageTimestamp] = useState(Date.now());
+  const [activeTab, setActiveTab] = useState('profile');
 
   // Force profile image to reload when updated
   const handleImageUpdate = useCallback(() => {
@@ -71,7 +72,8 @@ export default function Dashboard() {
                   {/* User profile card */}
                   <div className="flex items-center mb-6">
                     <div 
-                      className="w-16 h-16 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-2xl font-bold mr-4"
+                      className="w-16 h-16 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-2xl font-bold mr-4 cursor-pointer"
+                      onClick={() => document.getElementById('hidden-file-input')?.click()}
                     >
                       {user?.profileImageUrl ? (
                         <img 
@@ -86,6 +88,7 @@ export default function Dashboard() {
                     <div>
                       <h2 className="text-xl font-bold text-white">{user?.displayName || user?.username}</h2>
                       <p className="text-gray-400">@{user?.username}</p>
+                      <p className="text-gray-400 text-sm mt-1">{user?.email}</p>
                     </div>
                   </div>
                   
@@ -96,58 +99,139 @@ export default function Dashboard() {
                     onUploadSuccess={handleImageUpdate}
                   />
                   
-                  {/* Account details */}
+                  {/* Tabs for profile sections */}
                   <div className="border-t border-gray-800 pt-4 mt-4">
-                    <h3 className="text-lg font-semibold mb-4">Account Details</h3>
-                    <UserDisplayNameForm />
+                    <div className="flex space-x-4 mb-4 border-b border-gray-800">
+                      <button 
+                        onClick={() => setActiveTab('profile')}
+                        className={`pb-2 px-1 ${activeTab === 'profile' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                      >
+                        Personal Info
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('security')}
+                        className={`pb-2 px-1 ${activeTab === 'security' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                      >
+                        Security
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('image')}
+                        className={`pb-2 px-1 ${activeTab === 'image' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                      >
+                        Profile Image
+                      </button>
+                    </div>
                     
-                    <div className="mt-4">
-                      <p className="text-gray-400 mb-1">Email:</p>
-                      <p className="text-white mb-4">{user?.email}</p>
+                    {/* Tab content */}
+                    <div className="py-2">
+                      {activeTab === 'profile' && (
+                        <>
+                          <h3 className="text-lg font-semibold mb-4">Account Details</h3>
+                          <p className="text-sm text-gray-400 mb-4">Update your full name that appears on your profile</p>
+                          <UserDisplayNameForm />
+                          
+                          <div className="mt-6">
+                            <p className="text-gray-400 mb-1 font-medium">Account Type:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {(() => {
+                                // Create a Set of unique roles
+                                const uniqueRoles = new Set();
+                                
+                                // Add primary role if it exists
+                                if (user?.role) {
+                                  uniqueRoles.add(user.role);
+                                }
+                                
+                                // Add roles from the roles array if it exists
+                                if (user?.roles && Array.isArray(user.roles)) {
+                                  user.roles.forEach(roleObj => {
+                                    if (roleObj.role) {
+                                      uniqueRoles.add(roleObj.role);
+                                    }
+                                  });
+                                }
+                                
+                                // Convert Set back to array and render
+                                return Array.from(uniqueRoles).map(role => (
+                                  <span 
+                                    key={role} 
+                                    className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
+                                  >
+                                    {role}
+                                  </span>
+                                ));
+                              })()}
+                            </div>
+                          </div>
+                        </>
+                      )}
                       
-                      <p className="text-gray-400 mb-1">Account Type:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {(() => {
-                          // Create a Set of unique roles
-                          const uniqueRoles = new Set();
-                          
-                          // Add primary role if it exists
-                          if (user?.role) {
-                            uniqueRoles.add(user.role);
-                          }
-                          
-                          // Add roles from the roles array if it exists
-                          if (user?.roles && Array.isArray(user.roles)) {
-                            user.roles.forEach(roleObj => {
-                              if (roleObj.role) {
-                                uniqueRoles.add(roleObj.role);
-                              }
-                            });
-                          }
-                          
-                          // Convert Set back to array and render
-                          return Array.from(uniqueRoles).map(role => (
-                            <span 
-                              key={role} 
-                              className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
+                      {activeTab === 'security' && (
+                        <>
+                          <h3 className="text-lg font-semibold mb-4">Account Security</h3>
+                          <ChangePasswordForm />
+                        </>
+                      )}
+                      
+                      {activeTab === 'image' && (
+                        <>
+                          <h3 className="text-lg font-semibold mb-4">Profile Image</h3>
+                          <p className="text-gray-400 mb-4">Upload a professional photo for your profile</p>
+                          <div className="flex flex-col items-center mb-4">
+                            <div 
+                              className="w-32 h-32 rounded-full overflow-hidden bg-gray-800 mb-4 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity hover:ring-2 hover:ring-purple-400 relative group"
+                              onClick={() => document.getElementById('hidden-file-input')?.click()}
+                              title="Click to change profile photo"
                             >
-                              {role}
-                            </span>
-                          ));
-                        })()}
-                      </div>
+                              {user?.profileImageUrl ? (
+                                <img src={`${user.profileImageUrl}?t=${imageTimestamp}`} alt="Current profile" className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="text-white text-5xl font-bold">
+                                  {user?.displayName?.charAt(0) || user?.username?.charAt(0) || '?'}
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-400">
+                              Click the image above to upload a new photo
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Max size: 5MB. Recommended: Square image.
+                            </p>
+                            
+                            {/* Hidden file input for profile image upload */}
+                            <input
+                              type="file"
+                              id="hidden-file-input"
+                              className="hidden"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  // Trigger the upload function from ProfileImageUploader
+                                  const fileInput = document.getElementById('profile-image-upload');
+                                  if (fileInput) {
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(e.target.files[0]);
+                                    fileInput.files = dataTransfer.files;
+                                    
+                                    // Dispatch change event to trigger the onChange handler
+                                    const event = new Event('change', { bubbles: true });
+                                    fileInput.dispatchEvent(event);
+                                  }
+                                }
+                              }}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
-                
-                {/* Account Security */}
-                <div className="bg-gray-900 rounded-xl p-6 mb-6">
-                  <h2 className="text-xl font-bold text-white mb-4">Account Security</h2>
-                  <ChangePasswordForm />
-                </div>
-                
-                {/* Profile Image Upload */}
-                <ProfileImageUpload />
               </div>
               
               {/* Main content area - right side */}
