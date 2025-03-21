@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,11 +11,77 @@ import WorkProfileActivation from '@/components/dashboard/WorkProfileActivation'
 import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
 import UserPasswordTool from '@/components/admin/UserPasswordTool';
-import UserDisplayNameForm from '@/components/dashboard/UserDisplayNameForm';
 import AchievementItem from '@/components/dashboard/AchievementItem';
+import Image from 'next/image';
+import { HiUserCircle, HiShieldCheck, HiCog, HiOutlineExclamationCircle } from 'react-icons/hi';
+import { FaTrophy, FaUser, FaLock, FaBriefcase } from 'react-icons/fa';
+import { MdWorkOutline } from 'react-icons/md';
+import { IoGameController } from 'react-icons/io5';
+import AccountTabNav from '@/components/dashboard/AccountTabNav';
+import LatestAchievements from '@/components/dashboard/LatestAchievements';
+import AdminToolsSection from '@/components/dashboard/AdminToolsSection';
+import WorkProfileForm from '@/components/dashboard/WorkProfileForm';
+import Loader from '@/components/ui/Loader';
 
+// Dashboard tabs section
+function DashboardTabs({ user, initialTab = 'achievements', userAchievements, roles }) {
+  return (
+    <div className="mt-8">
+      <AccountTabNav initialTab={initialTab} />
+      
+      <div className="mt-6">
+        <div id="achievements" className="tab-content">
+          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
+            <div className="flex items-center mb-4">
+              <FaTrophy className="text-yellow-400 mr-2 text-xl" />
+              <h3 className="text-xl font-bold text-white">Achievements</h3>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Track your progress and earn achievements as you use the platform.
+            </p>
+            <LatestAchievements achievements={userAchievements} />
+          </div>
+        </div>
+        
+        <div id="security" className="tab-content hidden">
+          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
+            <div className="flex items-center mb-4">
+              <FaLock className="text-purple-400 mr-2 text-xl" />
+              <h3 className="text-xl font-bold text-white">Account Security</h3>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Manage your account security settings including password.
+            </p>
+            <ChangePasswordForm />
+          </div>
+        </div>
+        
+        <div id="work-profile" className="tab-content hidden">
+          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
+            <div className="flex items-center mb-4">
+              <FaBriefcase className="text-blue-400 mr-2 text-xl" />
+              <h3 className="text-xl font-bold text-white">Work Profile</h3>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Manage your professional information that will be visible to employers.
+            </p>
+            <WorkProfileForm />
+          </div>
+        </div>
+        
+        {roles && roles.includes('ADMIN') && (
+          <div id="admin" className="tab-content hidden">
+            <AdminToolsSection />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Main dashboard page component
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, roles } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
@@ -186,113 +252,54 @@ export default function Dashboard() {
                       </button>
                     </div>
                     
-                    {/* Tab content */}
-                    <div className="py-2">
-                      {activeTab === 'profile' && (
-                        <>
-                          <h3 className="text-lg font-semibold mb-4">Account Details</h3>
-                          <p className="text-sm text-gray-400 mb-4">Update your display name that appears on your profile</p>
-                          <UserDisplayNameForm />
-                          
-                          <div className="mt-6">
-                            <p className="text-gray-400 mb-1 font-medium">Account Type:</p>
-                            <div className="flex flex-wrap gap-2">
-                              {(() => {
-                                // Create a Set of unique roles
-                                const uniqueRoles = new Set();
-                                
-                                // Add primary role if it exists
-                                if (user?.role) {
-                                  uniqueRoles.add(user.role);
-                                }
-                                
-                                // Add roles from the roles array if it exists
-                                if (user?.roles && Array.isArray(user.roles)) {
-                                  user.roles.forEach(roleObj => {
-                                    if (roleObj.role) {
-                                      uniqueRoles.add(roleObj.role);
-                                    }
-                                  });
-                                }
-                                
-                                // Convert Set back to array and render
-                                return Array.from(uniqueRoles).map(role => (
-                                  <span 
-                                    key={role} 
-                                    className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
-                                  >
-                                    {role}
-                                  </span>
-                                ));
-                              })()}
-                            </div>
+                    {/* Tab contents */}
+                    <div className="mt-4">
+                      {/* Profile Info */}
+                      <div className={`${activeTab === 'profile' ? 'block' : 'hidden'}`}>
+                        {/* Account status section */}
+                        <div className="mb-6 bg-gray-800 bg-opacity-40 rounded-lg p-4">
+                          <div className="flex items-center mb-2">
+                            <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+                            <h3 className="text-lg font-semibold">Account Active</h3>
                           </div>
-                        </>
-                      )}
+                          <p className="text-sm text-gray-400">Your account is in good standing</p>
+                        </div>
+                        
+                        {isAdmin && (
+                          <div className="bg-indigo-900 bg-opacity-30 border border-indigo-500 rounded-lg p-4 mb-6">
+                            <div className="flex items-center mb-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
+                              <h3 className="text-lg font-semibold text-indigo-300">Admin Access</h3>
+                            </div>
+                            <p className="text-sm text-indigo-200">You have administrator privileges</p>
+                          </div>
+                        )}
+                        
+                        {/* Work Profile section */}
+                        <div className="mb-6">
+                          <WorkProfileActivation />
+                        </div>
+                      </div>
                       
-                      {activeTab === 'security' && (
-                        <>
-                          <h3 className="text-lg font-semibold mb-4">Account Security</h3>
+                      {/* Security settings */}
+                      <div className={`${activeTab === 'security' ? 'block' : 'hidden'}`}>
+                        <div className="bg-gray-800 bg-opacity-40 rounded-lg p-4 mb-6">
+                          <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+                          <p className="text-sm text-gray-400 mb-4">Update your password to keep your account secure</p>
                           <ChangePasswordForm />
-                        </>
-                      )}
+                        </div>
+                      </div>
                       
-                      {activeTab === 'image' && (
-                        <>
+                      {/* Profile Image Tab */}
+                      <div className={`${activeTab === 'image' ? 'block' : 'hidden'}`}>
+                        <div className="bg-gray-800 bg-opacity-40 rounded-lg p-4 mb-6">
                           <h3 className="text-lg font-semibold mb-4">Profile Image</h3>
-                          <p className="text-gray-400 mb-4">Upload a professional photo for your profile</p>
-                          <div className="flex flex-col items-center mb-4">
-                            <div 
-                              className="w-32 h-32 rounded-full overflow-hidden bg-gray-800 mb-4 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity hover:ring-2 hover:ring-purple-400 relative group"
-                              onClick={() => document.getElementById('hidden-file-input')?.click()}
-                              title="Click to change profile photo"
-                            >
-                              {user?.profileImageUrl ? (
-                                <img src={`${user.profileImageUrl}?t=${imageTimestamp}`} alt="Current profile" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="text-white text-5xl font-bold">
-                                  {user?.displayName?.charAt(0) || user?.username?.charAt(0) || '?'}
-                                </div>
-                              )}
-                              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-400">
-                              Click the image above to upload a new photo
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              Max size: 5MB. Recommended: Square image.
-                            </p>
-                            
-                            {/* Hidden file input for profile image upload */}
-                            <input
-                              type="file"
-                              id="hidden-file-input"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  // Trigger the upload function from ProfileImageUploader
-                                  const fileInput = document.getElementById('profile-image-upload');
-                                  if (fileInput) {
-                                    const dataTransfer = new DataTransfer();
-                                    dataTransfer.items.add(e.target.files[0]);
-                                    fileInput.files = dataTransfer.files;
-                                    
-                                    // Dispatch change event to trigger the onChange handler
-                                    const event = new Event('change', { bubbles: true });
-                                    fileInput.dispatchEvent(event);
-                                  }
-                                }
-                              }}
-                            />
-                          </div>
-                        </>
-                      )}
+                          <p className="text-sm text-gray-400 mb-4">Upload or update your profile picture</p>
+                          <ProfileImageUpload onUploadSuccess={handleImageUpdate} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
