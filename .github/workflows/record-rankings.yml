@@ -1,10 +1,11 @@
 name: Record Daily Rankings
 
 on:
-  schedule:
-    # Run at 12:00 UTC (midnight PST) every day
-    - cron: '0 12 * * *'
-  workflow_dispatch: # Allow manual triggering
+  # Disable scheduled runs - now handled by record-daily-activity.yml
+  # schedule:
+  #   # Run at 12:00 UTC (midnight PST) every day
+  #   - cron: '0 12 * * *'
+  workflow_dispatch: # Allow manual triggering only
 
 jobs:
   record-rankings:
