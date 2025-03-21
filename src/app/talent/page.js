@@ -100,8 +100,8 @@ const TalentCard = ({ talent }) => {
           
           {/* Specialization badge for vibe coding or AI expertise */}
           {hasSpecialization && (
-            <div className="mb-3 bg-grok-purple bg-opacity-20 rounded-full px-3 py-1 inline-block">
-              <span className="text-grok-purple text-sm font-medium">
+            <div className="mb-3 bg-grok-purple bg-opacity-20 rounded-full px-2 py-0.5 inline-block">
+              <span className="text-grok-purple text-xs font-medium">
                 {talent.vibeCodingExpert ? 
                   (talent.description ? `✦ ${talent.description}` : '✦ Vibe Coding Expert') : 
                   `✦ ${talent.specialization}`}
@@ -111,8 +111,8 @@ const TalentCard = ({ talent }) => {
           
           {/* Remote OK badge */}
           {talent.isRemoteOk && (
-            <div className="mb-3 ml-2 bg-green-600 bg-opacity-20 rounded-full px-3 py-1 inline-block">
-              <span className="text-green-500 text-sm font-medium">
+            <div className="mb-3 ml-2 bg-green-600 bg-opacity-20 rounded-full px-2 py-0.5 inline-block">
+              <span className="text-green-500 text-xs font-medium">
                 ✓ Remote OK
               </span>
             </div>
