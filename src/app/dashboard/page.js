@@ -17,7 +17,7 @@ import { HiUserCircle } from 'react-icons/hi';
 
 // Main dashboard page component
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, refreshUser, setUser } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, refreshUser, setUser, hasRole } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
@@ -297,18 +297,38 @@ export default function Dashboard() {
                   />
                   
                   {/* Status indicators - now horizontal badges */}
-                  <div className="flex space-x-2 mb-3">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     <div className="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-400 mr-1.5"></div>
                       Active
                     </div>
                     
-                    {user.isAdmin && (
-                      <div className="px-2 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-medium flex items-center">
-                        <div className="w-2 h-2 rounded-full bg-purple-400 mr-1.5"></div>
-                        Admin
-                      </div>
-                    )}
+                    {user.allRoles && user.allRoles.map((role, index) => {
+                      // Skip showing BASIC role if user has other roles
+                      if (role === 'BASIC' && user.allRoles.length > 1) return null;
+                      
+                      // Define colors and icons for each role type
+                      const roleConfig = {
+                        ADMIN: { bg: "bg-purple-500/20", text: "text-purple-400", dot: "bg-purple-400" },
+                        AUTHOR: { bg: "bg-blue-500/20", text: "text-blue-400", dot: "bg-blue-400" },
+                        APPLICANT: { bg: "bg-yellow-500/20", text: "text-yellow-400", dot: "bg-yellow-400" },
+                        EMPLOYER: { bg: "bg-green-500/20", text: "text-green-400", dot: "bg-green-400" }, 
+                        SPONSOR: { bg: "bg-pink-500/20", text: "text-pink-400", dot: "bg-pink-400" },
+                        BASIC: { bg: "bg-gray-500/20", text: "text-gray-400", dot: "bg-gray-400" }
+                      };
+                      
+                      const config = roleConfig[role] || roleConfig.BASIC;
+                      
+                      return (
+                        <div 
+                          key={`role-${index}`} 
+                          className={`px-2 py-1 rounded-full ${config.bg} ${config.text} text-xs font-medium flex items-center`}
+                        >
+                          <div className={`w-2 h-2 rounded-full ${config.dot} mr-1.5`}></div>
+                          {role.charAt(0) + role.slice(1).toLowerCase()}
+                        </div>
+                      );
+                    })}
                   </div>
                   
                   {/* Tabs for profile sections - cleaner design */}
@@ -527,7 +547,7 @@ export default function Dashboard() {
                 </div>
                 
                 {/* Admin Section - Only visible to admins */}
-                {isAdmin && (
+                {hasRole('ADMIN') && (
                   <section className="mb-8">
                     <h2 className="text-2xl font-bold text-white mb-4">Admin Tools</h2>
                     <UserPasswordTool />
