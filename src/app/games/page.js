@@ -144,7 +144,7 @@ export default function GamesPage() {
                   <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-12">#</th>
                   <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Game</th>
                   <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider hidden md:table-cell">Category</th>
-                  <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider hidden md:table-cell">Creator</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider hidden md:table-cell">Author</th>
                   <th className="py-3 px-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Plays</th>
                   <th className="py-3 px-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider hidden sm:table-cell">Views</th>
                   <th className="py-3 px-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Play</th>
@@ -241,7 +241,11 @@ export default function GamesPage() {
                             rel="noopener noreferrer" 
                             className="text-grok-purple hover:underline"
                           >
-                            {game.xaccount}
+                            {game.xaccount.startsWith('@') 
+                              ? game.xaccount 
+                              : game.xaccount.startsWith('http') 
+                                ? `@${game.xaccount.split('/').pop()}` 
+                                : `@${game.xaccount}`}
                           </a>
                         ) : (
                           <span>{game.creator || 'Unknown'}</span>
