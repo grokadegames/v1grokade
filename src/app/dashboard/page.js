@@ -101,24 +101,33 @@ export default function Dashboard() {
                   
                   {/* Tabs for profile sections */}
                   <div className="border-t border-gray-800 pt-4 mt-4">
-                    <div className="flex space-x-4 mb-4 border-b border-gray-800">
+                    <div className="flex justify-center space-x-12 mb-4 border-b border-gray-800">
                       <button 
                         onClick={() => setActiveTab('profile')}
-                        className={`pb-2 px-1 ${activeTab === 'profile' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        className={`pb-3 px-3 ${activeTab === 'profile' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        title="Personal Info"
                       >
-                        Personal Info
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                       </button>
                       <button 
                         onClick={() => setActiveTab('security')}
-                        className={`pb-2 px-1 ${activeTab === 'security' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        className={`pb-3 px-3 ${activeTab === 'security' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        title="Account Security"
                       >
-                        Security
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
                       </button>
                       <button 
                         onClick={() => setActiveTab('image')}
-                        className={`pb-2 px-1 ${activeTab === 'image' ? 'text-purple-500 border-b-2 border-purple-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        className={`pb-3 px-3 ${activeTab === 'image' ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'}`}
+                        title="Profile Image"
                       >
-                        Profile Image
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
                       </button>
                     </div>
                     
