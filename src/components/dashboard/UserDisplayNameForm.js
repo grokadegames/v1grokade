@@ -21,36 +21,49 @@ export default function UserDisplayNameForm() {
     setIsSubmitting(true);
     
     try {
+      // First show a toast that we're processing the request
+      showToast({
+        message: 'Updating display name...',
+        type: TOAST_TYPES.INFO,
+      });
+      
       const response = await fetch('/api/users/displayname', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ displayName }),
+        body: JSON.stringify({ displayName: displayName.trim() }),
       });
       
-      const data = await response.json();
-      
+      // Handle non-OK responses explicitly
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Show success message immediately
+      // Success case - we got an OK response
       showToast({
         message: 'Display name updated successfully',
         type: TOAST_TYPES.SUCCESS,
       });
       
-      // Refresh user data to update the UI after a small delay
-      try {
-        // Small delay to ensure the API has time to complete its processing
-        setTimeout(async () => {
-          await refreshUser();
-        }, 300);
-      } catch (refreshError) {
-        console.error('Error refreshing user data:', refreshError);
-        // Don't show this error to the user, as the save was successful
+      // Set the display name locally to match what was saved
+      // This avoids the need to refresh the user object immediately
+      if (user) {
+        user.displayName = displayName.trim();
       }
+      
+      // Don't await the refresh, let it happen asynchronously
+      setTimeout(() => {
+        try {
+          refreshUser().catch(err => {
+            console.error('Silent refresh failed:', err);
+            // We don't show this error to the user since the update was successful
+          });
+        } catch (err) {
+          console.error('Error during delayed refresh:', err);
+        }
+      }, 500);
       
     } catch (error) {
       console.error('Error updating display name:', error);

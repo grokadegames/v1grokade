@@ -189,6 +189,14 @@ export function AuthProvider({ children }) {
   const refreshUser = async () => {
     try {
       console.log('[Auth] Refreshing user data');
+      
+      // Make sure we have an auth token before even trying to refresh
+      const cookiesStr = document.cookie;
+      if (!cookiesStr.includes('auth_token=')) {
+        console.log('[Auth] No auth token found, skipping refresh');
+        return false;
+      }
+      
       const response = await fetch('/api/auth/me', {
         method: 'GET',
         cache: 'no-store',
@@ -205,7 +213,12 @@ export function AuthProvider({ children }) {
         
         // Only update user state if we actually got valid user data
         if (data.user && data.user.id) {
-          setUser(data.user);
+          // Use function form to ensure we're not depending on stale state
+          setUser(currentUser => {
+            // Merge the new data with existing data to preserve any fields
+            // that might not be returned by the API
+            return { ...currentUser, ...data.user };
+          });
           return true;
         } else {
           console.warn('[Auth] Refresh returned ok but no valid user data');
