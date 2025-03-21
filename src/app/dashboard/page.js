@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback, Suspense } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,76 +12,11 @@ import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
 import UserPasswordTool from '@/components/admin/UserPasswordTool';
 import AchievementItem from '@/components/dashboard/AchievementItem';
-import Image from 'next/image';
-import { HiUserCircle, HiShieldCheck, HiCog, HiOutlineExclamationCircle } from 'react-icons/hi';
-import { FaTrophy, FaUser, FaLock, FaBriefcase } from 'react-icons/fa';
-import { MdWorkOutline } from 'react-icons/md';
-import { IoGameController } from 'react-icons/io5';
-import AccountTabNav from '@/components/dashboard/AccountTabNav';
-import LatestAchievements from '@/components/dashboard/LatestAchievements';
-import AdminToolsSection from '@/components/dashboard/AdminToolsSection';
-import WorkProfileForm from '@/components/dashboard/WorkProfileForm';
-import Loader from '@/components/ui/Loader';
-
-// Dashboard tabs section
-function DashboardTabs({ user, initialTab = 'achievements', userAchievements, roles }) {
-  return (
-    <div className="mt-8">
-      <AccountTabNav initialTab={initialTab} />
-      
-      <div className="mt-6">
-        <div id="achievements" className="tab-content">
-          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
-            <div className="flex items-center mb-4">
-              <FaTrophy className="text-yellow-400 mr-2 text-xl" />
-              <h3 className="text-xl font-bold text-white">Achievements</h3>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Track your progress and earn achievements as you use the platform.
-            </p>
-            <LatestAchievements achievements={userAchievements} />
-          </div>
-        </div>
-        
-        <div id="security" className="tab-content hidden">
-          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
-            <div className="flex items-center mb-4">
-              <FaLock className="text-purple-400 mr-2 text-xl" />
-              <h3 className="text-xl font-bold text-white">Account Security</h3>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Manage your account security settings including password.
-            </p>
-            <ChangePasswordForm />
-          </div>
-        </div>
-        
-        <div id="work-profile" className="tab-content hidden">
-          <div className="bg-gray-800 rounded-lg p-6 shadow-md mb-6">
-            <div className="flex items-center mb-4">
-              <FaBriefcase className="text-blue-400 mr-2 text-xl" />
-              <h3 className="text-xl font-bold text-white">Work Profile</h3>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Manage your professional information that will be visible to employers.
-            </p>
-            <WorkProfileForm />
-          </div>
-        </div>
-        
-        {roles && roles.includes('ADMIN') && (
-          <div id="admin" className="tab-content hidden">
-            <AdminToolsSection />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+import { HiUserCircle } from 'react-icons/hi';
 
 // Main dashboard page component
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, roles } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
