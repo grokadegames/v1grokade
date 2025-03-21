@@ -419,7 +419,7 @@ export default function Dashboard() {
                         title="Game Creator"
                         description="Submit your first game"
                         linkText="Submit a Game"
-                        linkUrl="/submit"
+                        linkUrl="/"
                         isUnlocked={achievements.game_creator}
                         onUnlock={handleAchievementUnlock}
                         icon={
