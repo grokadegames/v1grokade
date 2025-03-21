@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
 import { authenticateUser } from '@/lib/auth';
 
@@ -83,33 +82,5 @@ export async function PUT(request) {
       { error: 'Internal server error', reason: error.message },
       { status: 500 }
     );
-  }
-}
-
-// Helper function to authenticate user
-async function authenticateUser(request) {
-  try {
-    const cookieHeader = request.headers.get('cookie');
-    if (!cookieHeader) return null;
-
-    const cookies = Object.fromEntries(
-      cookieHeader.split('; ').map(cookie => {
-        const [name, value] = cookie.split('=');
-        return [name, value];
-      })
-    );
-
-    const token = cookies.auth_token;
-    if (!token) return null;
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      include: { roles: true }
-    });
-    return user;
-  } catch (error) {
-    console.error('[API/displayname] Authentication error:', error);
-    return null;
   }
 } 
