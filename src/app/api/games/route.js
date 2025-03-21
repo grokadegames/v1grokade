@@ -228,6 +228,7 @@ export async function GET(request) {
         likes: game.metrics?.likes || 0,
         dislikes: game.metrics?.dislikes || 0,
         tags: game.tagcategory || '',
+        tagcategory: game.tagcategory || '', // Explicitly include tagcategory field for games page
         xaccount: game.xaccount || ''
       }));
       
