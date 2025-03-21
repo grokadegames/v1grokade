@@ -177,7 +177,12 @@ export default function Dashboard() {
   // Handle key presses in the edit field
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleSaveDisplayName();
+      if (newDisplayName.trim() !== '' && newDisplayName.trim() !== user?.displayName) {
+        handleSaveDisplayName();
+      } else {
+        setIsEditingName(false);
+        setNewDisplayName(user?.displayName || '');
+      }
     } else if (e.key === 'Escape') {
       setIsEditingName(false);
       setNewDisplayName(user?.displayName || '');
@@ -220,7 +225,7 @@ export default function Dashboard() {
                   <div className="flex items-center mb-3">
                     <div 
                       className="w-14 h-14 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center text-white text-xl font-bold mr-3 cursor-pointer"
-                      onClick={() => document.getElementById('hidden-file-input')?.click()}
+                      onClick={() => profileImageUploaderRef.current && profileImageUploaderRef.current()}
                     >
                       {user?.profileImageUrl ? (
                         <img 
@@ -229,10 +234,10 @@ export default function Dashboard() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        user?.displayName?.charAt(0) || user?.username?.charAt(0) || '?'
+                        <span>{user?.displayName?.[0] || user?.username?.[0] || '?'}</span>
                       )}
                     </div>
-                    <div className="min-w-0 flex-1">
+                    <div className="flex-1 min-w-0">
                       {isEditingName ? (
                         <div className="relative">
                           <input
@@ -242,10 +247,12 @@ export default function Dashboard() {
                             onChange={(e) => setNewDisplayName(e.target.value)}
                             onKeyDown={handleKeyPress}
                             onBlur={() => {
-                              if (newDisplayName.trim() !== user?.displayName) {
+                              // Only save if name changed and is not empty
+                              if (newDisplayName.trim() !== user?.displayName && newDisplayName.trim() !== '') {
                                 handleSaveDisplayName();
                               } else {
                                 setIsEditingName(false);
+                                setNewDisplayName(user?.displayName || '');
                               }
                             }}
                             className="text-lg font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
@@ -292,7 +299,7 @@ export default function Dashboard() {
                   {/* Hidden profile image uploader */}
                   <ProfileImageUploader 
                     minimal={true} 
-                    id="profile-image-upload" 
+                    triggerRef={profileImageUploaderRef}
                     onUploadSuccess={handleImageUpdate}
                   />
                   

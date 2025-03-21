@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function ProfileImageUpload({ minimal = false, triggerRef = null }) {
+export default function ProfileImageUpload({ minimal = false, triggerRef = null, onUploadSuccess }) {
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState('');
@@ -29,7 +29,9 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
   }, [triggerRef]);
 
   const triggerFileSelect = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = (e) => {
@@ -54,6 +56,8 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
     setFile(selectedFile);
     if (!minimal) {
       handleUpload(selectedFile);
+    } else if (minimal && selectedFile) {
+      handleUpload(selectedFile);
     }
   };
 
@@ -64,8 +68,8 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
     setMessage('Uploading image...');
     setIsError(false);
     
-    // Use a unique ID for the toast to be able to dismiss it later
-    const toastId = toast.loading('Uploading image...', { id: 'upload-toast' });
+    // Show toast notification without an ID to avoid reference errors
+    toast.loading('Uploading image...');
 
     try {
       const formData = new FormData();
@@ -78,17 +82,23 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to upload image');
+        throw new Error(errorData.error || errorData.message || 'Failed to upload image');
       }
 
       const data = await response.json();
       setMessage('Profile image updated successfully!');
       
-      // Update the existing toast instead of creating a new one
-      toast.success('Profile image updated successfully!', { id: toastId });
+      // Dismiss all toasts and show success
+      toast.dismiss();
+      toast.success('Profile image updated successfully!');
       
       // Refresh user data to get the updated image URL
       await refreshUser();
+      
+      // Call onUploadSuccess callback if provided
+      if (typeof onUploadSuccess === 'function') {
+        onUploadSuccess(data.imageUrl);
+      }
       
       // Reset the file input
       if (fileInputRef.current) {
@@ -100,8 +110,9 @@ export default function ProfileImageUpload({ minimal = false, triggerRef = null 
       setMessage(`Error: ${error.message || 'Failed to upload image'}`);
       setIsError(true);
       
-      // Update the existing toast instead of creating a new one
-      toast.error(`Error: ${error.message || 'Failed to upload image'}`, { id: toastId });
+      // Dismiss all toasts and show error
+      toast.dismiss();
+      toast.error(error.message || 'Failed to upload image');
     } finally {
       setIsUploading(false);
     }
