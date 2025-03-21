@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthNavbar from '@/components/AuthNavbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
+import { trackGamePlay, trackGameView } from '@/lib/metricsUtil';
 
 export default function GamesPage() {
   const { isAuthenticated } = useAuth();
@@ -45,6 +46,72 @@ export default function GamesPage() {
     
     fetchGames();
   }, [activeTab, sortOption]);
+
+  // Track views when games are loaded
+  useEffect(() => {
+    // Only track views when games are loaded and not in loading state
+    if (!loading && games.length > 0) {
+      console.log('Tracking views for games in directory page');
+      
+      // Track views for each visible game
+      // We're limiting to the first 10 games to avoid too many requests
+      const visibleGames = games.slice(0, 10);
+      
+      visibleGames.forEach(game => {
+        if (game && game.id) {
+          trackGameView(game.id)
+            .then(result => {
+              console.log(`View tracked for game ${game.id}:`, result);
+              // Update the local view count if available from the API
+              if (result && result.metrics && result.metrics.views !== undefined) {
+                setGames(prev => 
+                  prev.map(g => 
+                    g.id === game.id 
+                      ? {...g, views: result.metrics.views}
+                      : g
+                  )
+                );
+              }
+            })
+            .catch(error => {
+              console.error(`Error tracking view for game ${game.id}:`, error);
+            });
+        }
+      });
+    }
+  }, [loading, games.length]); // Re-run when loading state changes or games array length changes
+
+  // Handle play button click
+  const handlePlayClick = (e, game) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (game && game.id) {
+      // Use the centralized tracking utility
+      trackGamePlay(game.id)
+        .then(result => {
+          console.log('Game play tracked from games page:', result);
+          // Update the local play count if available from the API
+          if (result && result.metrics && result.metrics.plays !== undefined) {
+            setGames(prev => 
+              prev.map(g => 
+                g.id === game.id 
+                  ? {...g, plays: result.metrics.plays}
+                  : g
+              )
+            );
+          }
+          // Open the game URL
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+        })
+        .catch(error => {
+          console.error('Error tracking game play from games page:', error);
+          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+        });
+    } else if (game && game.playUrl) {
+      window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-grok-darker">
@@ -238,13 +305,7 @@ export default function GamesPage() {
                           target="_blank" 
                           rel="noopener noreferrer" 
                           className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-grok-purple hover:bg-purple-700 transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            // Track play for analytics (same as in GameCard)
-                            fetch(`/api/games/${game.id}/play`, {
-                              method: 'POST',
-                            }).catch(err => console.error('Error tracking play:', err));
-                          }}
+                          onClick={(e) => handlePlayClick(e, game)}
                         >
                           <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 5V19L19 12L8 5Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
