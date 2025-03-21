@@ -8,13 +8,18 @@ import { useRoadmapModal } from '@/contexts/RoadmapModalContext';
 
 export default function AuthNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isLoggingOut } = useAuth();
   const router = useRouter();
   const { openRoadmapModal } = useRoadmapModal();
 
   const handleLoginClick = (e) => {
     e.preventDefault();
     router.push('/login');
+  };
+  
+  const handleLogoutClick = async (e) => {
+    e.preventDefault();
+    await logout();
   };
 
   return (
@@ -68,7 +73,7 @@ export default function AuthNavbar() {
                   Dashboard
                 </Link>
                 <button 
-                  onClick={logout}
+                  onClick={handleLogoutClick}
                   className="bg-purple-600 text-white px-3 py-1 rounded-md hover:bg-purple-700 text-sm"
                 >
                   Logout
@@ -172,10 +177,7 @@ export default function AuthNavbar() {
                       Dashboard
                     </Link>
                     <button 
-                      onClick={() => {
-                        logout();
-                        setIsMenuOpen(false);
-                      }}
+                      onClick={handleLogoutClick}
                       className="bg-purple-600 text-white px-4 py-2 rounded-md text-center"
                     >
                       Logout

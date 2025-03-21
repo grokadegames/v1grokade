@@ -127,14 +127,7 @@ export function AuthProvider({ children }) {
       // Set logging out flag to prevent login redirect
       setIsLoggingOut(true);
       
-      // First clear the user state locally
-      setUser(null);
-      
-      // Immediately redirect to home page
-      console.log('[Auth] Redirecting to home page after logout');
-      router.push('/');
-      
-      // Then perform the logout on the server after redirection has started
+      // Perform the logout on the server first
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -143,11 +136,19 @@ export function AuthProvider({ children }) {
         cache: 'no-store',
       });
 
+      // Clear the user state locally AFTER server request
+      setUser(null);
+      
+      // Log result but continue with redirect regardless
       if (!response.ok) {
         console.error('[Auth] Logout failed on server');
       } else {
         console.log('[Auth] Logout successful on server');
       }
+      
+      // IMPORTANT: Use replace instead of push to avoid history issues
+      console.log('[Auth] Redirecting to home page after logout');
+      router.replace('/');
       
       // Reset logging out flag after a delay to ensure redirect completes
       setTimeout(() => {
@@ -155,7 +156,12 @@ export function AuthProvider({ children }) {
       }, 1000);
     } catch (error) {
       console.error('[Auth] Logout error:', error);
-      setIsLoggingOut(false);
+      // Still clear user state and redirect even if server logout fails
+      setUser(null);
+      router.replace('/');
+      setTimeout(() => {
+        setIsLoggingOut(false);
+      }, 1000);
     }
   };
 
