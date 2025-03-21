@@ -224,9 +224,13 @@ export default function GamesPage() {
                       </td>
                       <td className="py-4 px-4 text-gray-300 text-sm hidden md:table-cell">
                         {game.tagcategory ? (
-                          <span className="px-2 py-1 rounded-full text-xs bg-gray-700 text-gray-300">
-                            {game.tagcategory}
-                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            {game.tagcategory.split(',').map((tag, i) => (
+                              <span key={i} className="px-2 py-1 rounded-full text-xs bg-gray-700 text-gray-300">
+                                {tag.trim()}
+                              </span>
+                            ))}
+                          </div>
                         ) : (
                           <span className="text-gray-500">-</span>
                         )}
