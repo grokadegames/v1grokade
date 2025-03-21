@@ -11,6 +11,7 @@ import WorkProfileActivation from '@/components/dashboard/WorkProfileActivation'
 import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
 import UserPasswordTool from '@/components/admin/UserPasswordTool';
+import UserProfileForm from '@/components/dashboard/UserProfileForm';
 
 export default function Dashboard() {
   const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
@@ -83,7 +84,7 @@ export default function Dashboard() {
                       )}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-white">{user?.displayName || user?.username}</h2>
+                      <h2 className="text-xl font-bold text-white">{user?.fullName || user?.displayName || user?.username}</h2>
                       <p className="text-gray-400">@{user?.username}</p>
                     </div>
                   </div>
@@ -134,38 +135,13 @@ export default function Dashboard() {
                   </div>
                 </div>
                 
-                {/* Account Security Section - moved to sidebar */}
+                {/* User Profile Form */}
+                <UserProfileForm />
+                
+                {/* Account Security */}
                 <div className="bg-gray-900 rounded-xl p-6 mb-6">
-                  <h2 className="text-xl font-bold text-white mb-3">Account Security</h2>
-                  <form className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-1">Current Password</label>
-                      <input 
-                        type="password" 
-                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-1">New Password</label>
-                      <input 
-                        type="password" 
-                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-1">Confirm New Password</label>
-                      <input 
-                        type="password" 
-                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                    <button 
-                      type="submit"
-                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 w-full"
-                    >
-                      Update Password
-                    </button>
-                  </form>
+                  <h2 className="text-xl font-bold text-white mb-4">Account Security</h2>
+                  <ChangePasswordForm />
                 </div>
                 
                 {/* Profile Image Upload */}
