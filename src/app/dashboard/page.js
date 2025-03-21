@@ -11,6 +11,7 @@ import WorkProfileActivation from '@/components/dashboard/WorkProfileActivation'
 import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
 import UserPasswordTool from '@/components/admin/UserPasswordTool';
+import UserDisplayNameForm from '@/components/dashboard/UserDisplayNameForm';
 
 export default function Dashboard() {
   const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
@@ -97,39 +98,44 @@ export default function Dashboard() {
                   
                   {/* Account details */}
                   <div className="border-t border-gray-800 pt-4 mt-4">
-                    <p className="text-gray-400 mb-1">Email:</p>
-                    <p className="text-white mb-4">{user?.email}</p>
+                    <h3 className="text-lg font-semibold mb-4">Account Details</h3>
+                    <UserDisplayNameForm />
                     
-                    <p className="text-gray-400 mb-1">Account Type:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {(() => {
-                        // Create a Set of unique roles
-                        const uniqueRoles = new Set();
-                        
-                        // Add primary role if it exists
-                        if (user?.role) {
-                          uniqueRoles.add(user.role);
-                        }
-                        
-                        // Add roles from the roles array if it exists
-                        if (user?.roles && Array.isArray(user.roles)) {
-                          user.roles.forEach(roleObj => {
-                            if (roleObj.role) {
-                              uniqueRoles.add(roleObj.role);
-                            }
-                          });
-                        }
-                        
-                        // Convert Set back to array and render
-                        return Array.from(uniqueRoles).map(role => (
-                          <span 
-                            key={role} 
-                            className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
-                          >
-                            {role}
-                          </span>
-                        ));
-                      })()}
+                    <div className="mt-4">
+                      <p className="text-gray-400 mb-1">Email:</p>
+                      <p className="text-white mb-4">{user?.email}</p>
+                      
+                      <p className="text-gray-400 mb-1">Account Type:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(() => {
+                          // Create a Set of unique roles
+                          const uniqueRoles = new Set();
+                          
+                          // Add primary role if it exists
+                          if (user?.role) {
+                            uniqueRoles.add(user.role);
+                          }
+                          
+                          // Add roles from the roles array if it exists
+                          if (user?.roles && Array.isArray(user.roles)) {
+                            user.roles.forEach(roleObj => {
+                              if (roleObj.role) {
+                                uniqueRoles.add(roleObj.role);
+                              }
+                            });
+                          }
+                          
+                          // Convert Set back to array and render
+                          return Array.from(uniqueRoles).map(role => (
+                            <span 
+                              key={role} 
+                              className="bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded-full"
+                            >
+                              {role}
+                            </span>
+                          ));
+                        })()}
+                      </div>
                     </div>
                   </div>
                 </div>
