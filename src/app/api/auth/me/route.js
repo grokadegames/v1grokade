@@ -64,7 +64,6 @@ export async function GET(request) {
         username: true,
         email: true,
         displayName: true,
-        fullName: true,
         profileImageUrl: true,
         role: true,
         roles: {

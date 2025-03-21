@@ -11,7 +11,6 @@ import WorkProfileActivation from '@/components/dashboard/WorkProfileActivation'
 import TalentProfileForm from '@/components/dashboard/TalentProfileForm';
 import ProfileImageUpload, { ProfileImageUpload as ProfileImageUploader } from '@/components/dashboard/ProfileImageUpload';
 import UserPasswordTool from '@/components/admin/UserPasswordTool';
-import UserProfileForm from '@/components/dashboard/UserProfileForm';
 
 export default function Dashboard() {
   const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
@@ -84,7 +83,7 @@ export default function Dashboard() {
                       )}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-white">{user?.fullName || user?.displayName || user?.username}</h2>
+                      <h2 className="text-xl font-bold text-white">{user?.displayName || user?.username}</h2>
                       <p className="text-gray-400">@{user?.username}</p>
                     </div>
                   </div>
@@ -134,9 +133,6 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
-                
-                {/* User Profile Form */}
-                <UserProfileForm />
                 
                 {/* Account Security */}
                 <div className="bg-gray-900 rounded-xl p-6 mb-6">
