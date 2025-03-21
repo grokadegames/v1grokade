@@ -7,26 +7,11 @@ import Footer from '@/components/Footer';
 import CombinedTrendIndicator from '@/components/CombinedTrendIndicator';
 
 export default function RankingsPage() {
-  const [popularityGames, setPopularityGames] = useState([]);
-  const [qualityGames, setQualityGames] = useState([]);
-  const [creatorRanking, setCreatorRanking] = useState([]);
   const [activityGames, setActivityGames] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [activityLoading, setActivityLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('quality');
-  const [popularityLimit, setPopularityLimit] = useState(10);
-  const [qualityLimit, setQualityLimit] = useState(10);
-  const [creatorLimit, setCreatorLimit] = useState(10);
   const [activityLimit, setActivityLimit] = useState(10);
-  const [activePeriod, setActivePeriod] = useState('7d');
   const [activityPeriod, setActivityPeriod] = useState('24h');
   const [activitySortBy, setActivitySortBy] = useState('views');
-
-  const timePeriods = [
-    { id: '1d', label: '1d' },
-    { id: '7d', label: '7d' },
-    { id: '30d', label: '30d' },
-  ];
 
   const activityTimePeriods = [
     { id: '24h', label: '24h' },
@@ -35,42 +20,6 @@ export default function RankingsPage() {
     { id: '90d', label: '90d' },
     { id: '1y', label: '1y' },
   ];
-
-  useEffect(() => {
-    const fetchRankings = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch from individual endpoints instead of combined endpoint
-        const [popularityResponse, qualityResponse, creatorResponse] = await Promise.all([
-          fetch('/api/rankings/popular'),
-          fetch('/api/rankings/quality'),
-          fetch('/api/rankings/creator')
-        ]);
-        
-        if (popularityResponse.ok) {
-          const popularityData = await popularityResponse.json();
-          setPopularityGames(popularityData);
-        }
-        
-        if (qualityResponse.ok) {
-          const qualityData = await qualityResponse.json();
-          setQualityGames(qualityData);
-        }
-        
-        if (creatorResponse.ok) {
-          const creatorData = await creatorResponse.json();
-          setCreatorRanking(creatorData);
-        }
-      } catch (error) {
-        console.error('Error fetching rankings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchRankings();
-  }, []);
 
   useEffect(() => {
     const fetchActivityData = async () => {
@@ -92,18 +41,6 @@ export default function RankingsPage() {
     fetchActivityData();
   }, [activityPeriod]);
 
-  const showMorePopularity = () => {
-    setPopularityLimit(prev => prev + 10);
-  };
-
-  const showMoreQuality = () => {
-    setQualityLimit(prev => prev + 10);
-  };
-
-  const showMoreCreators = () => {
-    setCreatorLimit(prev => prev + 10);
-  };
-
   const showMoreActivity = () => {
     setActivityLimit(prev => prev + 10);
   };
@@ -121,612 +58,211 @@ export default function RankingsPage() {
   const sortedActivityGames = activityGames.length > 0 ? sortActivityGames(activityGames, activitySortBy) : [];
 
   return (
-    <div className="min-h-screen bg-black">
-      <AuthNavbar />
+    <div className="min-h-screen flex flex-col">
+      <AuthNavbar hideSearchBar includeEnrollment />
       
-      <main className="container mx-auto max-w-6xl px-4 py-20">
-        <h1 className="text-4xl font-bold text-white text-center mb-2">
-          Game Rankings
-        </h1>
-        
-        <p className="text-center text-grok-text-secondary mb-6">
-          Discover the most popular and highest quality AI games on the platform
-        </p>
-        
-        {/* Dynamic Header Based on Active Tab */}
-        <div className="bg-black rounded-xl overflow-hidden mb-4">
-          {activeTab === 'quality' && (
-            <div className="bg-gradient-to-r from-purple-700 to-purple-600 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Quality</h2>
-              <p className="text-purple-100 text-sm text-center">Based on likes and dislikes ratio</p>
-            </div>
-          )}
+      <main className="flex-grow py-8 sm:py-12 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gradient-purple-pink text-center pb-6">
+            Game Rankings
+          </h1>
           
-          {activeTab === 'popularity' && (
-            <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Popularity</h2>
-              <p className="text-purple-100 text-sm text-center">Based on total views and plays</p>
+          {/* Activity Rankings Section */}
+          <div>
+            <div className="bg-gradient-to-r from-blue-700 to-blue-600 rounded-t-xl px-6 py-4">
+              <h3 className="text-xl font-bold text-white text-center">Activity Rankings</h3>
+              <p className="text-blue-100 text-sm text-center">
+                Based on activity in the last {activityPeriod === '24h' ? '24 hours' : 
+                  activityPeriod === '7d' ? '7 days' : 
+                  activityPeriod === '30d' ? '30 days' : 
+                  activityPeriod === '90d' ? '90 days' : '1 year'}
+              </p>
             </div>
-          )}
-          
-          {activeTab === 'creators' && (
-            <div className="bg-gradient-to-r from-fuchsia-600 to-pink-500 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Creator</h2>
-              <p className="text-purple-100 text-sm text-center">Based on number of games published</p>
-            </div>
-          )}
-        </div>
-        
-        <div className="mb-4 flex justify-center">
-          <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center">
-            <button 
-              onClick={() => setActiveTab('quality')}
-              className={`px-4 py-2 rounded-md text-sm ${
-                activeTab === 'quality' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'text-grok-text-secondary hover:text-white'
-              }`}
-            >
-              Quality
-            </button>
-            <button 
-              onClick={() => setActiveTab('popularity')}
-              className={`px-4 py-2 rounded-md text-sm ${
-                activeTab === 'popularity' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'text-grok-text-secondary hover:text-white'
-              }`}
-            >
-              Popularity
-            </button>
-            <button 
-              onClick={() => setActiveTab('creators')}
-              className={`px-4 py-2 rounded-md text-sm ${
-                activeTab === 'creators' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'text-grok-text-secondary hover:text-white'
-              }`}
-            >
-              Creator
-            </button>
-          </div>
-        </div>
-        
-        <div className="flex justify-center mb-6">
-          <div className="bg-gray-900 rounded-lg inline-flex">
-            {timePeriods.map(period => (
-              <button
-                key={period.id}
-                onClick={() => setActivePeriod(period.id)}
-                className={`px-3 py-1.5 text-xs ${
-                  activePeriod === period.id
-                    ? 'bg-gray-700 text-white rounded-md'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {period.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        
-        {/* Information note about trend data updates */}
-        <div className="text-center mb-6">
-          <p className="text-xs text-gray-400 bg-gray-900/50 inline-block px-3 py-1 rounded-md">
-            Note: Trend data updates every 6 hours. Recent changes may not be immediately reflected.
-          </p>
-        </div>
-        
-        {/* Mobile helper text for horizontal scrolling */}
-        <div className="text-center mb-4 sm:hidden">
-          <p className="text-xs text-gray-400 italic">
-            ← Swipe horizontally to see more →
-          </p>
-        </div>
-        
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-          </div>
-        )}
-        
-        {!loading && activeTab === 'popularity' && (
-          <div className="bg-black rounded-xl overflow-hidden">
-            <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
-              <div className="w-full min-w-[500px]">
-                <table className="w-full table-auto">
-                  <thead>
-                    <tr className="border-b border-gray-800">
-                      <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
-                      <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Views</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Plays</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Score</th>
-                      <th className="w-[100px] px-3 py-3 text-center text-xs text-gray-400">% Change</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {popularityGames.length === 0 ? (
-                      <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
-                          No ranking data available
-                        </td>
-                      </tr>
-                    ) : (
-                      popularityGames.slice(0, popularityLimit).map((game, index) => (
-                        <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white font-bold">
-                              {index + 1}
-                            </span>
-                          </td>
-                          <td className="px-3 py-3">
-                            <div className="flex items-center space-x-2">
-                              <a href={`/game/${game.id}`} className="flex-shrink-0">
-                                {game.imageUrl ? (
-                                  <img src={game.imageUrl} alt={game.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                                ) : (
-                                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-gray-400">No img</span>
-                                  </div>
-                                )}
-                              </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
-                                <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
-                                  {game.title}
-                                </Link>
-                                <p className="text-xs text-gray-400 truncate">
-                                  {game.xaccount ? (
-                                    <a 
-                                      href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer"
-                                      className="hover:text-purple-400 transition-colors"
-                                    >
-                                      @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                    </a>
-                                  ) : (
-                                    `by ${game.author?.username || 'Unknown'}`
-                                  )}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-3 py-3 text-center hidden sm:table-cell">
-                            <span className="text-xs text-gray-400">{game.metrics?.views.toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center hidden sm:table-cell">
-                            <span className="text-xs text-gray-400">{game.metrics?.plays.toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white">{(game.popularityScore || 0).toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center">
-                            <div className="h-8 w-full flex items-center justify-center">
-                              <CombinedTrendIndicator
-                                entityId={game.id}
-                                entityType="game"
-                                rankingType="popularity"
-                                width={70}
-                                height={40}
-                                showPeriods={[activePeriod]}
-                                activePeriod={activePeriod}
-                                showPercentOnly={true}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            
-            {popularityGames.length > popularityLimit && (
-              <div className="py-4 text-center">
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-4">
+              <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center mb-2 sm:mb-0">
                 <button 
-                  onClick={showMorePopularity}
-                  className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-md transition-colors"
-                >
-                  Show More
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        
-        {!loading && activeTab === 'quality' && (
-          <div className="bg-black rounded-xl overflow-hidden">
-            <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
-              <div className="w-full min-w-[500px]">
-                <table className="w-full table-auto">
-                  <thead>
-                    <tr className="border-b border-gray-800">
-                      <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
-                      <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Likes</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Dislikes</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Rating</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">% Change</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {qualityGames.length === 0 ? (
-                      <tr>
-                        <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
-                          No ranking data available
-                        </td>
-                      </tr>
-                    ) : (
-                      qualityGames.slice(0, qualityLimit).map((game, index) => (
-                        <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white font-bold">
-                              {index + 1}
-                            </span>
-                          </td>
-                          <td className="px-3 py-3">
-                            <div className="flex items-center space-x-2">
-                              <a href={`/game/${game.id}`} className="flex-shrink-0">
-                                {game.imageUrl ? (
-                                  <img src={game.imageUrl} alt={game.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                                ) : (
-                                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-gray-400">No img</span>
-                                  </div>
-                                )}
-                              </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
-                                <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-purple-400 transition-colors truncate block">
-                                  {game.title}
-                                </Link>
-                                <p className="text-xs text-gray-400 truncate">
-                                  {game.xaccount ? (
-                                    <a 
-                                      href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer"
-                                      className="hover:text-purple-400 transition-colors"
-                                    >
-                                      @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                    </a>
-                                  ) : (
-                                    `by ${game.author?.username || 'Unknown'}`
-                                  )}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-3 py-3 text-center hidden sm:table-cell">
-                            <span className="text-xs text-gray-400">{game.metrics?.likes.toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center hidden sm:table-cell">
-                            <span className="text-xs text-gray-400">{game.metrics?.dislikes.toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white">{(game.qualityScore * 100).toFixed(1)}%</span>
-                          </td>
-                          <td className="px-3 py-3 text-center">
-                            <div className="h-8 w-full flex items-center justify-center">
-                              <CombinedTrendIndicator
-                                entityId={game.id}
-                                entityType="game"
-                                rankingType="quality"
-                                width={70}
-                                height={40}
-                                showPeriods={[activePeriod]}
-                                activePeriod={activePeriod}
-                                showPercentOnly={true}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            
-            {qualityGames.length > qualityLimit && (
-              <div className="py-4 text-center">
-                <button 
-                  onClick={showMoreQuality}
-                  className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-md transition-colors"
-                >
-                  Show More
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {!loading && activeTab === 'creators' && (
-          <div className="bg-black rounded-xl overflow-hidden">
-            <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
-              <div className="w-full min-w-[500px]">
-                <table className="w-full table-auto">
-                  <thead>
-                    <tr className="border-b border-gray-800">
-                      <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
-                      <th className="px-3 py-3 text-left text-xs text-gray-400">Creator</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400 hidden sm:table-cell">Games</th>
-                      <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {creatorRanking.length === 0 ? (
-                      <tr>
-                        <td colSpan="4" className="px-6 py-8 text-center text-gray-400">
-                          No ranking data available
-                        </td>
-                      </tr>
-                    ) : (
-                      creatorRanking.slice(0, creatorLimit).map((creator, index) => (
-                        <tr key={creator.xaccount} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white font-bold">
-                              {index + 1}
-                            </span>
-                          </td>
-                          <td className="px-3 py-3">
-                            <div className="flex items-center space-x-2">
-                              <a href={creator.topGame ? `/game/${creator.topGame.id}` : '#'} className="flex-shrink-0">
-                                {creator.topGame?.imageUrl ? (
-                                  <img src={creator.topGame.imageUrl} alt={creator.topGame.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                                ) : (
-                                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                    <span className="text-xs text-gray-400">No img</span>
-                                  </div>
-                                )}
-                              </a>
-                              <div className="min-w-0 max-w-[120px] sm:max-w-none">
-                                <Link 
-                                  href={`https://x.com/${creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                  target="_blank"
-                                  rel="noopener noreferrer" 
-                                  className="text-white text-xs sm:text-base font-medium hover:text-green-400 transition-colors truncate block"
-                                >
-                                  @{creator.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                </Link>
-                                {creator.topGame && (
-                                  <p className="text-xs text-gray-400 truncate">
-                                    Top: <Link href={`/game/${creator.topGame.id}`} className="hover:text-green-400 transition-colors">{creator.topGame.title}</Link>
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-3 py-3 text-center hidden sm:table-cell">
-                            <span className="text-xs text-gray-400">{creator.gameCount.toLocaleString()}</span>
-                          </td>
-                          <td className="px-3 py-3 text-center">
-                            <span className="text-xs text-white">{(creator.creatorScore || 0).toLocaleString()}</span>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            
-            {creatorRanking.length > creatorLimit && (
-              <div className="py-4 text-center">
-                <button 
-                  onClick={showMoreCreators}
-                  className="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors"
-                >
-                  Show More
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 24-Hour Activity Section */}
-        <div className="mt-16 mb-8">
-          <h2 className="text-2xl font-bold text-white text-center mb-2">
-            Activity Rankings
-          </h2>
-          <p className="text-center text-grok-text-secondary mb-6">
-            Games with the most activity over time
-          </p>
-
-          <div className="bg-gradient-to-r from-blue-700 to-blue-600 rounded-t-xl px-6 py-4">
-            <h3 className="text-xl font-bold text-white text-center">Recent Activity</h3>
-            <p className="text-blue-100 text-sm text-center">
-              Based on activity in the last {activityPeriod === '24h' ? '24 hours' : 
-                activityPeriod === '7d' ? '7 days' : 
-                activityPeriod === '30d' ? '30 days' : 
-                activityPeriod === '90d' ? '90 days' : '1 year'}
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-4">
-            <div className="bg-gray-900 p-1 rounded-lg inline-flex flex-wrap justify-center mb-2 sm:mb-0">
-              <button 
-                onClick={() => handleActivitySort('views')}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  activitySortBy === 'views' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-grok-text-secondary hover:text-white'
-                }`}
-              >
-                Views
-              </button>
-              <button 
-                onClick={() => handleActivitySort('plays')}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  activitySortBy === 'plays' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-grok-text-secondary hover:text-white'
-                }`}
-              >
-                Plays
-              </button>
-              <button 
-                onClick={() => handleActivitySort('likes')}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  activitySortBy === 'likes' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-grok-text-secondary hover:text-white'
-                }`}
-              >
-                Likes
-              </button>
-              <button 
-                onClick={() => handleActivitySort('dislikes')}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  activitySortBy === 'dislikes' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-grok-text-secondary hover:text-white'
-                }`}
-              >
-                Dislikes
-              </button>
-            </div>
-
-            <div className="bg-gray-900 rounded-lg inline-flex">
-              {activityTimePeriods.map(period => (
-                <button
-                  key={period.id}
-                  onClick={() => setActivityPeriod(period.id)}
-                  className={`px-3 py-1.5 text-xs ${
-                    activityPeriod === period.id
-                      ? 'bg-gray-700 text-white rounded-md'
-                      : 'text-gray-400 hover:text-white'
+                  onClick={() => handleActivitySort('views')}
+                  className={`px-4 py-2 rounded-md text-sm ${
+                    activitySortBy === 'views' 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-grok-text-secondary hover:text-white'
                   }`}
                 >
-                  {period.label}
+                  Views
                 </button>
-              ))}
+                <button 
+                  onClick={() => handleActivitySort('plays')}
+                  className={`px-4 py-2 rounded-md text-sm ${
+                    activitySortBy === 'plays' 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-grok-text-secondary hover:text-white'
+                  }`}
+                >
+                  Plays
+                </button>
+                <button 
+                  onClick={() => handleActivitySort('likes')}
+                  className={`px-4 py-2 rounded-md text-sm ${
+                    activitySortBy === 'likes' 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-grok-text-secondary hover:text-white'
+                  }`}
+                >
+                  Likes
+                </button>
+                <button 
+                  onClick={() => handleActivitySort('dislikes')}
+                  className={`px-4 py-2 rounded-md text-sm ${
+                    activitySortBy === 'dislikes' 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-grok-text-secondary hover:text-white'
+                  }`}
+                >
+                  Dislikes
+                </button>
+              </div>
+
+              <div className="bg-gray-900 rounded-lg inline-flex">
+                {activityTimePeriods.map(period => (
+                  <button
+                    key={period.id}
+                    onClick={() => setActivityPeriod(period.id)}
+                    className={`px-3 py-1.5 text-xs ${
+                      activityPeriod === period.id
+                        ? 'bg-gray-700 text-white rounded-md'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {period.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Information note about activity data */}
-          <div className="text-center mb-6">
-            <p className="text-xs text-gray-400 bg-gray-900/50 inline-block px-3 py-1 rounded-md">
-              Note: Activity data is updated daily and represents cumulative metrics for the selected time period.
-            </p>
-          </div>
-
-          {/* Mobile helper text for horizontal scrolling */}
-          <div className="text-center mb-4 sm:hidden">
-            <p className="text-xs text-gray-400 italic">
-              ← Swipe horizontally to see more →
-            </p>
-          </div>
-
-          {activityLoading && (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            {/* Information note about activity data */}
+            <div className="text-center mb-6">
+              <p className="text-xs text-gray-400 bg-gray-900/50 inline-block px-3 py-1 rounded-md">
+                Note: Activity data is updated daily and represents cumulative metrics for the selected time period.
+              </p>
             </div>
-          )}
 
-          {!activityLoading && (
-            <div className="bg-black rounded-xl overflow-hidden">
-              <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
-                <div className="w-full min-w-[500px]">
-                  <table className="w-full table-auto">
-                    <thead>
-                      <tr className="border-b border-gray-800">
-                        <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
-                        <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
-                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Views</th>
-                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Plays</th>
-                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Likes</th>
-                        <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Dislikes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedActivityGames.length === 0 ? (
-                        <tr>
-                          <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
-                            No activity data available for the last 24 hours
-                          </td>
+            {/* Mobile helper text for horizontal scrolling */}
+            <div className="text-center mb-4 sm:hidden">
+              <p className="text-xs text-gray-400 italic">
+                ← Swipe horizontally to see more →
+              </p>
+            </div>
+
+            {activityLoading && (
+              <div className="flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              </div>
+            )}
+
+            {!activityLoading && (
+              <div className="bg-black rounded-xl overflow-hidden">
+                <div className="overflow-x-auto overflow-y-visible -mx-4 sm:mx-0 pb-4 touch-pan-x">
+                  <div className="w-full min-w-[500px]">
+                    <table className="w-full table-auto">
+                      <thead>
+                        <tr className="border-b border-gray-800">
+                          <th className="w-[60px] px-3 py-3 text-center text-xs text-gray-400">Rank</th>
+                          <th className="px-3 py-3 text-left text-xs text-gray-400">Game</th>
+                          <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Views</th>
+                          <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Plays</th>
+                          <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Likes</th>
+                          <th className="w-[80px] px-3 py-3 text-center text-xs text-gray-400">Dislikes</th>
                         </tr>
-                      ) : (
-                        sortedActivityGames.slice(0, activityLimit).map((game, index) => (
-                          <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                            <td className="px-3 py-3 text-center">
-                              <span className="text-xs text-white font-bold">
-                                {index + 1}
-                              </span>
-                            </td>
-                            <td className="px-3 py-3">
-                              <div className="flex items-center space-x-2">
-                                <a href={`/game/${game.id}`} className="flex-shrink-0">
-                                  {game.imageUrl ? (
-                                    <img src={game.imageUrl} alt={game.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
-                                  ) : (
-                                    <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
-                                      <span className="text-xs text-gray-400">No img</span>
-                                    </div>
-                                  )}
-                                </a>
-                                <div className="min-w-0 max-w-[120px] sm:max-w-none">
-                                  <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-blue-400 transition-colors truncate block">
-                                    {game.title}
-                                  </Link>
-                                  <p className="text-xs text-gray-400 truncate">
-                                    {game.xaccount ? (
-                                      <a 
-                                        href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="hover:text-blue-400 transition-colors"
-                                      >
-                                        @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
-                                      </a>
-                                    ) : (
-                                      `by ${game.author?.username || 'Unknown'}`
-                                    )}
-                                  </p>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-3 py-3 text-center">
-                              <span className={`text-xs ${activitySortBy === 'views' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
-                                {game.activityMetrics.views.toLocaleString()}
-                              </span>
-                            </td>
-                            <td className="px-3 py-3 text-center">
-                              <span className={`text-xs ${activitySortBy === 'plays' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
-                                {game.activityMetrics.plays.toLocaleString()}
-                              </span>
-                            </td>
-                            <td className="px-3 py-3 text-center">
-                              <span className={`text-xs ${activitySortBy === 'likes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
-                                {game.activityMetrics.likes.toLocaleString()}
-                              </span>
-                            </td>
-                            <td className="px-3 py-3 text-center">
-                              <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
-                                {game.activityMetrics.dislikes.toLocaleString()}
-                              </span>
+                      </thead>
+                      <tbody>
+                        {sortedActivityGames.length === 0 ? (
+                          <tr>
+                            <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
+                              No activity data available for the selected period
                             </td>
                           </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+                        ) : (
+                          sortedActivityGames.slice(0, activityLimit).map((game, index) => (
+                            <tr key={game.id} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                              <td className="px-3 py-3 text-center">
+                                <span className="text-xs text-white font-bold">
+                                  {index + 1}
+                                </span>
+                              </td>
+                              <td className="px-3 py-3">
+                                <div className="flex items-center space-x-2">
+                                  <a href={`/game/${game.id}`} className="flex-shrink-0">
+                                    {game.imageUrl ? (
+                                      <img src={game.imageUrl} alt={game.title} className="w-7 h-7 sm:w-10 sm:h-10 rounded-md object-cover hover:opacity-80 transition-opacity" />
+                                    ) : (
+                                      <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-md bg-gray-900 flex items-center justify-center">
+                                        <span className="text-xs text-gray-400">No img</span>
+                                      </div>
+                                    )}
+                                  </a>
+                                  <div className="min-w-0 max-w-[120px] sm:max-w-none">
+                                    <Link href={`/game/${game.id}`} className="text-white text-xs sm:text-base font-medium hover:text-blue-400 transition-colors truncate block">
+                                      {game.title}
+                                    </Link>
+                                    <p className="text-xs text-gray-400 truncate">
+                                      {game.xaccount ? (
+                                        <a 
+                                          href={`https://x.com/${game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}`} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer"
+                                          className="hover:text-blue-400 transition-colors"
+                                        >
+                                          @{game.xaccount.replace(/^@/, '').replace(/^https?:\/\/(www\.)?x\.com\//i, '')}
+                                        </a>
+                                      ) : (
+                                        `by ${game.author?.username || 'Unknown'}`
+                                      )}
+                                    </p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-3 py-3 text-center">
+                                <span className={`text-xs ${activitySortBy === 'views' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                  {game.activityMetrics.views.toLocaleString()}
+                                </span>
+                              </td>
+                              <td className="px-3 py-3 text-center">
+                                <span className={`text-xs ${activitySortBy === 'plays' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                  {game.activityMetrics.plays.toLocaleString()}
+                                </span>
+                              </td>
+                              <td className="px-3 py-3 text-center">
+                                <span className={`text-xs ${activitySortBy === 'likes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                  {game.activityMetrics.likes.toLocaleString()}
+                                </span>
+                              </td>
+                              <td className="px-3 py-3 text-center">
+                                <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-blue-400 font-medium' : 'text-gray-400'}`}>
+                                  {game.activityMetrics.dislikes.toLocaleString()}
+                                </span>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+                
+                {sortedActivityGames.length > activityLimit && (
+                  <div className="py-4 text-center">
+                    <button 
+                      onClick={showMoreActivity}
+                      className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+                    >
+                      Show More
+                    </button>
+                  </div>
+                )}
               </div>
-              
-              {sortedActivityGames.length > activityLimit && (
-                <div className="py-4 text-center">
-                  <button 
-                    onClick={showMoreActivity}
-                    className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
-                  >
-                    Show More
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
       
