@@ -119,7 +119,10 @@ export default function Dashboard() {
   
   // Function to handle saving the display name
   const handleSaveDisplayName = async () => {
-    if (!newDisplayName.trim()) {
+    // Make sure newDisplayName is a string and not empty after trimming
+    const trimmedName = (newDisplayName || '').trim();
+    
+    if (!trimmedName) {
       setNameUpdateStatus({ loading: false, error: 'Display name cannot be empty' });
       return;
     }
@@ -132,7 +135,7 @@ export default function Dashboard() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ displayName: newDisplayName.trim() }),
+        body: JSON.stringify({ displayName: trimmedName }),
       });
       
       if (!response.ok) {
@@ -140,16 +143,16 @@ export default function Dashboard() {
         throw new Error(data.error || 'Failed to update display name');
       }
       
-      // Update was successful - immediately update local state to avoid waiting for refresh
-      const trimmedName = newDisplayName.trim();
-      
       // Use the safer functional update form for setUser
       if (user) {
         // Update local user state immediately using the functional form
-        setUser(currentUser => ({
-          ...currentUser,
-          displayName: trimmedName
-        }));
+        setUser((currentUser) => {
+          if (!currentUser) return currentUser;
+          return {
+            ...currentUser,
+            displayName: trimmedName
+          };
+        });
       }
       
       // Show success message
@@ -170,18 +173,26 @@ export default function Dashboard() {
       
     } catch (error) {
       console.error('Error updating display name:', error);
-      setNameUpdateStatus({ loading: false, error: error.message || 'An error occurred' });
+      setNameUpdateStatus({ 
+        loading: false, 
+        error: error.message || 'An error occurred',
+        success: false,
+        message: null
+      });
     }
   };
   
   // Handle key presses in the edit field
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      if (newDisplayName.trim() !== '' && newDisplayName.trim() !== user?.displayName) {
+      const currentDisplayName = user?.displayName || '';
+      const trimmedNewName = (newDisplayName || '').trim();
+      
+      if (trimmedNewName !== '' && trimmedNewName !== currentDisplayName) {
         handleSaveDisplayName();
       } else {
         setIsEditingName(false);
-        setNewDisplayName(user?.displayName || '');
+        setNewDisplayName(currentDisplayName);
       }
     } else if (e.key === 'Escape') {
       setIsEditingName(false);
@@ -234,7 +245,13 @@ export default function Dashboard() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <span>{user?.displayName?.[0] || user?.username?.[0] || '?'}</span>
+                        <span>
+                          {typeof user?.displayName === 'string' && user.displayName.length > 0 
+                            ? user.displayName.charAt(0) 
+                            : typeof user?.username === 'string' && user.username.length > 0 
+                              ? user.username.charAt(0) 
+                              : '?'}
+                        </span>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -247,12 +264,15 @@ export default function Dashboard() {
                             onChange={(e) => setNewDisplayName(e.target.value)}
                             onKeyDown={handleKeyPress}
                             onBlur={() => {
+                              const currentDisplayName = user?.displayName || '';
+                              const trimmedNewName = (newDisplayName || '').trim();
+                              
                               // Only save if name changed and is not empty
-                              if (newDisplayName.trim() !== user?.displayName && newDisplayName.trim() !== '') {
+                              if (trimmedNewName !== '' && trimmedNewName !== currentDisplayName) {
                                 handleSaveDisplayName();
                               } else {
                                 setIsEditingName(false);
-                                setNewDisplayName(user?.displayName || '');
+                                setNewDisplayName(currentDisplayName);
                               }
                             }}
                             className="text-lg font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
