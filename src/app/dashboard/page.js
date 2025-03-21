@@ -191,7 +191,7 @@ export default function Dashboard() {
                       {activeTab === 'profile' && (
                         <>
                           <h3 className="text-lg font-semibold mb-4">Account Details</h3>
-                          <p className="text-sm text-gray-400 mb-4">Update your full name that appears on your profile</p>
+                          <p className="text-sm text-gray-400 mb-4">Update your display name that appears on your profile</p>
                           <UserDisplayNameForm />
                           
                           <div className="mt-6">

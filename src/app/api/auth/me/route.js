@@ -57,45 +57,60 @@ export async function GET(request) {
 
     // Get user from database
     console.log('[API/me] Fetching user details from database');
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        displayName: true,
-        profileImageUrl: true,
-        role: true,
-        roles: {
-          select: {
-            role: true
-          }
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          displayName: true,
+          profileImageUrl: true,
+          role: true,
+          roles: {
+            select: {
+              role: true
+            }
+          },
+          createdAt: true,
+          updatedAt: true,
         },
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+      });
 
-    if (!user) {
-      console.log('[API/me] User not found in database');
+      if (!user) {
+        console.log('[API/me] User not found in database');
+        return NextResponse.json(
+          { message: 'User not found', reason: 'user_not_found' },
+          { status: 404 }
+        );
+      }
+
+      console.log('[API/me] User data retrieved:', {
+        id: user.id,
+        username: user.username,
+        displayName: user.displayName,
+        hasProfileImage: !!user.profileImageUrl
+      });
+
+      // Transform roles array to a more usable format
+      const allRoles = [user.role, ...user.roles.map(r => r.role)];
+      const uniqueRoles = [...new Set(allRoles)];
+      
+      // Create a modified user object with the transformed roles
+      const userData = {
+        ...user,
+        allRoles: uniqueRoles,
+      };
+
+      console.log('[API/me] User authenticated successfully:', user.username);
+      return NextResponse.json({ user: userData }, { status: 200 });
+    } catch (dbError) {
+      console.error('[API/me] Database error fetching user:', dbError);
       return NextResponse.json(
-        { message: 'User not found', reason: 'user_not_found' },
-        { status: 404 }
+        { message: 'Database error', error: dbError.message },
+        { status: 500 }
       );
     }
-
-    // Transform roles array to a more usable format
-    const allRoles = [user.role, ...user.roles.map(r => r.role)];
-    const uniqueRoles = [...new Set(allRoles)];
-    
-    // Create a modified user object with the transformed roles
-    const userData = {
-      ...user,
-      allRoles: uniqueRoles,
-    };
-
-    console.log('[API/me] User authenticated successfully:', user.username);
-    return NextResponse.json({ user: userData }, { status: 200 });
   } catch (error) {
     console.error('[API/me] Error fetching user:', error);
     return NextResponse.json(
