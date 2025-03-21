@@ -223,22 +223,22 @@ export default function RankingsPage() {
                                 </div>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'views' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'views' ? 'text-white font-bold' : 'text-gray-400'}`}>
                                   {game.activityMetrics.views.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'plays' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'plays' ? 'text-white font-bold' : 'text-gray-400'}`}>
                                   {game.activityMetrics.plays.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'likes' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'likes' ? 'text-white font-bold' : 'text-gray-400'}`}>
                                   {game.activityMetrics.likes.toLocaleString()}
                                 </span>
                               </td>
                               <td className="px-3 py-3 text-center">
-                                <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-purple-400 font-medium' : 'text-gray-400'}`}>
+                                <span className={`text-xs ${activitySortBy === 'dislikes' ? 'text-white font-bold' : 'text-gray-400'}`}>
                                   {game.activityMetrics.dislikes.toLocaleString()}
                                 </span>
                               </td>
