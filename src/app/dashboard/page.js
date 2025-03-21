@@ -16,7 +16,7 @@ import { HiUserCircle } from 'react-icons/hi';
 
 // Main dashboard page component
 export default function Dashboard() {
-  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin } = useAuth();
+  const { user, loading, logout, isAuthenticated, isLoggingOut, isAdmin, refreshUser } = useAuth();
   const router = useRouter();
   const profileImageUploaderRef = useRef(null);
   const [imageUpdated, setImageUpdated] = useState(false);
@@ -24,6 +24,10 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('profile');
   const [achievements, setAchievements] = useState({});
   const [achievementsLoaded, setAchievementsLoaded] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState('');
+  const [nameUpdateStatus, setNameUpdateStatus] = useState({ loading: false, error: null });
+  const displayNameInputRef = useRef(null);
 
   // Force profile image to reload when updated
   const handleImageUpdate = useCallback(() => {
@@ -93,6 +97,65 @@ export default function Dashboard() {
     }
   }, [loading, isAuthenticated, router, isLoggingOut]);
 
+  // Initialize display name when user data is loaded
+  useEffect(() => {
+    if (user?.displayName) {
+      setNewDisplayName(user.displayName);
+    }
+  }, [user?.displayName]);
+  
+  // Focus the input when entering edit mode
+  useEffect(() => {
+    if (isEditingName && displayNameInputRef.current) {
+      displayNameInputRef.current.focus();
+    }
+  }, [isEditingName]);
+  
+  // Function to handle saving the display name
+  const handleSaveDisplayName = async () => {
+    if (!newDisplayName.trim()) {
+      setNameUpdateStatus({ loading: false, error: 'Display name cannot be empty' });
+      return;
+    }
+    
+    setNameUpdateStatus({ loading: true, error: null });
+    
+    try {
+      const response = await fetch('/api/users/displayname', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ displayName: newDisplayName.trim() }),
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to update display name');
+      }
+      
+      // Update was successful
+      await refreshUser();
+      setIsEditingName(false);
+      setNameUpdateStatus({ loading: false, error: null });
+      
+    } catch (error) {
+      console.error('Error updating display name:', error);
+      setNameUpdateStatus({ loading: false, error: error.message || 'An error occurred' });
+    }
+  };
+  
+  // Handle key presses in the edit field
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSaveDisplayName();
+    } else if (e.key === 'Escape') {
+      setIsEditingName(false);
+      setNewDisplayName(user?.displayName || '');
+      setNameUpdateStatus({ loading: false, error: null });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
@@ -142,7 +205,46 @@ export default function Dashboard() {
                       )}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-white">{user?.displayName || user?.username}</h2>
+                      {isEditingName ? (
+                        <div className="relative">
+                          <input
+                            ref={displayNameInputRef}
+                            type="text"
+                            value={newDisplayName}
+                            onChange={(e) => setNewDisplayName(e.target.value)}
+                            onKeyDown={handleKeyPress}
+                            onBlur={() => {
+                              if (newDisplayName.trim() !== user?.displayName) {
+                                handleSaveDisplayName();
+                              } else {
+                                setIsEditingName(false);
+                              }
+                            }}
+                            className="text-xl font-bold bg-transparent text-white border-b border-purple-500 focus:outline-none focus:border-purple-300 w-full"
+                            placeholder="Your display name"
+                            maxLength={50}
+                            aria-label="Edit display name"
+                          />
+                          {nameUpdateStatus.loading && (
+                            <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                              <div className="animate-spin h-4 w-4 border-2 border-purple-500 rounded-full border-t-transparent"></div>
+                            </div>
+                          )}
+                          {nameUpdateStatus.error && (
+                            <p className="text-red-400 text-xs mt-1">{nameUpdateStatus.error}</p>
+                          )}
+                        </div>
+                      ) : (
+                        <h2 
+                          className="text-xl font-bold text-white hover:text-purple-300 cursor-pointer group relative"
+                          onClick={() => setIsEditingName(true)}
+                        >
+                          {user?.displayName || user?.username}
+                          <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 text-sm">
+                            ✏️ Edit
+                          </span>
+                        </h2>
+                      )}
                       <p className="text-gray-400">@{user?.username}</p>
                       <p className="text-gray-400 text-sm mt-1">{user?.email}</p>
                     </div>
