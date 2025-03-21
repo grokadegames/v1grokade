@@ -14,8 +14,22 @@ export default function GamesPage() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('production');
   const [sortOption, setSortOption] = useState('newest');
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Fetch games based on current filters
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setRefreshKey(prevKey => prevKey + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -26,6 +40,7 @@ export default function GamesPage() {
         queryParams.append('stage', activeTab.toUpperCase());
         queryParams.append('sort', sortOption);
         queryParams.append('limit', '1000');
+        queryParams.append('t', Date.now());
         
         const response = await fetch(`/api/games?${queryParams.toString()}`);
         
@@ -44,19 +59,16 @@ export default function GamesPage() {
     };
     
     fetchGames();
-  }, [activeTab, sortOption]);
+  }, [activeTab, sortOption, refreshKey]);
 
-  // Handle play button click
   const handlePlayClick = (e, game) => {
     e.preventDefault();
     e.stopPropagation();
     
     if (game && game.id) {
-      // Use the centralized tracking utility
       trackGamePlay(game.id)
         .then(result => {
           console.log('Game play tracked from games page:', result);
-          // Update the local play count if available from the API
           if (result && result.metrics && result.metrics.plays !== undefined) {
             setGames(prev => 
               prev.map(g => 
@@ -66,7 +78,6 @@ export default function GamesPage() {
               )
             );
           }
-          // Open the game URL
           window.open(game.playUrl, '_blank', 'noopener,noreferrer');
         })
         .catch(error => {
@@ -90,12 +101,9 @@ export default function GamesPage() {
           </p>
         </div>
         
-        {/* Main content section */}
         <div className="bg-grok-dark rounded-lg overflow-hidden shadow-xl">
-          {/* Top section - tabs and filters */}
           <div className="px-4 py-4 border-b border-gray-800">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-              {/* Left side - Main tabs */}
               <div className="flex space-x-4 mb-4 md:mb-0">
                 <button 
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -119,7 +127,6 @@ export default function GamesPage() {
                 </button>
               </div>
               
-              {/* Right side - Additional filters */}
               <div className="flex flex-wrap gap-2">
                 <select 
                   className="bg-gray-800 text-gray-300 px-3 py-2 rounded-md text-sm border border-gray-700 focus:outline-none focus:ring-2 focus:ring-grok-purple"
@@ -135,10 +142,8 @@ export default function GamesPage() {
             </div>
           </div>
           
-          {/* Games table */}
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              {/* Table header */}
               <thead className="bg-gray-800/40">
                 <tr>
                   <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-12">#</th>
@@ -151,7 +156,6 @@ export default function GamesPage() {
                 </tr>
               </thead>
               
-              {/* Table body */}
               <tbody className="divide-y divide-gray-800">
                 {loading ? (
                   <tr>
@@ -187,7 +191,6 @@ export default function GamesPage() {
                       <td className="py-4 px-4">
                         <Link href={`/game/${game.id}`} className="group">
                           <div className="flex items-center space-x-3">
-                            {/* Game thumbnail */}
                             <div className="h-12 w-12 bg-gray-800 rounded-md overflow-hidden flex-shrink-0">
                               {game.image ? (
                                 <img 
@@ -208,7 +211,6 @@ export default function GamesPage() {
                               )}
                             </div>
                             
-                            {/* Game title and description */}
                             <div className="flex flex-col">
                               <span className="text-white text-sm font-medium group-hover:text-grok-purple transition-colors">
                                 {game.title}
