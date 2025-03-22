@@ -13,7 +13,7 @@ const ARTICLES = [
     slug: 'is-vibe-coded-gaming-a-fad',
     title: 'Is Vibe-Coded Gaming a Fad? Exploring AI\'s Role in Game Development',
     excerpt: 'Discover whether vibe-coded games, powered by AI tools like Cursor and GitHub Copilot, are a fleeting trend or a transformative force in the gaming industry, as explored through the VibeJam competition and viral successes.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/vibe-coded-gaming.jpg',
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/1.jpeg?updatedAt=1742664491887',
     author: 'James Chmielinski (@aigamelord)',
     date: 'March 22, 2025'
   },
@@ -21,7 +21,7 @@ const ARTICLES = [
     slug: 'fly-pieter-com-ai-driven-game-development',
     title: 'Fly.pieter.com: A Glimpse into the Future of AI-Driven Game Development',
     excerpt: 'Explore how fly.pieter.com, a browser-based MMO flight simulator built in three hours using AI tools like Cursor AI, showcases the transformative potential of AI in gaming, lowering barriers for indie developers while raising questions about creativity, ethics, and the future of game development.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/fly-pieter-com-screenshot.jpg',
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/2.jpeg?updatedAt=1742664491840',
     author: 'James Chmielinski (@aigamelord)',
     date: 'March 18, 2025'
   }
