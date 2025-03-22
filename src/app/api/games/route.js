@@ -140,12 +140,28 @@ export async function GET(request) {
         orderBy = { createdAt: 'asc' };
         break;
       case 'popular':
-        // For popular, we'll sort in the query result based on metrics
-        orderBy = { metrics: { views: 'desc' } };
+        // Sort by views in descending order
+        orderBy = [
+          {
+            metrics: {
+              views: 'desc',
+            }
+          },
+          // Secondary sort for games with equal views
+          { createdAt: 'desc' }
+        ];
         break;
       case 'most_played':
-        // For most played, sort by play count
-        orderBy = { metrics: { plays: 'desc' } };
+        // Sort by plays in descending order
+        orderBy = [
+          {
+            metrics: {
+              plays: 'desc',
+            }
+          },
+          // Secondary sort for games with equal plays
+          { createdAt: 'desc' }
+        ];
         break;
       default:
         orderBy = { createdAt: 'desc' };
@@ -231,6 +247,13 @@ export async function GET(request) {
         tagcategory: game.tagcategory || '', // Explicitly include tagcategory field for games page
         xaccount: game.xaccount || ''
       }));
+      
+      // Double-check sorting for metrics-based sorts (if the DB sorting didn't work correctly)
+      if (sortBy === 'popular') {
+        formattedGames.sort((a, b) => (b.views || 0) - (a.views || 0));
+      } else if (sortBy === 'most_played') {
+        formattedGames.sort((a, b) => (b.plays || 0) - (a.plays || 0));
+      }
       
       console.log('[API] Formatted games data, returning', formattedGames.length, 'games');
       
