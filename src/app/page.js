@@ -38,7 +38,7 @@ export default function Home() {
           name: 'Grokade - AI Gaming Platform',
           applicationCategory: 'GameApplication',
           operatingSystem: 'Web Browser',
-          description: 'Discover AI-built games, join competitions, and connect with game developers. Grokade is the ultimate hub for AI gaming enthusiasts.',
+          description: 'Play AI-generated games built by Grok and other innovative tooling like Cursor, Claude, GPT, and Three.JS. Discover vibe-coded entertainment, join a vibejam competition, use our gig marketplace to find/hire game devs and creatives, or browse our vibegame index—all in one vibrant community.',
           offers: {
             '@type': 'Offer',
             price: '0',

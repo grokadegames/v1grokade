@@ -10,7 +10,7 @@ const faviconVersion = '?v=3';
 export const metadata = {
   metadataBase: new URL('https://grokade.com'),
   title: 'Grokade - AI Gaming Vibe Hub',
-  description: 'Discover games built with Grok and other AI tools. Play AI-generated games, browse our vibegame index, hire talent, and join competitions on the ultimate AI gaming community platform.',
+  description: 'Play AI-generated games built by Grok and other innovative tooling like Cursor, Claude, GPT, and Three.JS. Discover vibe-coded entertainment, join a vibejam competition, use our gig marketplace to find/hire game devs and creatives, or browse our vibegame index—all in one vibrant community.',
   keywords: ['AI games', 'vibe coding', 'grok games', 'WebGL games', 'AI game development', 'game developers', 'Three.js', 'talent marketplace', 'game competitions'],
   authors: [{ name: 'Grokade Team' }],
   creator: 'Grokade',
@@ -41,7 +41,7 @@ export const metadata = {
     url: 'https://grokade.com',
     siteName: 'Grokade',
     title: 'Grokade - AI Gaming Vibe Hub',
-    description: 'Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.',
+    description: 'Play AI-generated games built by Grok and other innovative tooling like Cursor, Claude, GPT, and Three.JS. Discover vibe-coded entertainment, join a vibejam competition, use our gig marketplace to find/hire game devs and creatives, or browse our vibegame index—all in one vibrant community.',
     images: [
       {
         url: 'https://ik.imagekit.io/cbzkrwprl/Grokade%20Logo.png?updatedAt=1742653726017',
@@ -54,7 +54,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Grokade - AI Gaming Vibe Hub',
-    description: 'Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.',
+    description: 'Play AI-generated games built by Grok and other innovative tooling like Cursor, Claude, GPT, and Three.JS. Discover vibe-coded entertainment, join a vibejam competition, use our gig marketplace to find/hire game devs and creatives, or browse our vibegame index—all in one vibrant community.',
     site: '@GrokadeGames',
     creator: '@aigamelord',
     images: ['https://ik.imagekit.io/cbzkrwprl/Grokade%20Logo.png?updatedAt=1742653726017']
