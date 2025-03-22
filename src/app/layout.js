@@ -41,10 +41,10 @@ export const metadata = {
     url: 'https://grokade.com',
     siteName: 'Grokade',
     title: 'Grokade - AI Gaming Vibe Hub',
-    description: 'Discover games built with Grok and other AI tools. Play AI-generated games, browse our vibegame index, hire talent, and join competitions.',
+    description: 'Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.',
     images: [
       {
-        url: 'https://grokade.com/images/og-image.png',
+        url: 'https://ik.imagekit.io/cbzkrwprl/Grokade%20Logo.png?updatedAt=1742653726017',
         width: 1200,
         height: 630,
         alt: 'Grokade - AI Gaming Vibe Hub'
@@ -54,10 +54,10 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Grokade - AI Gaming Vibe Hub',
-    description: 'Discover games built with Grok and other AI tools. Play AI-generated games, hire talent, and join competitions.',
+    description: 'Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index.',
     site: '@GrokadeGames',
-    creator: '@GrokadeGames',
-    images: ['https://grokade.com/images/twitter-image.png']
+    creator: '@aigamelord',
+    images: ['https://ik.imagekit.io/cbzkrwprl/Grokade%20Logo.png?updatedAt=1742653726017']
   },
   robots: {
     index: true,
