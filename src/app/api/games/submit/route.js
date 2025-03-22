@@ -14,7 +14,7 @@ export async function POST(request) {
     
     // Parse the request body
     const formData = await request.formData();
-    console.log('[API] Form data received:', Object.fromEntries(formData.entries()));
+    console.log('[API] Form data received, fields:', Array.from(formData.keys()));
     
     // Extract game details
     const title = formData.get('title');
@@ -68,16 +68,31 @@ export async function POST(request) {
     let thumbnailUrl = null;
     if (thumbnail) {
       console.log('[API] Uploading thumbnail image to ImageKit');
-      const arrayBuffer = await thumbnail.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
+      console.log('[API] Thumbnail file type:', thumbnail.type);
+      console.log('[API] Thumbnail file size:', thumbnail.size, 'bytes');
       
-      const uploadResult = await uploadBuffer(buffer, `game_thumbnail_${id}`, {
-        folder: 'games',
-        useUniqueFileName: false,
-      });
-      
-      thumbnailUrl = uploadResult.url;
-      console.log('[API] Thumbnail uploaded successfully:', thumbnailUrl);
+      try {
+        const arrayBuffer = await thumbnail.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        
+        console.log('[API] Converted thumbnail to buffer, size:', buffer.length);
+        console.log('[API] ImageKit credentials exist:', {
+          publicKey: !!process.env.IMAGEKIT_PUBLIC_KEY,
+          privateKey: !!process.env.IMAGEKIT_PRIVATE_KEY,
+          urlEndpoint: !!process.env.IMAGEKIT_URL_ENDPOINT
+        });
+        
+        const uploadResult = await uploadBuffer(buffer, `game_thumbnail_${id}`, {
+          folder: 'games',
+          useUniqueFileName: false,
+        });
+        
+        thumbnailUrl = uploadResult.url;
+        console.log('[API] Thumbnail uploaded successfully:', thumbnailUrl);
+      } catch (uploadError) {
+        console.error('[API] Thumbnail upload error:', uploadError);
+        throw new Error(`Thumbnail upload failed: ${uploadError.message}`);
+      }
     }
     
     // Upload gallery images to ImageKit if provided
@@ -86,16 +101,26 @@ export async function POST(request) {
       const image = galleryImages[i];
       if (image) {
         console.log(`[API] Uploading gallery image ${i+1} to ImageKit`);
-        const arrayBuffer = await image.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        console.log(`[API] Gallery image ${i+1} type:`, image.type);
+        console.log(`[API] Gallery image ${i+1} size:`, image.size, 'bytes');
         
-        const uploadResult = await uploadBuffer(buffer, `game_gallery_${id}_${i+1}`, {
-          folder: 'games',
-          useUniqueFileName: false,
-        });
-        
-        galleryUrls.push(uploadResult.url);
-        console.log(`[API] Gallery image ${i+1} uploaded successfully:`, uploadResult.url);
+        try {
+          const arrayBuffer = await image.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          
+          console.log(`[API] Converted gallery image ${i+1} to buffer, size:`, buffer.length);
+          
+          const uploadResult = await uploadBuffer(buffer, `game_gallery_${id}_${i+1}`, {
+            folder: 'games',
+            useUniqueFileName: false,
+          });
+          
+          galleryUrls.push(uploadResult.url);
+          console.log(`[API] Gallery image ${i+1} uploaded successfully:`, uploadResult.url);
+        } catch (uploadError) {
+          console.error(`[API] Gallery image ${i+1} upload error:`, uploadError);
+          throw new Error(`Gallery image ${i+1} upload failed: ${uploadError.message}`);
+        }
       }
     }
     
@@ -159,14 +184,12 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('[API] Error submitting game:', error);
+    console.error('[API] Game submission error:', error.message);
+    console.error('[API] Error stack:', error.stack);
+    
+    // Return a proper JSON response for errors
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Failed to submit game',
-        error: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-      },
+      { success: false, message: `Error submitting game: ${error.message}` },
       { status: 500 }
     );
   }

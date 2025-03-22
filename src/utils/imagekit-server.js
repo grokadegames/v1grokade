@@ -20,8 +20,15 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
   const { folder = '', useUniqueFileName = true, tags = [], ...rest } = options;
   
   try {
+    console.log('[ImageKit] Starting upload for file:', fileName);
+    console.log('[ImageKit] Buffer size:', buffer.length);
+    
+    // Convert buffer to base64 string
+    const base64Image = buffer.toString('base64');
+    console.log('[ImageKit] Converted to base64, length:', base64Image.length);
+    
     const result = await imagekit.upload({
-      file: buffer,
+      file: base64Image,
       fileName: fileName,
       folder: folder,
       useUniqueFileName: useUniqueFileName,
@@ -29,9 +36,13 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
       ...rest,
     });
     
+    console.log('[ImageKit] Upload successful, URL:', result.url);
     return result;
   } catch (error) {
-    console.error('ImageKit upload error:', error);
+    console.error('[ImageKit] Upload error:', error.message);
+    if (error.response) {
+      console.error('[ImageKit] Error response:', error.response.data);
+    }
     throw error;
   }
 }
