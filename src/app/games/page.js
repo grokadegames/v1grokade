@@ -78,14 +78,39 @@ export default function GamesPage() {
               )
             );
           }
-          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          
+          // Check if it's a mobile device
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          
+          if (isMobile) {
+            // Use direct navigation for mobile
+            window.location.href = game.playUrl;
+          } else {
+            // Use window.open for desktop
+            window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          }
         })
         .catch(error => {
           console.error('Error tracking game play from games page:', error);
-          window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          
+          // Same mobile check in the catch block
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          
+          if (isMobile) {
+            window.location.href = game.playUrl;
+          } else {
+            window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+          }
         });
     } else if (game && game.playUrl) {
-      window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+      // Same mobile check for the fallback
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        window.location.href = game.playUrl;
+      } else {
+        window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+      }
     }
   };
 
