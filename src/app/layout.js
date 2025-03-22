@@ -44,7 +44,7 @@ export const metadata = {
     description: 'Discover games built with Grok and other AI tools. Play AI-generated games, browse our vibegame index, hire talent, and join competitions.',
     images: [
       {
-        url: 'https://grokade.com/images/og-image.jpg',
+        url: 'https://grokade.com/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Grokade - AI Gaming Vibe Hub'
@@ -57,7 +57,7 @@ export const metadata = {
     description: 'Discover games built with Grok and other AI tools. Play AI-generated games, hire talent, and join competitions.',
     site: '@GrokadeGames',
     creator: '@GrokadeGames',
-    images: ['https://grokade.com/images/twitter-image.jpg']
+    images: ['https://grokade.com/images/twitter-image.png']
   },
   robots: {
     index: true,
