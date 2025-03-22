@@ -5,11 +5,11 @@ import ImageKit from 'imagekit';
 let imagekit;
 try {
   imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'public_yf4/s4sqsRi/BPBW6g3HD+k5TuI=',
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'private_bCEM9K7BDaU6Aes7yp0Xj0uMTqw=',
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl',
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
   });
-  console.log('[ImageKit] Initialized with endpoint:', process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl');
+  console.log('[ImageKit] Initialized with endpoint:', process.env.IMAGEKIT_URL_ENDPOINT);
 } catch (initError) {
   console.error('[ImageKit] Initialization error:', initError);
   // Create a dummy imagekit object with methods that return errors

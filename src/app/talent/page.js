@@ -68,23 +68,23 @@ const TalentCard = ({ talent }) => {
   
   // Determine if this talent specializes in vibe coding or AI games
   const hasSpecialization = talent.specialization || talent.vibeCodingExpert;
-
+  
   return (
     <div className="bg-grok-dark rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105 hover:shadow-xl border border-gray-800">
       <div className="flex items-start">
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4 overflow-hidden">
-          {talent.profileImageUrl ? (
-            <img 
-              src={talent.profileImageUrl} 
-              alt={talent.name} 
+              {talent.profileImageUrl ? (
+                  <img 
+                    src={talent.profileImageUrl} 
+                    alt={talent.name} 
               className="w-full h-full object-cover"
-            />
-          ) : (
+                  />
+              ) : (
             <div className="w-full h-full bg-grok-purple flex items-center justify-center">
               {initials}
             </div>
           )}
-        </div>
+          </div>
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-white">{talent.name}</h3>
           <p className="text-grok-text-secondary mb-1">{talent.title}</p>
@@ -106,7 +106,7 @@ const TalentCard = ({ talent }) => {
                   (talent.description ? `✦ ${talent.description}` : '✦ Vibe Coding Expert') : 
                   `✦ ${talent.specialization}`}
               </span>
-            </div>
+        </div>
           )}
           
           {/* Remote OK badge */}
@@ -114,8 +114,8 @@ const TalentCard = ({ talent }) => {
             <div className="mb-3 ml-2 bg-green-600 bg-opacity-20 rounded-full px-2 py-0.5 inline-block">
               <span className="text-green-500 text-xs font-medium">
                 ✓ Remote OK
-              </span>
-            </div>
+            </span>
+        </div>
           )}
           
           <div className="mb-3 flex flex-wrap">
@@ -123,20 +123,20 @@ const TalentCard = ({ talent }) => {
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-sm text-grok-text-secondary">{talent.location}</span>
-            {talent.xaccount ? (
-              <a 
-                href={`https://x.com/${talent.xaccount.replace(/^@/, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
+          {talent.xaccount ? (
+            <a
+              href={`https://x.com/${talent.xaccount.replace(/^@/, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
                 className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors"
-              >
-                Contact
-              </a>
-            ) : (
+            >
+              Contact
+            </a>
+          ) : (
               <button className="bg-grok-purple hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors opacity-75 cursor-not-allowed">
-                Contact
-              </button>
-            )}
+              Contact
+            </button>
+          )}
           </div>
         </div>
       </div>
@@ -178,10 +178,10 @@ export default function TalentPage() {
         setIsLoading(false);
       }
     };
-
+    
     fetchAllProfiles();
   }, []);
-
+  
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -230,7 +230,7 @@ export default function TalentPage() {
     
     return [...baseKeywords, ...skillKeywords].join(', ');
   };
-  
+
   return (
     <div className="min-h-screen bg-grok-darker">
       {/* SEO metadata */}
@@ -247,7 +247,7 @@ export default function TalentPage() {
       />
       
       <AuthNavbar />
-
+      
       <main className="container-custom mx-auto px-4 py-12 pt-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Grokade Talent</h1>
@@ -270,7 +270,7 @@ export default function TalentPage() {
             </svg>
           </div>
         </div>
-
+        
         <div className="mb-12">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-white">Featured Talent</h2>
@@ -299,14 +299,14 @@ export default function TalentPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+            </div>
               ))
             ) : (
               featuredProfiles.map(profile => (
                 <TalentCard key={profile.id} talent={profile} />
               ))
-            )}
-          </div>
+              )}
+            </div>
           
           {!isLoading && featuredProfiles.length === 0 && (
             <div className="text-center py-12">
@@ -314,7 +314,7 @@ export default function TalentPage() {
             </div>
           )}
         </div>
-
+        
         <div className="bg-grok-dark rounded-lg p-6 md:p-8 text-center mb-12">
           <h2 className="text-2xl font-bold text-white mb-4">Looking for Specialized AI Game Developers?</h2>
           <p className="text-grok-text-secondary mb-6 max-w-2xl mx-auto">
@@ -419,7 +419,7 @@ export default function TalentPage() {
           </div>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );
