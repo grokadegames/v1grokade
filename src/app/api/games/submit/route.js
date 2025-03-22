@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { GameStage } from '@prisma/client';
 import { uploadBuffer } from '@/utils/imagekit-server';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request) {
   // Wrap the entire function in a try-catch to ensure we always return a valid JSON response
@@ -62,13 +63,17 @@ export async function POST(request) {
       );
     }
     
-    // Generate a URL-friendly ID from the title
-    const id = title
+    // Generate a UUID for the game ID instead of using the title
+    const id = uuidv4();
+    console.log('[API] Generated UUID game ID:', id);
+    
+    // Generate a slug from the title (for future URL use if needed)
+    const slug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
     
-    console.log('[API] Generated game ID:', id);
+    console.log('[API] Generated slug from title:', slug);
     
     // Check if a game with this ID already exists
     try {
