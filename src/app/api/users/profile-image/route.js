@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma-fix';
 import { uploadBuffer } from '@/utils/imagekit-server';
 
 // Upload a profile image
@@ -66,12 +66,7 @@ export async function POST(request) {
     // Upload to ImageKit with transformations
     const uploadResult = await uploadBuffer(buffer, publicId, {
       folder: 'user_profiles',
-      useUniqueFileName: false,
-      transformation: [
-        { width: 400, height: 400, crop: 'at_max' },
-        { radius: 'max' }, // Make image perfectly circular
-        { quality: 'auto' } // Automatically optimize quality
-      ]
+      useUniqueFileName: false
     });
     
     console.log(`[API/profile-image] Image uploaded to: ${uploadResult.url}`);

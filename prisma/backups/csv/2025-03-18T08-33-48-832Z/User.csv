@@ -1,6 +1,0 @@
-id,username,email,displayName,password,role,createdAt,updatedAt
-"37211933-f036-4942-a90a-b4d5e34e5a26","test","test@example.com","test","$2b$10$XrHbEsVWQegDgZ8iFAjgpOgnH.Liaewt4/D5nP7CcrJ0/i09XfTX2","REGULAR",2025-03-15T00:38:17.422Z,2025-03-15T00:38:17.422Z
-"aa737d17-fa89-402a-83cc-ae911bb0730d","Testing","Testing@test.com","Testing","$2b$10$MR5w3Hi9clJ8KZy3In1gUeuQAisqkC8l6w6kewULtKv6FcguEPc1a","REGULAR",2025-03-15T01:04:33.189Z,2025-03-15T01:04:33.189Z
-"a6c246ae-f84b-4c43-87b4-05db6b55afc3","admin","admin@grokade.com","Admin User","$2b$10$KQQRQjkpMfSuuYVpdnAZBe35b73PYmsdK3METy1GONsG1qkPEjyuG","ADMIN",2025-03-14T21:19:05.893Z,2025-03-18T04:09:47.562Z
-"406e20cd-07f9-4227-9a14-cba2e292afa4","aigamelord","aigamelord@gmail.com","aigamelord","$2b$10$wAGz8dwjQYYAXQr7yx/JbuJ4Yb8DdHgSHMAwJf0aGz0uR4Gk.btz6","ADMIN",2025-03-15T00:44:10.731Z,2025-03-18T04:09:53.674Z
-"bc7ef627-d00d-40f9-a2e0-6271df18d692","p0tfur","hrab.wesol@gmail.com","p0tfur","$2b$10$WuPtkbWPrhP9bRMW32YLtO4rhLWvAFhm/RFoWxFBI2em6bx4eFXl.","REGULAR",2025-03-18T07:04:44.825Z,2025-03-18T07:04:44.825Z
