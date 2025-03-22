@@ -18,12 +18,12 @@ const ARTICLES = [
     date: 'March 22, 2025'
   },
   {
-    slug: 'article-2',
-    title: 'Your Second Article Title',
-    excerpt: 'A brief description of your second article. This should be compelling enough to drive readers to click and read more.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/article-2-cover.jpg',
-    author: 'Grokade Team',
-    date: 'April 19, 2025'
+    slug: 'fly-pieter-com-ai-driven-game-development',
+    title: 'Fly.pieter.com: A Glimpse into the Future of AI-Driven Game Development',
+    excerpt: 'Explore how fly.pieter.com, a browser-based MMO flight simulator built in three hours using AI tools like Cursor AI, showcases the transformative potential of AI in gaming, lowering barriers for indie developers while raising questions about creativity, ethics, and the future of game development.',
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/fly-pieter-com-screenshot.jpg',
+    author: 'James Chmielinski (@aigamelord)',
+    date: 'March 18, 2025'
   }
 ];
 

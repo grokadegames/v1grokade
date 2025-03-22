@@ -86,32 +86,50 @@ const ARTICLES = [
     `
   },
   {
-    slug: 'article-2',
-    title: 'Your Second Article Title',
-    excerpt: 'A brief description of your second article. This should be compelling enough to drive readers to click and read more.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/article-2-cover.jpg',
-    author: 'Grokade Team',
-    date: 'April 19, 2025',
+    slug: 'fly-pieter-com-ai-driven-game-development',
+    title: 'Fly.pieter.com: A Glimpse into the Future of AI-Driven Game Development',
+    excerpt: 'Explore how fly.pieter.com, a browser-based MMO flight simulator built in three hours using AI tools like Cursor AI, showcases the transformative potential of AI in gaming, lowering barriers for indie developers while raising questions about creativity, ethics, and the future of game development.',
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/fly-pieter-com-screenshot.jpg',
+    author: 'James Chmielinski (@aigamelord)',
+    date: 'March 18, 2025',
     content: `
-      <p>This is the full content of your second article. You can include multiple paragraphs, formatting, and images.</p>
+      <h2>Introduction to fly.pieter.com</h2>
+      <p>Imagine a free-to-play, browser-based flight simulator where you can soar through the skies, engage in dogfights, and explore a low-poly 3D world—all crafted in just three hours by a solo developer with no prior game development experience. Meet fly.pieter.com, an MMO flight simulator created by Pieter Levels (known as @levelsio on X) using AI tools like Cursor AI. This game lets players pilot planes, battle opponents, and navigate a simple yet immersive environment, complete with multiplayer mode and optional microtransactions (like a $29.99 F-16 plane). Currently in alpha, it's open to all at fly.pieter.com—no downloads required.</p>
       
-      <h2>Section Heading</h2>
+      <h2>The Movement of AI in Gaming</h2>
+      <p>The rise of AI in gaming is transforming how games are made, and fly.pieter.com is a shining example. Historically, AI powered things like NPC behavior or pathfinding, but today's tools—like Cursor AI—go further, generating entire game levels, characters, and even music. Pieter Levels used simple prompts like "make a 3D flying game in the browser" to build his viral hit, proving that AI can slash the time and expertise needed to create games. This shift is democratizing the industry, inviting a new wave of creators to jump in.</p>
       
-      <p>Here's a paragraph with some <strong>bold text</strong> and <em>italic text</em> for emphasis. You can structure your content however you want.</p>
+      <h2>Implications for Video Game Development</h2>
+      <p>The story of fly.pieter.com reveals how AI is reshaping game development. Here's a closer look at its impact:</p>
       
-      <p>For images, you can include them like this:</p>
+      <h3>Accessibility</h3>
+      <p>AI tools lower the entry barrier, letting anyone with an idea—like @levelsio—create a game without years of coding experience. This could spark a boom in diverse, creative titles.</p>
       
-      <img src="https://ik.imagekit.io/cbzkrwprl/article-2-image-1.jpg" alt="Description of image" class="my-6 rounded-lg w-full" />
+      <h3>Efficiency</h3>
+      <p>AI speeds up the process dramatically. A game that once took months or years can now be prototyped in hours, benefiting indie devs and big studios alike.</p>
       
-      <p>Continue with more content, lists, etc.</p>
+      <h3>Cost Reduction</h3>
+      <p>By automating tasks like coding and asset creation, AI cuts costs, empowering smaller teams to compete with industry giants.</p>
       
-      <ul>
-        <li>List item one</li>
-        <li>List item two</li>
-        <li>List item three</li>
-      </ul>
+      <h3>Quality and Originality</h3>
+      <p>AI speeds things up, but some worry about the uniqueness of its creations. Fly.pieter.com's simple aesthetic raises the question: can AI match human creativity? Future advancements might close this gap.</p>
       
-      <p>Conclude your article with a strong closing paragraph.</p>
+      <h3>Job Displacement</h3>
+      <p>Automation might disrupt traditional developer roles, but it could also spark new opportunities—like AI trainers or prompt engineers—pushing creativity to the forefront. This is where Grokade.com steps in, building a gig marketplace tailored for game developers to navigate this shift. If traditional game development restructures like the film industry, what's the new norm? Smaller, specialized tasks over sprawling projects? We see potential here. Our research shows a third of our traffic already hitting our "coming soon" pages for the gig marketplace and talent showcase. Curious? Check out Grokade.com and join us as we redefine game dev's future!</p>
+      
+      <h3>Ethical Considerations</h3>
+      <p>Who owns AI-generated content? Could biases sneak into algorithms? These questions linger as AI grows in gaming.</p>
+      
+      <h3>Workflow Integration</h3>
+      <p>Studios must adapt, retraining staff or hiring AI specialists to blend these tools into their processes.</p>
+      
+      <h2>Conclusion</h2>
+      <p>Fly.pieter.com isn't just a fun flight sim—it's a window into AI's game-changing potential. Built in a mere three hours, it shows how AI can empower anyone to create, slashing barriers of time, cost, and skill. Yet, it also spotlights challenges: originality, jobs, and ethics. As AI evolves, it's poised to redefine gaming, blending opportunity with uncertainty. The industry's next move? Adapting to this new reality, where creativity and code collide in exciting ways.</p>
+      
+      <p>What's next for this wild, evolving world of game development? We're just getting started, and we'd love to hear your thoughts—drop a comment or join the conversation on X. If you're as excited as we are about vibe-coded, AI-crafted games, consider partnering with us! Your sponsorship powers Grokade's growth and shines a spotlight on this emerging industry. DM and follow us @grokadegames for more. Here's to building the future of games, together!</p>
+      
+      <h3>Additional Information</h3>
+      <p>Discover games built with Grok and other AI tools. Attract players, run competitions, hire game devs, or browse our vibegame index at Grokade.com.</p>
     `
   }
 ];
