@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  username        String            @unique
+  email           String            @unique
+  displayName     String
+  password        String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  role            UserRole          @default(BASIC)
+  profileImageUrl String?
+  favorites       GameFavorite[]
+  games           Game[]
+  pageViews       PageView[]
+  talentProfile   TalentProfile?
+  achievements    UserAchievement[]
+  roles           UserRoles[]
+
+  @@map("users")
+}
+
+model Game {
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  imageUrl      String?
+  playUrl       String
+  authorId      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  tagcategory   String?
+  xaccount      String?
+  galleryImage1 String?
+  galleryImage2 String?
+  galleryImage3 String?
+  galleryImage4 String?
+  featured      Boolean        @default(false)
+  stage         GameStage      @default(BETA)
+  favoritedBy   GameFavorite[]
+  metrics       GameMetrics?
+  activities    GameActivity[]
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("games")
+}
+
+model GameFavorite {
+  userId    String
+  gameId    String
+  createdAt DateTime @default(now())
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, gameId])
+  @@map("game_favorites")
+}
+
+model Sponsor {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  logoUrl     String
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sponsors")
+}
+
+model GameMetrics {
+  id          String   @id @default(uuid())
+  gameId      String   @unique
+  views       Int      @default(0)
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  dislikes    Int      @default(0)
+  lastUpdated DateTime @default(now()) @updatedAt
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("game_metrics")
+}
+
+model Subscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscribers")
+}
+
+model UserAchievement {
+  id            String   @id @default(uuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+model PageView {
+  id        String   @id @default(uuid())
+  path      String
+  userId    String?
+  userAgent String?
+  referer   String?
+  timestamp DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@map("page_views")
+}
+
+model RankingHistory {
+  id          String   @id @default(uuid())
+  entityId    String
+  entityType  String
+  rankingType String
+  position    Int
+  score       Float?
+  views       Int?
+  plays       Int?
+  recordedAt  DateTime @default(now())
+
+  @@index([entityId, rankingType])
+  @@index([recordedAt])
+  @@map("ranking_history")
+}
+
+model UserRoles {
+  id        String   @id @default(uuid())
+  userId    String
+  role      UserRole
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("user_roles")
+}
+
+model TalentProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  title       String
+  description String   @default("")
+  skills      String[]
+  hourlyRate  String
+  location    String
+  xaccount    String?
+  isRemoteOk  Boolean  @default(true)
+  featured    Boolean  @default(false)
+  rating      Float    @default(0)
+  reviewCount Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("talent_profiles")
+}
+
+model GameActivity {
+  id          String   @id @default(uuid())
+  gameId      String
+  views       Int      @default(0)
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  dislikes    Int      @default(0)
+  timestamp   DateTime @default(now())
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId])
+  @@index([timestamp])
+  @@index([gameId, timestamp])
+  @@map("game_activities")
+}
+
+enum UserRole {
+  BASIC
+  APPLICANT
+  EMPLOYER
+  AUTHOR
+  SPONSOR
+  ADMIN
+}
+
+enum GameStage {
+  BETA
+  PRODUCTION
+}

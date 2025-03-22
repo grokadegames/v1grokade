@@ -1,0 +1,14 @@
+id,name,description,logoUrl,website,createdAt,updatedAt
+"f031ffa6-d698-44e3-8e55-8d07afb91bf0","Ubuntu","Operating system","https://ik.imagekit.io/cbzkrwprl/sponsors/ubuntu-logo","https://ubuntu.com",2025-03-16T02:05:31.831Z,2025-03-22T03:58:25.362Z
+"5c4420bd-641f-4dd1-872b-3427552fad6c","Docker","Container platform","https://ik.imagekit.io/cbzkrwprl/sponsors/docker-logo","https://docker.com",2025-03-16T02:05:31.178Z,2025-03-22T03:56:57.608Z
+"66f36e27-f85c-4e3d-a2e9-1ee5ab23623c","Google Cloud","Cloud services partner","https://ik.imagekit.io/cbzkrwprl/sponsors/google-cloud-logo","https://cloud.google.com",2025-03-16T02:05:30.850Z,2025-03-22T03:56:59.208Z
+"bbbc6247-782a-4f1b-8f60-cd5e3a2d69fd","GitHub","Development platform","https://ik.imagekit.io/cbzkrwprl/sponsors/github-logo","https://github.com",2025-03-16T02:05:31.002Z,2025-03-22T03:57:00.477Z
+"7e702654-f6c1-45c3-af6c-13fad1f01923","Python","Programming language","https://ik.imagekit.io/cbzkrwprl/sponsors/python-logo","https://python.org",2025-03-16T02:05:31.678Z,2025-03-22T03:57:03.048Z
+"af0d9214-fa29-4410-a635-3b691e573417","Laravel","Backend framework provider","https://ik.imagekit.io/cbzkrwprl/sponsors/laravel-logo","https://laravel.com",2025-03-16T02:05:29.586Z,2025-03-22T03:57:06.553Z
+"d1926221-d51b-4e57-bf71-43175556c9f8","Node.js","Server runtime environment","https://ik.imagekit.io/cbzkrwprl/sponsors/node.js-logo","https://nodejs.org",2025-03-16T02:05:30.053Z,2025-03-22T03:57:08.315Z
+"c3faa617-490e-4356-8a1c-3a18ea929e1b","AWS","Cloud infrastructure partner","https://ik.imagekit.io/cbzkrwprl/sponsors/aws-logo","https://aws.amazon.com",2025-03-16T02:05:30.217Z,2025-03-22T03:57:10.588Z
+"d74600e3-64c7-43fd-a61b-3f51db746f5a","Stripe","Payment processing","https://ik.imagekit.io/cbzkrwprl/sponsors/stripe-logo","https://stripe.com",2025-03-16T02:05:30.697Z,2025-03-22T03:57:13.481Z
+"20de7838-dc4a-4dc4-be04-300db35feb1d","npm","Package registry","https://ik.imagekit.io/cbzkrwprl/sponsors/npm-logo","https://www.npmjs.com",2025-03-16T02:05:31.525Z,2025-03-22T03:57:50.674Z
+"a7f9f60f-0ca9-448d-966f-884103f27c87","React","Frontend library partner","https://ik.imagekit.io/cbzkrwprl/sponsors/react-logo","https://reactjs.org",2025-03-16T02:05:29.902Z,2025-03-22T03:57:53.249Z
+"b0081589-dc99-4c90-809a-13bc32fc99ea","DigitalOcean","Hosting services provider","https://ik.imagekit.io/cbzkrwprl/sponsors/digitalocean-logo","https://digitalocean.com",2025-03-16T02:05:30.392Z,2025-03-22T03:57:54.668Z
+"ad66957f-8770-41c8-a88d-3ae7198bd944","MongoDB","Database solutions","https://ik.imagekit.io/cbzkrwprl/sponsors/mongodb-logo","https://mongodb.com",2025-03-16T02:05:30.544Z,2025-03-22T03:57:56.018Z
