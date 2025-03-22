@@ -10,18 +10,18 @@ import { useAuth } from '@/contexts/AuthContext';
 // Later this could be moved to a database or CMS
 const ARTICLES = [
   {
-    slug: 'article-1',
-    title: 'Your First Article Title',
-    excerpt: 'A brief description of your first article. This should be engaging and make readers want to click through to read the full article.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/article-1-cover.jpg', // Replace with actual image URL
-    author: 'Grokade Team',
-    date: 'April 12, 2025'
+    slug: 'is-vibe-coded-gaming-a-fad',
+    title: 'Is Vibe-Coded Gaming a Fad? Exploring AI\'s Role in Game Development',
+    excerpt: 'Discover whether vibe-coded games, powered by AI tools like Cursor and GitHub Copilot, are a fleeting trend or a transformative force in the gaming industry, as explored through the VibeJam competition and viral successes.',
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/vibe-coded-gaming.jpg',
+    author: 'James Chmielinski (@aigamelord)',
+    date: 'March 22, 2025'
   },
   {
     slug: 'article-2',
     title: 'Your Second Article Title',
     excerpt: 'A brief description of your second article. This should be compelling enough to drive readers to click and read more.',
-    coverImage: 'https://ik.imagekit.io/cbzkrwprl/article-2-cover.jpg', // Replace with actual image URL
+    coverImage: 'https://ik.imagekit.io/cbzkrwprl/article-2-cover.jpg',
     author: 'Grokade Team',
     date: 'April 19, 2025'
   }
