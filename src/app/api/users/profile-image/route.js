@@ -1,17 +1,39 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import prisma from '@/lib/prisma-fix';
+import prisma from '@/lib/prisma';
 import { uploadBuffer } from '@/utils/imagekit-server';
 
 // Upload a profile image
 export async function POST(request) {
   try {
-    // Get the JWT token from the cookie
-    const token = request.cookies.get('auth_token')?.value;
+    console.log('[API/profile-image] Starting profile image upload process');
+    console.log('[API/profile-image] JWT_SECRET exists:', !!process.env.JWT_SECRET);
+    
+    // Get the token from cookies
+    const cookieHeader = request.headers.get('cookie');
+    if (!cookieHeader) {
+      console.log('[API/profile-image] No cookies found');
+      return NextResponse.json(
+        { error: 'Authentication required', reason: 'no_cookies' },
+        { status: 401 }
+      );
+    }
+
+    // Parse cookies
+    const cookies = Object.fromEntries(
+      cookieHeader.split('; ').map(cookie => {
+        const [name, value] = cookie.split('=');
+        return [name, value];
+      })
+    );
+
+    const token = cookies.auth_token;
+    console.log('[API/profile-image] Auth token exists:', !!token);
+    
     if (!token) {
       console.error('[API/profile-image] Authentication token is missing');
       return NextResponse.json(
-        { error: 'Authentication required' },
+        { error: 'Authentication required', reason: 'no_token' },
         { status: 401 }
       );
     }
@@ -19,17 +41,25 @@ export async function POST(request) {
     // Verify the token
     let user;
     try {
+      console.log('[API/profile-image] Attempting to verify token...');
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log('[API/profile-image] Token decoded successfully:', decoded);
+      
       user = await prisma.user.findUnique({
-        where: { id: decoded.userId }
+        where: { id: decoded.id }
       });
+      
       if (!user) {
+        console.error('[API/profile-image] User not found with ID:', decoded.id);
         throw new Error('User not found');
       }
+      
+      console.log('[API/profile-image] User found:', user.username);
     } catch (error) {
-      console.error('[API/profile-image] Invalid token:', error.message);
+      console.error('[API/profile-image] Token verification error:', error.message);
+      console.error('[API/profile-image] Token verification error stack:', error.stack);
       return NextResponse.json(
-        { error: 'Authentication failed', message: error.message },
+        { error: 'Authentication failed', details: error.message },
         { status: 401 }
       );
     }
