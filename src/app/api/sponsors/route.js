@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { updateCloudinaryUrl } from '../../../utils/cloudinary';
+import { cloudinaryToImageKit } from '../../../utils/imagekit';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ const SAMPLE_SPONSORS = [
     id: '1',
     name: 'Laravel',
     description: 'Backend framework provider',
-    logoUrl: 'https://res.cloudinary.com/dxow1rafl/image/upload/sponsors/laravel-logo.svg',
+    logoUrl: 'https://ik.imagekit.io/cbzkrwprl/sponsors/laravel-logo.svg',
     website: 'https://laravel.com',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -47,10 +47,10 @@ export async function GET() {
       return NextResponse.json({ sponsors: SAMPLE_SPONSORS }, { status: 200 });
     }
 
-    // Update the Cloudinary URLs with the correct cloud name
+    // Update any remaining Cloudinary URLs to ImageKit URLs
     const updatedSponsors = sponsors.map(sponsor => ({
       ...sponsor,
-      logoUrl: updateCloudinaryUrl(sponsor.logoUrl)
+      logoUrl: cloudinaryToImageKit(sponsor.logoUrl)
     }));
 
     return NextResponse.json({ sponsors: updatedSponsors }, { status: 200 });

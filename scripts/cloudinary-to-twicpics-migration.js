@@ -13,7 +13,7 @@ cloudinary.config({
 });
 
 // TwicPics configuration - add to your .env file
-const TWICPICS_API_KEY = process.env.TWICPICS_API_KEY;
+const TWICPICS_TOKEN = process.env.TWICPICS_TOKEN || 'cb2d5e10-e115-41a0-90a5-638174c87335';
 const TWICPICS_DOMAIN = process.env.TWICPICS_DOMAIN;
 const TWICPICS_PATH_PREFIX = process.env.TWICPICS_PATH_PREFIX || 'grokade/';
 
@@ -81,24 +81,30 @@ async function downloadAsset(asset) {
 
 // Upload asset to TwicPics
 async function uploadToTwicPics(filePath, assetId) {
-  const formData = new FormData();
-  formData.append('file', fs.createReadStream(filePath));
-  
-  // Preserve folder structure
-  const twicPicsPath = `${TWICPICS_PATH_PREFIX}${assetId}`;
-  
   try {
+    // Read the file
+    const fileData = fs.readFileSync(filePath);
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', fs.createReadStream(filePath));
+    
+    // Construct the TwicPics upload URL
+    const twicPicsPath = `${TWICPICS_PATH_PREFIX}${assetId}`;
+    
+    // New approach: using the direct domain with an Auth header
     const response = await axios.post(
-      `https://upload.twicpics.com/api/v1/upload?path=${encodeURIComponent(twicPicsPath)}`,
+      `https://${TWICPICS_DOMAIN}/upload`,
       formData,
       {
         headers: {
-          'Authorization': `Bearer ${TWICPICS_API_KEY}`,
+          'Authorization': `Bearer ${TWICPICS_TOKEN}`,
           'Content-Type': 'multipart/form-data'
         }
       }
     );
     
+    // Return success info
     return {
       success: true,
       twicPicsUrl: `https://${TWICPICS_DOMAIN}/${twicPicsPath}`,
@@ -142,8 +148,8 @@ function writeToCSV(migrationResults) {
 async function migrateAssets() {
   try {
     // Check for TwicPics credentials
-    if (!TWICPICS_API_KEY || !TWICPICS_DOMAIN) {
-      console.error('Missing TwicPics credentials. Please set TWICPICS_API_KEY and TWICPICS_DOMAIN in your .env file');
+    if (!TWICPICS_TOKEN || !TWICPICS_DOMAIN) {
+      console.error('Missing TwicPics credentials. Please set TWICPICS_TOKEN and TWICPICS_DOMAIN in your .env file');
       return;
     }
     

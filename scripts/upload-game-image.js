@@ -2,29 +2,33 @@
 
 const fs = require('fs');
 const path = require('path');
-const { v2: cloudinary } = require('cloudinary');
+const ImageKit = require('imagekit');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-// Configure Cloudinary with your credentials
-cloudinary.config({
-  cloud_name: 'dxow1rafl',
-  api_key: '189369456186199',
-  api_secret: '31EANFqVf28WcdN3p7IE2_q-wtw'
+// Configure ImageKit with credentials
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'public_yf4/s4sqsRi/BPBW6g3HD+k5TuI=',
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'private_bCEM9K7BDaU6Aes7yp0Xj0uMTqw=',
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl'
 });
 
-// Function to upload a file to Cloudinary
-async function uploadToCloudinary(filepath, publicId, folder = 'games') {
+// Function to upload a file to ImageKit
+async function uploadToImageKit(filepath, fileName, folder = 'games') {
   try {
-    console.log(`Uploading ${filepath} to Cloudinary...`);
-    const result = await cloudinary.uploader.upload(filepath, {
-      public_id: publicId,
+    console.log(`Uploading ${filepath} to ImageKit...`);
+    const fileBuffer = fs.readFileSync(filepath);
+    
+    const result = await imagekit.upload({
+      file: fileBuffer,
+      fileName: fileName,
       folder: folder,
-      overwrite: true
+      useUniqueFileName: false
     });
+    
     console.log('Upload successful!');
-    console.log('URL:', result.secure_url);
+    console.log('URL:', result.url);
     return result;
   } catch (error) {
     console.error(`Error uploading ${filepath}:`, error);
@@ -57,13 +61,13 @@ async function main() {
     // Parameters (should be passed as arguments in a production script)
     const imagePath = path.resolve(__dirname, '../temp-upload/land-booster-mars.jpg'); // Path to the downloaded image
     const gameId = '13a9b6f6-0b5b-416b-ab9e-3e143dd6bfce'; // Land the Booster V2 game ID
-    const publicId = 'land-booster-mars'; // ID to use in Cloudinary
+    const fileName = 'land-booster-mars.jpg'; // Filename to use in ImageKit
     
-    // Upload the image to Cloudinary
-    const uploadResult = await uploadToCloudinary(imagePath, publicId);
+    // Upload the image to ImageKit
+    const uploadResult = await uploadToImageKit(imagePath, fileName);
     
     // Update the game in the database
-    await updateGameImageUrl(gameId, uploadResult.secure_url);
+    await updateGameImageUrl(gameId, uploadResult.url);
     
     console.log('Process completed successfully!');
   } catch (error) {

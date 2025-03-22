@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma-fix';
-import { v2 as cloudinary } from 'cloudinary';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { GameStage } from '@prisma/client';
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: 'dxow1rafl',
-  api_key: '189369456186199',
-  api_secret: '31EANFqVf28WcdN3p7IE2_q-wtw'
-});
+import { uploadBuffer } from '@/utils/imagekit-server';
 
 export async function POST(request) {
   try {
@@ -71,62 +64,38 @@ export async function POST(request) {
       );
     }
     
-    // Upload thumbnail to Cloudinary if provided
+    // Upload thumbnail to ImageKit if provided
     let thumbnailUrl = null;
     if (thumbnail) {
-      console.log('[API] Uploading thumbnail image to Cloudinary');
+      console.log('[API] Uploading thumbnail image to ImageKit');
       const arrayBuffer = await thumbnail.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       
-      const uploadResult = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          {
-            resource_type: 'image',
-            public_id: `game_thumbnail_${id}`,
-            folder: 'games',
-            overwrite: true,
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        
-        uploadStream.end(buffer);
+      const uploadResult = await uploadBuffer(buffer, `game_thumbnail_${id}`, {
+        folder: 'games',
+        useUniqueFileName: false,
       });
       
-      thumbnailUrl = uploadResult.secure_url;
+      thumbnailUrl = uploadResult.url;
       console.log('[API] Thumbnail uploaded successfully:', thumbnailUrl);
     }
     
-    // Upload gallery images to Cloudinary if provided
+    // Upload gallery images to ImageKit if provided
     const galleryUrls = [];
     for (let i = 0; i < galleryImages.length; i++) {
       const image = galleryImages[i];
       if (image) {
-        console.log(`[API] Uploading gallery image ${i+1} to Cloudinary`);
+        console.log(`[API] Uploading gallery image ${i+1} to ImageKit`);
         const arrayBuffer = await image.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         
-        const uploadResult = await new Promise((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            {
-              resource_type: 'image',
-              public_id: `game_gallery_${id}_${i+1}`,
-              folder: 'games',
-              overwrite: true,
-            },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          
-          uploadStream.end(buffer);
+        const uploadResult = await uploadBuffer(buffer, `game_gallery_${id}_${i+1}`, {
+          folder: 'games',
+          useUniqueFileName: false,
         });
         
-        galleryUrls.push(uploadResult.secure_url);
-        console.log(`[API] Gallery image ${i+1} uploaded successfully:`, uploadResult.secure_url);
+        galleryUrls.push(uploadResult.url);
+        console.log(`[API] Gallery image ${i+1} uploaded successfully:`, uploadResult.url);
       }
     }
     

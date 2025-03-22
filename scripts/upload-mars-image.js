@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { v2: cloudinary } = require('cloudinary');
+const ImageKit = require('imagekit');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: 'dxow1rafl',
-  api_key: '189369456186199',
-  api_secret: '31EANFqVf28WcdN3p7IE2_q-wtw'
+// Configure ImageKit
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'public_yf4/s4sqsRi/BPBW6g3HD+k5TuI=',
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'private_bCEM9K7BDaU6Aes7yp0Xj0uMTqw=',
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl'
 });
 
 // Game ID for Land the Booster V3
@@ -20,24 +20,28 @@ const imagePath = path.join(__dirname, '../temp-upload/mars-landing.jpg');
 
 async function uploadImageAndUpdateGame() {
   try {
-    console.log('Uploading image to Cloudinary...');
+    console.log('Uploading image to ImageKit...');
     
-    // Upload the image to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(imagePath, {
+    // Read the file as buffer
+    const fileBuffer = fs.readFileSync(imagePath);
+    
+    // Upload the image to ImageKit
+    const uploadResult = await imagekit.upload({
+      file: fileBuffer,
+      fileName: 'land-booster-mars-v2.jpg',
       folder: 'games',
-      public_id: 'land-booster-mars-v2',
-      overwrite: true
+      useUniqueFileName: false
     });
     
     console.log('Image uploaded successfully!');
-    console.log('Cloudinary URL:', uploadResult.secure_url);
+    console.log('ImageKit URL:', uploadResult.url);
     
     // Update the game record in the database
     console.log(`Updating Land the Booster V3 (ID: ${gameId}) with new image URL...`);
     
     const updatedGame = await prisma.game.update({
       where: { id: gameId },
-      data: { imageUrl: uploadResult.secure_url }
+      data: { imageUrl: uploadResult.url }
     });
     
     console.log('Game updated successfully!');
