@@ -151,10 +151,10 @@ export default function Hero() {
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="w-full lg:w-1/2 xl:w-1/2 mb-8 lg:mb-0 text-center lg:text-left lg:pl-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-3">
-              <span className="text-purple-500">AI Gaming</span> Vibe Hub
+              <span className="text-purple-500">Vibe Gaming</span> Hub
             </h1>
             <p className="text-gray-300 text-base mb-5 mx-auto lg:mx-0">
-              Discover vibe-coded entertainment built by Grok and other innovative tools such as Cursor, Claude, and Three.JS. Play AI-generated games, join a vibejam competition, use our gig marketplace to connect with game devs and creatives, or browse our vibegame index—all in one vibrant community.
+              Discover vibe-coded entertainment built by Grok and other innovative artifical intelligence. Play AI-generated games, join a vibejam competition, use our gig marketplace to connect with game devs and creatives, or browse our vibegame index—all in one vibrant community.
             </p>
             <div className="flex space-x-4 justify-center lg:justify-start">
               <a href="#games-section" className="btn-primary text-sm">Play Now</a>

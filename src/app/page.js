@@ -35,10 +35,10 @@ export default function Home() {
         customSchema={{
           '@context': 'https://schema.org',
           '@type': 'WebApplication',
-          name: 'Grokade - AI Gaming Platform',
+          name: 'Grokade - Vibe Gaming Hub',
           applicationCategory: 'GameApplication',
           operatingSystem: 'Web Browser',
-          description: 'Discover vibe-coded entertainment built by Grok and other innovative tools such as Cursor, Claude, and Three.JS. Play AI-generated games, join a vibejam competition, use our gig marketplace to connect with game devs and creatives, or browse our vibegame index—all in one vibrant community.',
+          description: 'Discover vibe-coded entertainment built by Grok and other innovative artifical intelligence. Play AI-generated games, join a vibejam competition, use our gig marketplace to connect with game devs and creatives, or browse our vibegame index—all in one vibrant community.',
           offers: {
             '@type': 'Offer',
             price: '0',
