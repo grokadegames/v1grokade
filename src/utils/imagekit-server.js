@@ -2,11 +2,22 @@
 import ImageKit from 'imagekit';
 
 // Initialize ImageKit with server-side credentials
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'public_yf4/s4sqsRi/BPBW6g3HD+k5TuI=',
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'private_bCEM9K7BDaU6Aes7yp0Xj0uMTqw=',
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl',
-});
+let imagekit;
+try {
+  imagekit = new ImageKit({
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'public_yf4/s4sqsRi/BPBW6g3HD+k5TuI=',
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'private_bCEM9K7BDaU6Aes7yp0Xj0uMTqw=',
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl',
+  });
+  console.log('[ImageKit] Initialized with endpoint:', process.env.IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/cbzkrwprl');
+} catch (initError) {
+  console.error('[ImageKit] Initialization error:', initError);
+  // Create a dummy imagekit object with methods that return errors
+  imagekit = {
+    upload: () => Promise.reject(new Error('ImageKit initialization failed')),
+    getAuthenticationParameters: () => ({ error: 'ImageKit initialization failed' })
+  };
+}
 
 /**
  * Upload a buffer to ImageKit
@@ -17,6 +28,16 @@ const imagekit = new ImageKit({
  * @returns {Promise} - Upload result
  */
 export async function uploadBuffer(buffer, fileName, options = {}) {
+  if (!buffer || buffer.length === 0) {
+    console.error('[ImageKit] Empty buffer provided');
+    throw new Error('Empty buffer provided for upload');
+  }
+  
+  if (!fileName) {
+    console.error('[ImageKit] No fileName provided');
+    throw new Error('No fileName provided for upload');
+  }
+  
   const { folder = '', useUniqueFileName = true, tags = [], ...rest } = options;
   
   try {
@@ -24,9 +45,17 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
     console.log('[ImageKit] Buffer size:', buffer.length);
     
     // Convert buffer to base64 string
-    const base64Image = buffer.toString('base64');
-    console.log('[ImageKit] Converted to base64, length:', base64Image.length);
+    let base64Image;
+    try {
+      base64Image = buffer.toString('base64');
+      console.log('[ImageKit] Converted to base64, length:', base64Image.length);
+    } catch (conversionError) {
+      console.error('[ImageKit] Base64 conversion error:', conversionError);
+      throw new Error(`Failed to convert image to base64: ${conversionError.message}`);
+    }
     
+    // Upload to ImageKit
+    console.log('[ImageKit] Sending upload request to ImageKit...');
     const result = await imagekit.upload({
       file: base64Image,
       fileName: fileName,
@@ -36,6 +65,11 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
       ...rest,
     });
     
+    if (!result || !result.url) {
+      console.error('[ImageKit] Upload completed but no URL returned');
+      throw new Error('Upload completed but no URL was returned from ImageKit');
+    }
+    
     console.log('[ImageKit] Upload successful, URL:', result.url);
     return result;
   } catch (error) {
@@ -43,7 +77,11 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
     if (error.response) {
       console.error('[ImageKit] Error response:', error.response.data);
     }
-    throw error;
+    
+    // Enhance the error with more details
+    const enhancedError = new Error(`ImageKit upload failed for ${fileName}: ${error.message}`);
+    enhancedError.originalError = error;
+    throw enhancedError;
   }
 }
 
@@ -53,7 +91,12 @@ export async function uploadBuffer(buffer, fileName, options = {}) {
  * @returns {Object} - Authentication parameters
  */
 export function getAuthParams() {
-  return imagekit.getAuthenticationParameters();
+  try {
+    return imagekit.getAuthenticationParameters();
+  } catch (error) {
+    console.error('[ImageKit] Error getting auth parameters:', error);
+    throw new Error(`Failed to get ImageKit authentication parameters: ${error.message}`);
+  }
 }
 
 export default imagekit; 
