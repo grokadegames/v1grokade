@@ -39,6 +39,9 @@ export default function AuthNavbar() {
             <Link href="/games" className="text-white hover:text-purple-500 transition-colors mx-3">
               Games
             </Link>
+            <Link href="/vibe-gaming-weekly" className="text-white hover:text-purple-500 transition-colors mx-3">
+              Weekly
+            </Link>
             <Link href="/coming-soon?feature=Gigs" className="text-white hover:text-purple-500 transition-colors mx-3">
               Gigs
             </Link>
@@ -113,6 +116,9 @@ export default function AuthNavbar() {
             <div className="flex flex-col px-4 space-y-3">
               <Link href="/games" className="text-white hover:text-purple-500 transition-colors" onClick={() => setIsMenuOpen(false)}>
                 Games
+              </Link>
+              <Link href="/vibe-gaming-weekly" className="text-white hover:text-purple-500 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                Weekly
               </Link>
               <Link 
                 href="/coming-soon?feature=Gigs" 
